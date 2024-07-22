@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="forum_schema@localhost" uuid="a20319e4-b676-449b-af5a-344d9afc3c65">
-      <driver-ref>mariadb</driver-ref>
+    <data-source source="LOCAL" name="@mariadbservertelerik.database.windows.net" uuid="b45b373a-38cf-41be-8c66-5547b68a9fd3">
+      <driver-ref>azure.ms</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
-      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://localhost:3306/forum_schema</jdbc-url>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://mariadbservertelerik.database.windows.net:1433</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
