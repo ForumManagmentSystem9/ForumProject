@@ -16,16 +16,6 @@ public class Tags {
     @Column(name = "tag_name")
     private String tag_name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tag_post",
-            joinColumns = @JoinColumn(name = "tag_id"),
-            inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
-    private Set<Posts> posts;
-
-
-    public Tags(){}
     public int getId() {
         return id;
     }
@@ -40,14 +30,6 @@ public class Tags {
 
     public void setTag_name(String tag_name) {
         this.tag_name = tag_name;
-    }
-
-    public Set<Posts> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Posts> posts) {
-        this.posts = posts;
     }
 
     @Override

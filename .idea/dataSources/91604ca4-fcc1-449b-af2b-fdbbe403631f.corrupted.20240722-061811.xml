@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="@mariadbservertelerik.database.windows.net">
-  <database-model serializer="dbm" dbms="AZURE" family-id="AZURE" format-version="4.51">
+  <database-model serializer="dbm" dbms="AZURE" family-id="AZURE" format-version="4.52">
     <root id="1">
       <Dbms>AZURE</Dbms>
       <ServerVersion>12.0.5564</ServerVersion>
@@ -16814,8 +16814,8 @@
     </schema>
     <schema id="5581" parent="5542" name="dbo">
       <Current>1</Current>
-      <IntrospectionTimestamp>2024-07-22.18:20:08.883</IntrospectionTimestamp>
-      <LastIntrospectionLocalTimestamp>2024-07-22.15:20:07</LastIntrospectionLocalTimestamp>
+      <IntrospectionTimestamp>2024-07-22.17:42:37.377</IntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-07-22.14:42:37</LastIntrospectionLocalTimestamp>
       <ObjectId>1</ObjectId>
     </schema>
     <schema id="5582" parent="5542" name="guest">
@@ -16824,394 +16824,171 @@
     <schema id="5583" parent="5542" name="sys">
       <ObjectId>4</ObjectId>
     </schema>
-    <assembly id="5584" parent="5543" name="Microsoft.SqlServer.Types">
-      <ObjectId>1</ObjectId>
-      <Visible>1</Visible>
-    </assembly>
-    <filegroup id="5585" parent="5543" name="PRIMARY">
-      <DefaultGroup>1</DefaultGroup>
-      <ObjectId>1</ObjectId>
-    </filegroup>
-    <role id="5586" parent="5543" name="public">
-      <AuthType>none</AuthType>
-      <ObjectId>0</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5587" parent="5543" name="dbo">
-      <AuthType>instance</AuthType>
-      <DefaultSchema>dbo</DefaultSchema>
-      <ObjectId>1</ObjectId>
-    </role>
-    <role id="5588" parent="5543" name="guest">
-      <AuthType>none</AuthType>
-      <DefaultSchema>guest</DefaultSchema>
-      <ObjectId>2</ObjectId>
-    </role>
-    <role id="5589" parent="5543" name="INFORMATION_SCHEMA">
-      <AuthType>none</AuthType>
-      <ObjectId>3</ObjectId>
-    </role>
-    <role id="5590" parent="5543" name="sys">
-      <AuthType>none</AuthType>
-      <ObjectId>4</ObjectId>
-    </role>
-    <role id="5591" parent="5543" name="mariadbuser">
-      <AuthType>instance</AuthType>
-      <DefaultSchema>dbo</DefaultSchema>
-      <ObjectId>5</ObjectId>
-    </role>
-    <role id="5592" parent="5543" name="dbmanager">
-      <AuthType>none</AuthType>
-      <ObjectId>6</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5593" parent="5543" name="loginmanager">
-      <AuthType>none</AuthType>
-      <ObjectId>7</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5594" parent="5543" name="db_owner">
-      <AuthType>none</AuthType>
-      <ObjectId>16384</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5595" parent="5543" name="db_accessadmin">
-      <AuthType>none</AuthType>
-      <ObjectId>16385</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5596" parent="5543" name="db_securityadmin">
-      <AuthType>none</AuthType>
-      <ObjectId>16386</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5597" parent="5543" name="db_ddladmin">
-      <AuthType>none</AuthType>
-      <ObjectId>16387</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5598" parent="5543" name="db_backupoperator">
-      <AuthType>none</AuthType>
-      <ObjectId>16389</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5599" parent="5543" name="db_datareader">
-      <AuthType>none</AuthType>
-      <ObjectId>16390</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5600" parent="5543" name="db_datawriter">
-      <AuthType>none</AuthType>
-      <ObjectId>16391</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5601" parent="5543" name="db_denydatareader">
-      <AuthType>none</AuthType>
-      <ObjectId>16392</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <role id="5602" parent="5543" name="db_denydatawriter">
-      <AuthType>none</AuthType>
-      <ObjectId>16393</ObjectId>
-      <Type>database-role</Type>
-      <OwnerId>1</OwnerId>
-    </role>
-    <schema id="5603" parent="5543" name="INFORMATION_SCHEMA">
-      <ObjectId>3</ObjectId>
-    </schema>
-    <schema id="5604" parent="5543" name="db_accessadmin">
-      <ObjectId>16385</ObjectId>
-    </schema>
-    <schema id="5605" parent="5543" name="db_backupoperator">
-      <ObjectId>16389</ObjectId>
-    </schema>
-    <schema id="5606" parent="5543" name="db_datareader">
-      <ObjectId>16390</ObjectId>
-    </schema>
-    <schema id="5607" parent="5543" name="db_datawriter">
-      <ObjectId>16391</ObjectId>
-    </schema>
-    <schema id="5608" parent="5543" name="db_ddladmin">
-      <ObjectId>16387</ObjectId>
-    </schema>
-    <schema id="5609" parent="5543" name="db_denydatareader">
-      <ObjectId>16392</ObjectId>
-    </schema>
-    <schema id="5610" parent="5543" name="db_denydatawriter">
-      <ObjectId>16393</ObjectId>
-    </schema>
-    <schema id="5611" parent="5543" name="db_owner">
-      <ObjectId>16384</ObjectId>
-    </schema>
-    <schema id="5612" parent="5543" name="db_securityadmin">
-      <ObjectId>16386</ObjectId>
-    </schema>
-    <schema id="5613" parent="5543" name="dbo">
-      <Current>1</Current>
-      <ObjectId>1</ObjectId>
-    </schema>
-    <schema id="5614" parent="5543" name="guest">
-      <ObjectId>2</ObjectId>
-    </schema>
-    <schema id="5615" parent="5543" name="sys">
-      <ObjectId>4</ObjectId>
-    </schema>
-    <alias-type id="5616" parent="5581" name="AccountNumber">
+    <alias-type id="5584" parent="5581" name="AccountNumber">
       <DasType>nvarchar(15 char)|0s</DasType>
       <TypeId>257</TypeId>
     </alias-type>
-    <alias-type id="5617" parent="5581" name="Flag">
+    <alias-type id="5585" parent="5581" name="Flag">
       <DasType>bit|0s</DasType>
       <NotNull>1</NotNull>
       <TypeId>258</TypeId>
     </alias-type>
-    <alias-type id="5618" parent="5581" name="Name">
+    <alias-type id="5586" parent="5581" name="Name">
       <DasType>nvarchar(50 char)|0s</DasType>
       <TypeId>259</TypeId>
     </alias-type>
-    <alias-type id="5619" parent="5581" name="NameStyle">
+    <alias-type id="5587" parent="5581" name="NameStyle">
       <DasType>bit|0s</DasType>
       <NotNull>1</NotNull>
       <TypeId>260</TypeId>
     </alias-type>
-    <alias-type id="5620" parent="5581" name="OrderNumber">
+    <alias-type id="5588" parent="5581" name="OrderNumber">
       <DasType>nvarchar(25 char)|0s</DasType>
       <TypeId>261</TypeId>
     </alias-type>
-    <alias-type id="5621" parent="5581" name="Phone">
+    <alias-type id="5589" parent="5581" name="Phone">
       <DasType>nvarchar(25 char)|0s</DasType>
       <TypeId>262</TypeId>
     </alias-type>
-    <routine id="5622" parent="5581" name="ufnGetAllCategories">
+    <routine id="5590" parent="5581" name="ufnGetAllCategories">
       <CreatedTimestamp>2024-07-21.17:38:15.187</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:38:15.187</ModifiedTimestamp>
       <ObjectId>1541580530</ObjectId>
       <RoutineType>tab-fun</RoutineType>
       <SourceTextLength>1129</SourceTextLength>
     </routine>
-    <routine id="5623" parent="5581" name="ufnGetCustomerInformation">
+    <routine id="5591" parent="5581" name="ufnGetCustomerInformation">
       <CreatedTimestamp>2024-07-21.17:38:15.190</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:38:15.190</ModifiedTimestamp>
       <ObjectId>1605580758</ObjectId>
       <RoutineType>tab-fun</RoutineType>
       <SourceTextLength>311</SourceTextLength>
     </routine>
-    <routine id="5624" parent="5581" name="ufnGetSalesOrderStatusText">
+    <routine id="5592" parent="5581" name="ufnGetSalesOrderStatusText">
       <CreatedTimestamp>2024-07-21.17:38:15.190</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:38:15.190</ModifiedTimestamp>
       <ObjectId>1557580587</ObjectId>
       <RoutineType>scalar-fun</RoutineType>
       <SourceTextLength>525</SourceTextLength>
     </routine>
-    <routine id="5625" parent="5581" name="uspLogError">
+    <routine id="5593" parent="5581" name="uspLogError">
       <CreatedTimestamp>2024-07-21.17:38:16.640</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:38:16.640</ModifiedTimestamp>
       <ObjectId>1042102753</ObjectId>
       <RoutineType>proc</RoutineType>
       <SourceTextLength>1991</SourceTextLength>
     </routine>
-    <routine id="5626" parent="5581" name="uspPrintError">
+    <routine id="5594" parent="5581" name="uspPrintError">
       <CreatedTimestamp>2024-07-21.17:38:16.640</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:38:16.640</ModifiedTimestamp>
       <ObjectId>1026102696</ObjectId>
       <RoutineType>proc</RoutineType>
       <SourceTextLength>704</SourceTextLength>
     </routine>
-    <table id="5627" parent="5581" name="comment_likes">
-      <CreatedTimestamp>2024-07-22.18:15:22.860</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:20:07.353</ModifiedTimestamp>
-      <ObjectId>1970106059</ObjectId>
-    </table>
-    <table id="5628" parent="5581" name="comments">
+    <table id="5595" parent="5581" name="comments">
       <CreatedTimestamp>2024-07-21.17:56:00.167</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:15:22.863</ModifiedTimestamp>
+      <ModifiedTimestamp>2024-07-22.16:43:28.810</ModifiedTimestamp>
       <ObjectId>1218103380</ObjectId>
     </table>
-    <table id="5629" parent="5581" name="post_likes">
-      <CreatedTimestamp>2024-07-22.18:14:20.750</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:19:53.820</ModifiedTimestamp>
-      <ObjectId>1906105831</ObjectId>
-    </table>
-    <table id="5630" parent="5581" name="post_tag">
-      <CreatedTimestamp>2024-07-22.17:54:30.010</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.17:54:30.010</ModifiedTimestamp>
-      <ObjectId>1810105489</ObjectId>
-    </table>
-    <table id="5631" parent="5581" name="posts">
+    <table id="5596" parent="5581" name="posts">
       <CreatedTimestamp>2024-07-21.17:56:00.177</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:39:04.713</ModifiedTimestamp>
+      <ModifiedTimestamp>2024-07-22.16:50:57.257</ModifiedTimestamp>
       <ObjectId>1314103722</ObjectId>
     </table>
-    <table id="5632" parent="5581" name="roles">
+    <table id="5597" parent="5581" name="roles">
       <CreatedTimestamp>2024-07-21.17:56:00.157</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
       <ObjectId>1106102981</ObjectId>
     </table>
-    <table id="5633" parent="5581" name="tags">
+    <table id="5598" parent="5581" name="tags">
       <CreatedTimestamp>2024-07-22.15:07:50.063</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.17:54:30.010</ModifiedTimestamp>
+      <ModifiedTimestamp>2024-07-22.15:07:50.063</ModifiedTimestamp>
       <ObjectId>1490104349</ObjectId>
     </table>
-    <table id="5634" parent="5581" name="users">
+    <table id="5599" parent="5581" name="users">
       <CreatedTimestamp>2024-07-21.17:56:00.160</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:15:22.863</ModifiedTimestamp>
+      <ModifiedTimestamp>2024-07-22.18:08:02.183</ModifiedTimestamp>
       <ObjectId>1154103152</ObjectId>
     </table>
-    <column id="5635" parent="5622" name="ParentProductCategoryName">
+    <column id="5600" parent="5590" name="ParentProductCategoryName">
       <DasType>nvarchar(50 char)|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="5636" parent="5622" name="ProductCategoryName">
+    <column id="5601" parent="5590" name="ProductCategoryName">
       <DasType>nvarchar(50 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="5637" parent="5622" name="ProductCategoryID">
+    <column id="5602" parent="5590" name="ProductCategoryID">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <argument id="5638" parent="5623" name="@CustomerID">
+    <argument id="5603" parent="5591" name="@CustomerID">
       <DasType>int|0s</DasType>
       <Position>1</Position>
     </argument>
-    <column id="5639" parent="5623" name="CustomerID">
+    <column id="5604" parent="5591" name="CustomerID">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="5640" parent="5623" name="FirstName">
+    <column id="5605" parent="5591" name="FirstName">
       <DasType>Name|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="5641" parent="5623" name="LastName">
+    <column id="5606" parent="5591" name="LastName">
       <DasType>Name|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <argument id="5642" parent="5624">
+    <argument id="5607" parent="5592">
       <ArgumentDirection>R</ArgumentDirection>
       <DasType>nvarchar(15 char)|0s</DasType>
     </argument>
-    <argument id="5643" parent="5624" name="@Status">
+    <argument id="5608" parent="5592" name="@Status">
       <DasType>tinyint|0s</DasType>
       <Position>1</Position>
     </argument>
-    <argument id="5644" parent="5625" name="@ErrorLogID">
+    <argument id="5609" parent="5593" name="@ErrorLogID">
       <ArgumentDirection>O</ArgumentDirection>
       <DasType>int|0s</DasType>
       <DefaultExpression>0</DefaultExpression>
       <Position>1</Position>
     </argument>
-    <column id="5645" parent="5627" name="comment_likes_id">
+    <column id="5610" parent="5595" name="comment_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="5646" parent="5627" name="comment_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-    </column>
-    <column id="5647" parent="5627" name="user_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-    </column>
-    <foreign-key id="5648" parent="5627" name="FK__CommentLi__comme__7755B73D">
-      <ColNames>comment_id</ColNames>
-      <CreatedTimestamp>2024-07-22.18:15:22.860</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:15:22.860</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>2002106173</ObjectId>
-      <RefColNames>comment_id</RefColNames>
-      <RefTableId>1218103380</RefTableId>
-      <RefTableName>comments</RefTableName>
-    </foreign-key>
-    <foreign-key id="5649" parent="5627" name="FK__CommentLi__user___7849DB76">
-      <ColNames>user_id</ColNames>
-      <CreatedTimestamp>2024-07-22.18:15:22.863</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:15:22.863</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>2018106230</ObjectId>
-      <RefColNames>user_id</RefColNames>
-      <RefTableId>1154103152</RefTableId>
-      <RefTableName>users</RefTableName>
-    </foreign-key>
-    <index id="5650" parent="5627" name="PK__CommentL__AE6F32DFA7B7E9C9">
-      <Clustering>1</Clustering>
-      <ColNames>comment_likes_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Position>1</Position>
-      <Unique>1</Unique>
-      <PartitionDataSpaceId>1</PartitionDataSpaceId>
-    </index>
-    <key id="5651" parent="5627" name="PK__CommentL__AE6F32DFA7B7E9C9">
-      <CreatedTimestamp>2024-07-22.18:15:22.860</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:15:22.860</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>1986106116</ObjectId>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PK__CommentL__AE6F32DFA7B7E9C9</UnderlyingIndexName>
-    </key>
-    <column id="5652" parent="5628" name="comment_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="5653" parent="5628" name="content">
-      <DasType>nvarchar(max)|0s</DasType>
+    <column id="5611" parent="5595" name="content">
+      <DasType>nvarchar(255 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5654" parent="5628" name="post_id">
+    <column id="5612" parent="5595" name="post_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="5655" parent="5628" name="comment_likes">
+    <column id="5613" parent="5595" name="creator">
+      <DasType>int|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="5614" parent="5595" name="comments_created">
+      <DasType>datetime2|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="5615" parent="5595" name="likes">
       <DasType>int|0s</DasType>
       <Position>6</Position>
     </column>
-    <column id="5656" parent="5628" name="user_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>8</Position>
-    </column>
-    <foreign-key id="5657" parent="5628" name="comments_posts_post_id_fk">
-      <ColNames>post_id</ColNames>
-      <CreatedTimestamp>2024-07-22.18:05:46.087</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:05:46.087</ModifiedTimestamp>
-      <ObjectId>1890105774</ObjectId>
-      <RefColNames>post_id</RefColNames>
-      <RefTableId>1314103722</RefTableId>
-      <RefTableName>posts</RefTableName>
-    </foreign-key>
-    <foreign-key id="5658" parent="5628" name="FK_comments_users">
-      <ColNames>user_id</ColNames>
-      <CreatedTimestamp>2024-07-22.18:04:17.240</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:04:17.240</ModifiedTimestamp>
-      <ObjectId>1874105717</ObjectId>
-      <RefColNames>user_id</RefColNames>
-      <RefTableId>1154103152</RefTableId>
-      <RefTableName>users</RefTableName>
-    </foreign-key>
-    <index id="5659" parent="5628" name="PK__comments__E795768784B27D37">
+    <index id="5616" parent="5595" name="PK__comments__E795768784B27D37">
       <Clustering>1</Clustering>
       <ColNames>comment_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17219,12 +16996,12 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <index id="5660" parent="5628" name="IX_comments_post_id">
+    <index id="5617" parent="5595" name="IX_comments_post_id">
       <ColNames>post_id</ColNames>
       <Position>2</Position>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5661" parent="5628" name="PK__comments__E795768784B27D37">
+    <key id="5618" parent="5595" name="PK__comments__E795768784B27D37">
       <CreatedTimestamp>2024-07-21.17:56:00.167</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.167</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17232,139 +17009,39 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__comments__E795768784B27D37</UnderlyingIndexName>
     </key>
-    <column id="5662" parent="5629" name="post_like_id">
+    <column id="5619" parent="5596" name="post_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="5663" parent="5629" name="post_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-    </column>
-    <column id="5664" parent="5629" name="user_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-    </column>
-    <foreign-key id="5665" parent="5629" name="FK__PostLikes__post___73852659">
-      <ColNames>post_id</ColNames>
-      <CreatedTimestamp>2024-07-22.18:14:20.750</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:14:20.750</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>1938105945</ObjectId>
-      <RefColNames>post_id</RefColNames>
-      <RefTableId>1314103722</RefTableId>
-      <RefTableName>posts</RefTableName>
-    </foreign-key>
-    <foreign-key id="5666" parent="5629" name="FK__PostLikes__user___74794A92">
-      <ColNames>user_id</ColNames>
-      <CreatedTimestamp>2024-07-22.18:14:20.750</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:14:20.750</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>1954106002</ObjectId>
-      <RefColNames>user_id</RefColNames>
-      <RefTableId>1154103152</RefTableId>
-      <RefTableName>users</RefTableName>
-    </foreign-key>
-    <index id="5667" parent="5629" name="PK__PostLike__89C782A60AD75D2F">
-      <Clustering>1</Clustering>
-      <ColNames>post_like_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Position>1</Position>
-      <Unique>1</Unique>
-      <PartitionDataSpaceId>1</PartitionDataSpaceId>
-    </index>
-    <key id="5668" parent="5629" name="PK__PostLike__89C782A60AD75D2F">
-      <CreatedTimestamp>2024-07-22.18:14:20.750</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:14:20.750</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>1922105888</ObjectId>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PK__PostLike__89C782A60AD75D2F</UnderlyingIndexName>
-    </key>
-    <column id="5669" parent="5630" name="post_tag_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="5670" parent="5630" name="post_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-    </column>
-    <column id="5671" parent="5630" name="tag_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-    </column>
-    <foreign-key id="5672" parent="5630" name="FK__post_tag__post_i__6DCC4D03">
-      <ColNames>post_id</ColNames>
-      <CreatedTimestamp>2024-07-22.17:54:30.010</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.17:54:30.010</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>1842105603</ObjectId>
-      <RefColNames>post_id</RefColNames>
-      <RefTableId>1314103722</RefTableId>
-      <RefTableName>posts</RefTableName>
-    </foreign-key>
-    <foreign-key id="5673" parent="5630" name="FK__post_tag__tag_id__6EC0713C">
-      <ColNames>tag_id</ColNames>
-      <CreatedTimestamp>2024-07-22.17:54:30.010</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.17:54:30.010</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>1858105660</ObjectId>
-      <RefColNames>tag_id</RefColNames>
-      <RefTableId>1490104349</RefTableId>
-      <RefTableName>tags</RefTableName>
-    </foreign-key>
-    <index id="5674" parent="5630" name="PK__post_tag__FB97556EFB20141F">
-      <Clustering>1</Clustering>
-      <ColNames>post_tag_id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Position>1</Position>
-      <Unique>1</Unique>
-      <PartitionDataSpaceId>1</PartitionDataSpaceId>
-    </index>
-    <key id="5675" parent="5630" name="PK__post_tag__FB97556EFB20141F">
-      <CreatedTimestamp>2024-07-22.17:54:30.010</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.17:54:30.010</ModifiedTimestamp>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>1826105546</ObjectId>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PK__post_tag__FB97556EFB20141F</UnderlyingIndexName>
-    </key>
-    <column id="5676" parent="5631" name="post_id">
-      <DasType>int|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <SequenceIdentity>1</SequenceIdentity>
-    </column>
-    <column id="5677" parent="5631" name="post_title">
+    <column id="5620" parent="5596" name="post_title">
       <DasType>nvarchar(64 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5678" parent="5631" name="content">
+    <column id="5621" parent="5596" name="content">
       <DasType>nvarchar(2000 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5679" parent="5631" name="likes">
+    <column id="5622" parent="5596" name="likes">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="5680" parent="5631" name="user_id">
+    <column id="5623" parent="5596" name="user_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <foreign-key id="5681" parent="5631" name="FK_posts_users_user">
+    <column id="5624" parent="5596" name="post_dislike">
+      <DasType>int|0s</DasType>
+      <Position>7</Position>
+    </column>
+    <foreign-key id="5625" parent="5596" name="FK_posts_users_user">
       <ColNames>user_id</ColNames>
       <CreatedTimestamp>2024-07-21.17:56:00.177</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.177</ModifiedTimestamp>
@@ -17373,7 +17050,7 @@
       <RefTableId>1154103152</RefTableId>
       <RefTableName>users</RefTableName>
     </foreign-key>
-    <index id="5682" parent="5631" name="PK__posts__3ED78766CB794F9B">
+    <index id="5626" parent="5596" name="PK__posts__3ED78766CB794F9B">
       <Clustering>1</Clustering>
       <ColNames>post_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17381,7 +17058,7 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5683" parent="5631" name="PK__posts__3ED78766CB794F9B">
+    <key id="5627" parent="5596" name="PK__posts__3ED78766CB794F9B">
       <CreatedTimestamp>2024-07-21.17:56:00.177</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.177</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17389,7 +17066,7 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__posts__3ED78766CB794F9B</UnderlyingIndexName>
     </key>
-    <check id="5684" parent="5632" name="CK__roles__name__43D61337">
+    <check id="5628" parent="5597" name="CK__roles__name__43D61337">
       <ColNames>name</ColNames>
       <CreatedTimestamp>2024-07-21.17:56:00.160</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.160</ModifiedTimestamp>
@@ -17397,19 +17074,19 @@
       <ObjectId>1138103095</ObjectId>
       <Predicate>[name]=&apos;admin&apos; OR [name]=&apos;moderator&apos; OR [name]=&apos;user&apos;</Predicate>
     </check>
-    <column id="5685" parent="5632" name="name">
+    <column id="5629" parent="5597" name="name">
       <DasType>nvarchar(50 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5686" parent="5632" name="role_id">
+    <column id="5630" parent="5597" name="role_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <index id="5687" parent="5632" name="PK__roles__760965CC1F9D1380">
+    <index id="5631" parent="5597" name="PK__roles__760965CC1F9D1380">
       <Clustering>1</Clustering>
       <ColNames>role_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17417,7 +17094,7 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5688" parent="5632" name="PK__roles__760965CC1F9D1380">
+    <key id="5632" parent="5597" name="PK__roles__760965CC1F9D1380">
       <CreatedTimestamp>2024-07-21.17:56:00.160</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.160</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17425,24 +17102,24 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__roles__760965CC1F9D1380</UnderlyingIndexName>
     </key>
-    <column id="5689" parent="5633" name="tag_id">
+    <column id="5633" parent="5598" name="tag_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="5690" parent="5633" name="tag_name">
+    <column id="5634" parent="5598" name="tag_name">
       <DasType>varchar(32 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5691" parent="5633" name="post_id">
+    <column id="5635" parent="5598" name="post_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <foreign-key id="5692" parent="5633" name="tags_posts_post_id_fk">
+    <foreign-key id="5636" parent="5598" name="tags_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <CreatedTimestamp>2024-07-22.15:07:50.063</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-22.15:07:50.063</ModifiedTimestamp>
@@ -17451,7 +17128,7 @@
       <RefTableId>1314103722</RefTableId>
       <RefTableName>posts</RefTableName>
     </foreign-key>
-    <index id="5693" parent="5633" name="PK__tags__4296A2B68F0FB51D">
+    <index id="5637" parent="5598" name="PK__tags__4296A2B68F0FB51D">
       <Clustering>1</Clustering>
       <ColNames>tag_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17459,7 +17136,7 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5694" parent="5633" name="PK__tags__4296A2B68F0FB51D">
+    <key id="5638" parent="5598" name="PK__tags__4296A2B68F0FB51D">
       <CreatedTimestamp>2024-07-22.15:07:50.063</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-22.15:07:50.063</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17467,57 +17144,57 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__tags__4296A2B68F0FB51D</UnderlyingIndexName>
     </key>
-    <column id="5695" parent="5634" name="user_id">
+    <column id="5639" parent="5599" name="user_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="5696" parent="5634" name="first_name">
+    <column id="5640" parent="5599" name="first_name">
       <DasType>nvarchar(32 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5697" parent="5634" name="last_name">
+    <column id="5641" parent="5599" name="last_name">
       <DasType>nvarchar(32 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5698" parent="5634" name="email">
+    <column id="5642" parent="5599" name="email">
       <DasType>nvarchar(255 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5699" parent="5634" name="username">
+    <column id="5643" parent="5599" name="username">
       <DasType>nvarchar(255 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5700" parent="5634" name="password">
+    <column id="5644" parent="5599" name="password">
       <DasType>nvarchar(255 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5701" parent="5634" name="role_id">
+    <column id="5645" parent="5599" name="role_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="5702" parent="5634" name="phone_number">
+    <column id="5646" parent="5599" name="phone_number">
       <DasType>nvarchar(20 char)|0s</DasType>
       <Position>8</Position>
       <CollationName>SQL_Latin1_General_CP1_CI_AS</CollationName>
     </column>
-    <column id="5703" parent="5634" name="blocked">
+    <column id="5647" parent="5599" name="blocked">
       <DasType>tinyint|0s</DasType>
       <Position>9</Position>
     </column>
-    <foreign-key id="5704" parent="5634" name="FK_users_roles">
+    <foreign-key id="5648" parent="5599" name="FK_users_roles">
       <ColNames>role_id</ColNames>
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
@@ -17526,7 +17203,7 @@
       <RefTableId>1106102981</RefTableId>
       <RefTableName>roles</RefTableName>
     </foreign-key>
-    <index id="5705" parent="5634" name="PK__users__B9BE370F1BDEB4D6">
+    <index id="5649" parent="5599" name="PK__users__B9BE370F1BDEB4D6">
       <Clustering>1</Clustering>
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17534,14 +17211,14 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <index id="5706" parent="5634" name="UQ__users__AB6E6164B11BD345">
+    <index id="5650" parent="5599" name="UQ__users__AB6E6164B11BD345">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Position>2</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5707" parent="5634" name="PK__users__B9BE370F1BDEB4D6">
+    <key id="5651" parent="5599" name="PK__users__B9BE370F1BDEB4D6">
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17549,52 +17226,12 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__users__B9BE370F1BDEB4D6</UnderlyingIndexName>
     </key>
-    <key id="5708" parent="5634" name="UQ__users__AB6E6164B11BD345">
+    <key id="5652" parent="5599" name="UQ__users__AB6E6164B11BD345">
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1186103266</ObjectId>
       <UnderlyingIndexName>UQ__users__AB6E6164B11BD345</UnderlyingIndexName>
     </key>
-    <partition id="5709" parent="5650">
-      <ObjectId>72057594050510848</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5710" parent="5659">
-      <ObjectId>72057594049593344</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5711" parent="5660">
-      <ObjectId>72057594049658880</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5712" parent="5667">
-      <ObjectId>72057594050445312</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5713" parent="5674">
-      <ObjectId>72057594050379776</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5714" parent="5682">
-      <ObjectId>72057594049789952</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5715" parent="5687">
-      <ObjectId>72057594049396736</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5716" parent="5693">
-      <ObjectId>72057594050052096</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5717" parent="5705">
-      <ObjectId>72057594049462272</ObjectId>
-      <Position>1</Position>
-    </partition>
-    <partition id="5718" parent="5706">
-      <ObjectId>72057594049527808</ObjectId>
-      <Position>1</Position>
-    </partition>
   </database-model>
 </dataSource>

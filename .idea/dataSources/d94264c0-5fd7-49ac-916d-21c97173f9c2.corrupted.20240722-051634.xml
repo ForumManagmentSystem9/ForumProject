@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="@localhost">
+<dataSource name="@localhost [2]">
   <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.52">
     <root id="1">
       <DefaultCasing>lower/lower</DefaultCasing>
@@ -1409,8 +1409,7 @@
       <CollationName>latin1_swedish_ci</CollationName>
     </schema>
     <schema id="512" parent="1" name="forum_project">
-      <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-07-22.14:34:57</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-07-22.11:22:43</LastIntrospectionLocalTimestamp>
       <CollationName>latin1_swedish_ci</CollationName>
     </schema>
     <schema id="513" parent="1" name="information_schema">
@@ -1510,324 +1509,329 @@
       <DasType>int(11)|0s</DasType>
       <Position>7</Position>
     </column>
-    <foreign-key id="539" parent="524" name="comments_users__user_id_fk">
+    <column id="539" parent="524" name="comment_created">
+      <DasType>timestamp|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+    </column>
+    <foreign-key id="540" parent="524" name="comments_users__user_id_fk">
       <ColNames>creator</ColNames>
       <RefColNames>user_id</RefColNames>
       <RefTableName>users</RefTableName>
     </foreign-key>
-    <index id="540" parent="524" name="PRIMARY">
+    <index id="541" parent="524" name="PRIMARY">
       <ColNames>comment_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="541" parent="524" name="comments_posts_post_id_fk">
+    <index id="542" parent="524" name="comments_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="542" parent="524" name="comments_users__user_id_fk">
+    <index id="543" parent="524" name="comments_users__user_id_fk">
       <ColNames>creator</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="543" parent="524" name="PRIMARY">
+    <key id="544" parent="524" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="544" parent="525" name="post_id">
+    <column id="545" parent="525" name="post_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="545" parent="525" name="comment_id">
+    <column id="546" parent="525" name="comment_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="546" parent="525" name="id">
+    <column id="547" parent="525" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <foreign-key id="547" parent="525" name="post_comments__fk">
+    <foreign-key id="548" parent="525" name="post_comments__fk">
       <ColNames>comment_id</ColNames>
       <RefColNames>comment_id</RefColNames>
       <RefTableName>comments</RefTableName>
     </foreign-key>
-    <index id="548" parent="525" name="PRIMARY">
+    <index id="549" parent="525" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="549" parent="525" name="post_comments__fk">
+    <index id="550" parent="525" name="post_comments__fk">
       <ColNames>comment_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="550" parent="525" name="PRIMARY">
+    <key id="551" parent="525" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="551" parent="526" name="post_id">
+    <column id="552" parent="526" name="post_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="552" parent="526" name="post_title">
+    <column id="553" parent="526" name="post_title">
       <DasType>varchar(64)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="553" parent="526" name="content">
+    <column id="554" parent="526" name="content">
       <DasType>varchar(8192)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="554" parent="526" name="likes">
+    <column id="555" parent="526" name="likes">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="555" parent="526" name="user_id">
+    <column id="556" parent="526" name="user_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="556" parent="526" name="post_dislike">
+    <column id="557" parent="526" name="post_dislike">
       <DasType>int(11)|0s</DasType>
       <Position>6</Position>
     </column>
-    <foreign-key id="557" parent="526" name="posts_users_user_id_fk">
+    <foreign-key id="558" parent="526" name="posts_users_user_id_fk">
       <ColNames>user_id</ColNames>
       <RefColNames>user_id</RefColNames>
       <RefTableName>users</RefTableName>
     </foreign-key>
-    <index id="558" parent="526" name="PRIMARY">
+    <index id="559" parent="526" name="PRIMARY">
       <ColNames>post_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="559" parent="526" name="posts_users_user_id_fk">
+    <index id="560" parent="526" name="posts_users_user_id_fk">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="560" parent="526" name="PRIMARY">
+    <key id="561" parent="526" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="561" parent="527" name="user_id">
+    <column id="562" parent="527" name="user_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="562" parent="527" name="content">
+    <column id="563" parent="527" name="content">
       <DasType>text|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="563" parent="527" name="reply_time">
+    <column id="564" parent="527" name="reply_time">
       <DasType>timestamp|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="564" parent="527" name="likes">
+    <column id="565" parent="527" name="likes">
       <DasType>int(11)|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="565" parent="527" name="dislike">
+    <column id="566" parent="527" name="dislike">
       <DasType>int(11)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="566" parent="527" name="replies_id">
+    <column id="567" parent="527" name="replies_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <foreign-key id="567" parent="527" name="replies_fk">
+    <foreign-key id="568" parent="527" name="replies_fk">
       <ColNames>user_id</ColNames>
       <RefColNames>user_id</RefColNames>
       <RefTableName>users</RefTableName>
     </foreign-key>
-    <index id="568" parent="527" name="PRIMARY">
+    <index id="569" parent="527" name="PRIMARY">
       <ColNames>replies_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="569" parent="527" name="replies_fk">
+    <index id="570" parent="527" name="replies_fk">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="570" parent="527" name="PRIMARY">
+    <key id="571" parent="527" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="571" parent="528" name="comment_id">
+    <column id="572" parent="528" name="comment_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="572" parent="528" name="reply_id">
+    <column id="573" parent="528" name="reply_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="573" parent="528" name="id">
+    <column id="574" parent="528" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <foreign-key id="574" parent="528" name="comments___fk">
+    <foreign-key id="575" parent="528" name="comments___fk">
       <ColNames>comment_id</ColNames>
       <RefColNames>comment_id</RefColNames>
       <RefTableName>post_comments</RefTableName>
     </foreign-key>
-    <foreign-key id="575" parent="528" name="replies__fk">
+    <foreign-key id="576" parent="528" name="replies__fk">
       <ColNames>reply_id</ColNames>
       <RefColNames>replies_id</RefColNames>
       <RefTableName>replies</RefTableName>
     </foreign-key>
-    <index id="576" parent="528" name="PRIMARY">
+    <index id="577" parent="528" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="577" parent="528" name="comments___fk">
+    <index id="578" parent="528" name="comments___fk">
       <ColNames>comment_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="578" parent="528" name="replies__fk">
+    <index id="579" parent="528" name="replies__fk">
       <ColNames>reply_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="579" parent="528" name="PRIMARY">
+    <key id="580" parent="528" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="580" parent="529" name="name">
+    <column id="581" parent="529" name="name">
       <DasType>enum(&apos;user&apos;, &apos;moderator&apos;, &apos;admin&apos;)|0e</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="581" parent="529" name="role_id">
+    <column id="582" parent="529" name="role_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <index id="582" parent="529" name="PRIMARY">
+    <index id="583" parent="529" name="PRIMARY">
       <ColNames>role_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="583" parent="529" name="PRIMARY">
+    <key id="584" parent="529" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="584" parent="530" name="tag_id">
+    <column id="585" parent="530" name="tag_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="585" parent="530" name="tag_name">
+    <column id="586" parent="530" name="tag_name">
       <DasType>varchar(32)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="586" parent="530" name="post_id">
+    <column id="587" parent="530" name="post_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <foreign-key id="587" parent="530" name="tags_posts_post_id_fk">
+    <foreign-key id="588" parent="530" name="tags_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <RefColNames>post_id</RefColNames>
       <RefTableName>posts</RefTableName>
     </foreign-key>
-    <index id="588" parent="530" name="PRIMARY">
+    <index id="589" parent="530" name="PRIMARY">
       <ColNames>tag_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="589" parent="530" name="tags_posts_post_id_fk">
+    <index id="590" parent="530" name="tags_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="590" parent="530" name="PRIMARY">
+    <key id="591" parent="530" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="591" parent="531" name="user_id">
+    <column id="592" parent="531" name="user_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="592" parent="531" name="first_name">
+    <column id="593" parent="531" name="first_name">
       <DasType>varchar(32)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="593" parent="531" name="last_name">
+    <column id="594" parent="531" name="last_name">
       <DasType>varchar(32)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="594" parent="531" name="email">
+    <column id="595" parent="531" name="email">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="595" parent="531" name="username">
+    <column id="596" parent="531" name="username">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="596" parent="531" name="password">
+    <column id="597" parent="531" name="password">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="597" parent="531" name="role_id">
+    <column id="598" parent="531" name="role_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="598" parent="531" name="phone_number">
+    <column id="599" parent="531" name="phone_number">
       <DasType>varchar(20)|0s</DasType>
       <Position>8</Position>
     </column>
-    <foreign-key id="599" parent="531" name="users_roles_fk">
+    <foreign-key id="600" parent="531" name="users_roles_fk">
       <ColNames>role_id</ColNames>
       <RefColNames>role_id</RefColNames>
       <RefTableName>roles</RefTableName>
     </foreign-key>
-    <index id="600" parent="531" name="PRIMARY">
+    <index id="601" parent="531" name="PRIMARY">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="601" parent="531" name="email">
+    <index id="602" parent="531" name="email">
       <ColNames>email</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="602" parent="531" name="users_roles_fk">
+    <index id="603" parent="531" name="users_roles_fk">
       <ColNames>role_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="603" parent="531" name="PRIMARY">
+    <key id="604" parent="531" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="604" parent="531" name="email">
+    <key id="605" parent="531" name="email">
       <UnderlyingIndexName>email</UnderlyingIndexName>
     </key>
   </database-model>
