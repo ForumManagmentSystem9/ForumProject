@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="@localhost">
+<dataSource name="forum_schema@localhost">
   <database-model serializer="dbm" dbms="MARIADB" family-id="MARIADB" format-version="4.51">
     <root id="1">
       <DefaultCasing>exact</DefaultCasing>
@@ -1281,257 +1281,261 @@
     <schema id="509" parent="1" name="mysql">
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </schema>
-    <schema id="510" parent="1" name="performance_schema">
-      <CollationName>utf8mb3_general_ci</CollationName>
+    <schema id="510" parent="1" name="schema_name">
+      <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </schema>
     <schema id="511" parent="1" name="sys">
       <CollationName>utf8mb3_general_ci</CollationName>
     </schema>
-    <schema id="512" parent="1" name="schema_name">
-      <LastIntrospectionLocalTimestamp>2024-07-20.15:34:03</LastIntrospectionLocalTimestamp>
+    <schema id="512" parent="1" name="performance_schema">
+      <CollationName>utf8mb3_general_ci</CollationName>
+    </schema>
+    <schema id="513" parent="1" name="forum_schema">
+      <Current>1</Current>
+      <LastIntrospectionLocalTimestamp>2024-07-20.18:59:17</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </schema>
-    <user id="513" parent="1" name="mariadb.sys">
+    <user id="514" parent="1" name="mariadb.sys">
       <Host>localhost</Host>
     </user>
-    <user id="514" parent="1" name="root">
+    <user id="515" parent="1" name="root">
       <Host>localhost</Host>
     </user>
-    <user id="515" parent="1" name="root"/>
-    <user id="516" parent="1" name="healthcheck">
+    <user id="516" parent="1" name="root"/>
+    <user id="517" parent="1" name="healthcheck">
       <Host>127.0.0.1</Host>
     </user>
-    <user id="517" parent="1" name="healthcheck">
+    <user id="518" parent="1" name="healthcheck">
       <Host>::1</Host>
     </user>
-    <user id="518" parent="1" name="healthcheck">
+    <user id="519" parent="1" name="healthcheck">
       <Host>localhost</Host>
     </user>
-    <table id="519" parent="512" name="comments">
+    <table id="520" parent="513" name="comments">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="520" parent="512" name="posts">
+    <table id="521" parent="513" name="posts">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="521" parent="512" name="roles">
+    <table id="522" parent="513" name="roles">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="522" parent="512" name="tags">
+    <table id="523" parent="513" name="tags">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <table id="523" parent="512" name="users">
+    <table id="524" parent="513" name="users">
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_uca1400_ai_ci</CollationName>
     </table>
-    <column id="524" parent="519" name="comment_id">
+    <column id="525" parent="520" name="comment_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="525" parent="519" name="content">
+    <column id="526" parent="520" name="content">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="526" parent="519" name="post_id">
+    <column id="527" parent="520" name="post_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="527" parent="519" name="reply_id">
+    <column id="528" parent="520" name="reply_id">
       <DasType>int(11)|0s</DasType>
       <Position>4</Position>
     </column>
-    <foreign-key id="528" parent="519" name="comments_posts_post_id_fk">
+    <foreign-key id="529" parent="520" name="comments_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <RefColNames>post_id</RefColNames>
       <RefTableName>posts</RefTableName>
     </foreign-key>
-    <index id="529" parent="519" name="PRIMARY">
+    <index id="530" parent="520" name="PRIMARY">
       <ColNames>comment_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="530" parent="519" name="comments_posts_post_id_fk">
+    <index id="531" parent="520" name="comments_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="531" parent="519" name="PRIMARY">
+    <key id="532" parent="520" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="532" parent="520" name="post_id">
+    <column id="533" parent="521" name="post_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="533" parent="520" name="post_title">
+    <column id="534" parent="521" name="post_title">
       <DasType>varchar(64)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="534" parent="520" name="content">
+    <column id="535" parent="521" name="content">
       <DasType>varchar(8192)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="535" parent="520" name="likes">
+    <column id="536" parent="521" name="likes">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="536" parent="520" name="user_id">
+    <column id="537" parent="521" name="user_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <foreign-key id="537" parent="520" name="posts_users_user_id_fk">
+    <foreign-key id="538" parent="521" name="posts_users_user_id_fk">
       <ColNames>user_id</ColNames>
       <RefColNames>user_id</RefColNames>
       <RefTableName>users</RefTableName>
     </foreign-key>
-    <index id="538" parent="520" name="PRIMARY">
+    <index id="539" parent="521" name="PRIMARY">
       <ColNames>post_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="539" parent="520" name="posts_users_user_id_fk">
+    <index id="540" parent="521" name="posts_users_user_id_fk">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="540" parent="520" name="PRIMARY">
+    <key id="541" parent="521" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="541" parent="521" name="role_id">
+    <column id="542" parent="522" name="role_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="542" parent="521" name="role">
+    <column id="543" parent="522" name="role">
       <DasType>varchar(20)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <index id="543" parent="521" name="PRIMARY">
+    <index id="544" parent="522" name="PRIMARY">
       <ColNames>role_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="544" parent="521" name="PRIMARY">
+    <key id="545" parent="522" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="545" parent="522" name="tag_id">
+    <column id="546" parent="523" name="tag_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="546" parent="522" name="tag_name">
+    <column id="547" parent="523" name="tag_name">
       <DasType>varchar(32)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="547" parent="522" name="post_id">
+    <column id="548" parent="523" name="post_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <foreign-key id="548" parent="522" name="tags_posts_post_id_fk">
+    <foreign-key id="549" parent="523" name="tags_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <RefColNames>post_id</RefColNames>
       <RefTableName>posts</RefTableName>
     </foreign-key>
-    <index id="549" parent="522" name="PRIMARY">
+    <index id="550" parent="523" name="PRIMARY">
       <ColNames>tag_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="550" parent="522" name="tags_posts_post_id_fk">
+    <index id="551" parent="523" name="tags_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="551" parent="522" name="PRIMARY">
+    <key id="552" parent="523" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="552" parent="523" name="user_id">
+    <column id="553" parent="524" name="user_id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="553" parent="523" name="first_name">
+    <column id="554" parent="524" name="first_name">
       <DasType>varchar(32)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="554" parent="523" name="last_name">
+    <column id="555" parent="524" name="last_name">
       <DasType>varchar(32)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="555" parent="523" name="email">
+    <column id="556" parent="524" name="email">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="556" parent="523" name="username">
+    <column id="557" parent="524" name="username">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="557" parent="523" name="password">
+    <column id="558" parent="524" name="password">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="558" parent="523" name="phone">
-      <DasType>varchar(15)|0s</DasType>
-      <Position>7</Position>
-    </column>
-    <column id="559" parent="523" name="role_id">
+    <column id="559" parent="524" name="tag_id">
       <DasType>int(11)|0s</DasType>
       <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <column id="560" parent="524" name="role_id">
+      <DasType>int(11)|0s</DasType>
       <Position>8</Position>
     </column>
-    <foreign-key id="560" parent="523" name="users_roles_role_id_fk">
+    <foreign-key id="561" parent="524" name="users_roles_role_id_fk">
       <ColNames>role_id</ColNames>
       <RefColNames>role_id</RefColNames>
       <RefTableName>roles</RefTableName>
     </foreign-key>
-    <index id="561" parent="523" name="PRIMARY">
+    <index id="562" parent="524" name="PRIMARY">
       <ColNames>user_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="562" parent="523" name="email">
+    <index id="563" parent="524" name="email">
       <ColNames>email</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="563" parent="523" name="users_roles_role_id_fk">
+    <index id="564" parent="524" name="users_roles_role_id_fk">
       <ColNames>role_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="564" parent="523" name="PRIMARY">
+    <key id="565" parent="524" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <key id="565" parent="523" name="email">
+    <key id="566" parent="524" name="email">
       <UnderlyingIndexName>email</UnderlyingIndexName>
     </key>
   </database-model>
