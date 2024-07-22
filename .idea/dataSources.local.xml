@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-233.14015.106">
+  <component name="dataSourceStorageLocal" created-in="IU-241.17890.1">
     <data-source name="@localhost" uuid="5300c96b-fd80-45e7-bf2e-71ec0d840cc7">
       <database-info product="MariaDB" version="11.4.2-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="11.4.2" exact-driver-version="3.3">
         <extra-name-characters>#@</extra-name-characters>
@@ -14,6 +14,23 @@
           <node kind="schema">
             <name qname="@" />
             <name qname="forume_project" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+    <data-source name="@localhost [2]" uuid="d94264c0-5fd7-49ac-916d-21c97173f9c2">
+      <database-info product="MariaDB" version="11.4.2-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="3.3.3" dbms="MARIADB" exact-version="11.4.2" exact-driver-version="3.3">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema">
+            <name qname="@" />
+            <name qname="forum_project" />
           </node>
         </introspection-scope>
       </schema-mapping>
