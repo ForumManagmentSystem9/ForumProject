@@ -17,11 +17,10 @@ public class Posts {
 
     @Column(name = "content")
     private String content;
+
     @Column(name = "likes")
     private int likes;
 
-    @Column(name = "dislikes")
-    private int dislikes;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -58,14 +57,6 @@ public class Posts {
 
     public void setLikes(int likes) {
         this.likes = likes;
-    }
-
-    public int getDislikes() {
-        return dislikes;
-    }
-
-    public void setDislikes(int dislikes) {
-        this.dislikes = dislikes;
     }
 
     public User getUser() {

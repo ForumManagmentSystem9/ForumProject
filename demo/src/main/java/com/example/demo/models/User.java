@@ -37,6 +37,9 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "blocked")
+    private boolean isBlocked;
+
     public User(){}
 
     public int getId(){
@@ -101,6 +104,14 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber){
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean bloked) {
+        isBlocked = bloked;
     }
 
     @Override
