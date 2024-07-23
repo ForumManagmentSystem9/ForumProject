@@ -1,10 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.Posts;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -56,7 +53,7 @@ public class PostsRepositoryImpl implements PostsRepository {
 
     @Override
     public void deleteById(int id) {
-        Posts postToDelete = findById(id).orElseThrow(() -> new EntityNotFoundException("Posts", id));
+        Posts postToDelete = findById(id).orElseThrow(() -> new EntityNotFoundException("Post not found with ID " + id));
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(postToDelete);
