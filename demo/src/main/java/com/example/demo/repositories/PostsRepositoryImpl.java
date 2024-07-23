@@ -25,7 +25,7 @@ public class PostsRepositoryImpl implements PostsRepository {
     public Posts save(Posts post) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            if (post.getPost_id() == 0) {
+            if (post.getId() == 0) {
                 session.persist(post);
             } else {
                 session.merge(post);
