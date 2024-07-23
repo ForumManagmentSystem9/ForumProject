@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="@mariadbservertelerik.database.windows.net">
-  <database-model serializer="dbm" dbms="AZURE" family-id="AZURE" format-version="4.52">
+  <database-model serializer="dbm" dbms="AZURE" family-id="AZURE" format-version="4.51">
     <root id="1">
       <Dbms>AZURE</Dbms>
       <ServerVersion>12.0.5564</ServerVersion>
@@ -16814,8 +16814,8 @@
     </schema>
     <schema id="5581" parent="5542" name="dbo">
       <Current>1</Current>
-      <IntrospectionTimestamp>2024-07-22.18:20:08.883</IntrospectionTimestamp>
-      <LastIntrospectionLocalTimestamp>2024-07-22.15:20:07</LastIntrospectionLocalTimestamp>
+      <IntrospectionTimestamp>2024-07-23.13:04:04.580</IntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-07-23.10:04:05</LastIntrospectionLocalTimestamp>
       <ObjectId>1</ObjectId>
     </schema>
     <schema id="5582" parent="5542" name="guest">

@@ -1,10 +1,11 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.exceptions.UserRegistrationException;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
     @Autowired
@@ -33,6 +34,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User updateUser(User user) {
+        Optional<User> existingUser = Optional.ofNullable(repository.getByUsername(user.getUsername()));
+        return null;
+    }
+
+    @Override
+    public UserDetails getUserByEmail(String email) throws EntityNotFoundException{
+        User user = repository.getByEmail(email);
         return null;
     }
 
