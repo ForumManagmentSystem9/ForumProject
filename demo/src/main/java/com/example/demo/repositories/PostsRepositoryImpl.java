@@ -78,4 +78,13 @@ public class PostsRepositoryImpl implements PostsRepository {
             return query.list();
         }
     }
+    @Override
+    public void update(Posts post) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(post);
+            session.getTransaction().commit();
+        }
+    }
+
 }

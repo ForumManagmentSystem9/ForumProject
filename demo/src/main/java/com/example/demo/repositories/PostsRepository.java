@@ -14,4 +14,6 @@ public interface PostsRepository {
     List<Posts> findByUserId(int userId);
 
     List<Posts> findByTitleContaining(String title);
+
+    void update(Posts post);
 }
