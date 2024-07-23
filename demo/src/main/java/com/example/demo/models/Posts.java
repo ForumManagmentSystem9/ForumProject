@@ -2,6 +2,7 @@ package com.example.demo.models;
 
 import jakarta.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -11,29 +12,39 @@ public class Posts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private int id;
-
     @Column(name = "post_title")
     private String title;
-
     @Column(name = "content")
     private String content;
     @Column(name = "likes")
     private int likes;
-
-    @Column(name = "dislikes")
-    private int dislikes;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tags> tags;
 
     public Posts(){}
 
-    public int getPost_id() {
+    public int getId() {
         return id;
     }
 
-    public void setPost_id(int id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public Set<Tags> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tags> tags) {
+        this.tags = tags;
     }
 
     public String getTitle() {
@@ -58,14 +69,6 @@ public class Posts {
 
     public void setLikes(int likes) {
         this.likes = likes;
-    }
-
-    public int getDislikes() {
-        return dislikes;
-    }
-
-    public void setDislikes(int dislikes) {
-        this.dislikes = dislikes;
     }
 
     public User getUser() {
