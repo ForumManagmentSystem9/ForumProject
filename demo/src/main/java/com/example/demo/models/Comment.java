@@ -6,22 +6,28 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
-public class Comments {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private int id;
+
     @Column(name = "content")
     private String content;
+
     @Column(name = "comment_likes")
     private int likes;
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Posts post;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
+
     private User user;
-    public Comments(){}
+
+    public Comment(){}
 
     public int getId() {
         return id;
@@ -66,7 +72,7 @@ public class Comments {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Comments comment = (Comments) o;
+        Comment comment = (Comment) o;
         return id == comment.id;
     }
 
