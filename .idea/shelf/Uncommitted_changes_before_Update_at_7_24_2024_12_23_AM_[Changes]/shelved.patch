@@ -1,0 +1,870 @@
+Index: demo/src/main/java/com/example/demo/models/UserDto.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.models;\r\n\r\nimport jakarta.validation.constraints.Email;\r\nimport jakarta.validation.constraints.NotNull;\r\nimport jakarta.validation.constraints.Size;\r\nimport org.checkerframework.common.aliasing.qual.Unique;\r\n\r\npublic class UserDto {\r\n    @NotNull\r\n    @Size(min = 4, max = 32,\r\n            message = \"Username should be between 4 and 32 symbols\")\r\n    private String username;\r\n\r\n    @NotNull\r\n    @Size(min = 4, max = 32,\r\n            message = \"Password should be between 4 and 32 symbols\")\r\n    private String password;\r\n\r\n    @NotNull\r\n    @Size(min = 4, max = 32,\r\n            message = \"First name should be between 4 and 32 symbols\")\r\n    private String firstName;\r\n\r\n    @NotNull\r\n    @Size(min = 4, max = 32,\r\n            message = \"Last name should be between 4 and 32 symbols\")\r\n    private String lastName;\r\n\r\n    @NotNull\r\n    @Unique\r\n    @Email\r\n    private String email;\r\n\r\n    private String phone;\r\n\r\n    public UserDto(){}\r\n\r\n    public String getUsername(){\r\n        return username;\r\n    }\r\n\r\n    public void setUsername() {\r\n        this.username = username;\r\n    }\r\n\r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n\r\n    public String getFirstName() {\r\n        return firstName;\r\n    }\r\n\r\n    public void setFirstName(String firstName) {\r\n        this.firstName = firstName;\r\n    }\r\n\r\n    public String getLastName() {\r\n        return lastName;\r\n    }\r\n\r\n    public void setLastName(String lasrName) {\r\n        this.lastName = lasrName;\r\n    }\r\n\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public void setEmail(String email) {\r\n        this.email = email;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/UserDto.java b/demo/src/main/java/com/example/demo/models/UserDto.java
+--- a/demo/src/main/java/com/example/demo/models/UserDto.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/models/UserDto.java	(date 1721767677117)
+@@ -63,8 +63,8 @@
+         return lastName;
+     }
+ 
+-    public void setLastName(String lasrName) {
+-        this.lastName = lasrName;
++    public void setLastName(String lastName) {
++        this.lastName = lastName;
+     }
+ 
+     public String getEmail() {
+Index: demo/src/main/java/com/example/demo/repositories/UserRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserRepository {\r\n    void createUser(User user);\r\n\r\n    List<User> getAllUsers();\r\n\r\n    User getByEmail(String email);\r\n\r\n    User getByUsername(String username);\r\n\r\n    List<User> search(String keyword);\r\n    User get(int id);\r\n    void update(User user);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/UserRepository.java b/demo/src/main/java/com/example/demo/repositories/UserRepository.java
+--- a/demo/src/main/java/com/example/demo/repositories/UserRepository.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/repositories/UserRepository.java	(date 1721743688322)
+@@ -5,7 +5,7 @@
+ import java.util.List;
+ 
+ public interface UserRepository {
+-    void createUser(User user);
++    User createUser(User user);
+ 
+     List<User> getAllUsers();
+ 
+@@ -14,6 +14,6 @@
+     User getByUsername(String username);
+ 
+     List<User> search(String keyword);
+-    User get(int id);
++    User getById(int id);
+     void update(User user);
+ }
+Index: demo/src/main/java/com/example/demo/services/UserServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.exceptions.UserRegistrationException;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.repositories.UserRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.security.crypto.password.PasswordEncoder;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n@Service\r\npublic class UserServiceImpl implements UserService{\r\n    private final UserRepository repository;\r\n    private final PasswordEncoder encoder;\r\n    @Autowired\r\n    public UserServiceImpl(UserRepository repository, PasswordEncoder encoder){\r\n        this.repository = repository;\r\n        this.encoder = encoder;\r\n    }\r\n    @Override\r\n    public void registerUser(User user) {\r\n        Optional<User> existingUser = Optional.ofNullable(repository.getByUsername(user.getUsername()));\r\n        if (existingUser.isPresent()) {\r\n            throw new EntityNotFoundException(\"User\", \"email\", user.getEmail());\r\n        } else {\r\n            user.setPassword(encoder.encode(user.getPassword()));\r\n            repository.createUser(user);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User updateUser(User user) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public User getUserById(int id) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<User> getUserByKeyword(String keyword) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void changePassword(int id, String newPassword) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void blockUser(int id) {\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/UserServiceImpl.java b/demo/src/main/java/com/example/demo/services/UserServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/UserServiceImpl.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/services/UserServiceImpl.java	(date 1721744560414)
+@@ -1,58 +1,56 @@
+ package com.example.demo.services;
+ 
++import com.example.demo.exceptions.EntityDuplicateException;
+ import com.example.demo.exceptions.EntityNotFoundException;
+-import com.example.demo.exceptions.UserRegistrationException;
+ import com.example.demo.models.User;
+ import com.example.demo.repositories.UserRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.security.crypto.password.PasswordEncoder;
+ import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
+-import java.util.Optional;
+ 
+ @Service
+ public class UserServiceImpl implements UserService{
+-    private final UserRepository repository;
+-    private final PasswordEncoder encoder;
++
++    private UserRepository repository;
++
+     @Autowired
+-    public UserServiceImpl(UserRepository repository, PasswordEncoder encoder){
++    public UserServiceImpl(UserRepository repository){
+         this.repository = repository;
+-        this.encoder = encoder;
+-    }
+-    @Override
+-    public void registerUser(User user) {
+-        Optional<User> existingUser = Optional.ofNullable(repository.getByUsername(user.getUsername()));
+-        if (existingUser.isPresent()) {
+-            throw new EntityNotFoundException("User", "email", user.getEmail());
+-        } else {
+-            user.setPassword(encoder.encode(user.getPassword()));
+-            repository.createUser(user);
+-        }
+     }
+ 
+     @Override
+-    public User updateUser(User user) {
+-        return null;
++    public List<User> getUsers(User user) {
++        return repository.getAllUsers();
+     }
+ 
+     @Override
+-    public User getUserById(int id) {
+-        return null;
++    public User getById(int id) {
++        return repository.getById(id);
++
+     }
+ 
+     @Override
+-    public List<User> getUserByKeyword(String keyword) {
+-        return null;
++    public User getByUsername(String username) {
++        return repository.getByUsername(username);
++
+     }
+ 
+     @Override
+-    public void changePassword(int id, String newPassword) {
++    public User create(User user) {
++        boolean duplicate = true;
++
++        try {
++            repository.getByUsername(user.getUsername());
++        }catch (EntityNotFoundException e){
++            duplicate = false;
++        }
+ 
+-    }
++        if (duplicate){
++            throw new EntityDuplicateException("User", "username", user.getUsername());
++        }
+ 
+-    @Override
+-    public void blockUser(int id) {
++        return repository.createUser(user);
+ 
+     }
+ }
+Index: demo/src/main/java/com/example/demo/helpers/PostMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.helpers;\r\n\r\nimport com.example.demo.models.PostDTO;\r\nimport com.example.demo.models.Posts;\r\nimport org.springframework.stereotype.Component;\r\n\r\n@Component\r\npublic class PostMapper {\r\n    public Posts fromDto(PostDTO postDTO) {\r\n        Posts post = new Posts();\r\n        post.setTitle(postDTO.getTitle());\r\n        post.setContent(postDTO.getContent());\r\n        return post;\r\n    }\r\n\r\n    public Posts fromDto(int id, PostDTO postDTO) {\r\n        Posts post = fromDto(postDTO);\r\n        post.setId(id);\r\n        return post;\r\n    }\r\n\r\n    public PostDTO toDto(Posts post) {\r\n        PostDTO postDTO = new PostDTO();\r\n        postDTO.setTitle(post.getTitle());\r\n        postDTO.setContent(post.getContent());\r\n        return postDTO;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/helpers/PostMapper.java b/demo/src/main/java/com/example/demo/helpers/PostMapper.java
+--- a/demo/src/main/java/com/example/demo/helpers/PostMapper.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/helpers/PostMapper.java	(date 1721766789646)
+@@ -1,25 +1,25 @@
+ package com.example.demo.helpers;
+ 
+ import com.example.demo.models.PostDTO;
+-import com.example.demo.models.Posts;
++import com.example.demo.models.Post;
+ import org.springframework.stereotype.Component;
+ 
+ @Component
+ public class PostMapper {
+-    public Posts fromDto(PostDTO postDTO) {
+-        Posts post = new Posts();
++    public Post fromDto(PostDTO postDTO) {
++        Post post = new Post();
+         post.setTitle(postDTO.getTitle());
+         post.setContent(postDTO.getContent());
+         return post;
+     }
+ 
+-    public Posts fromDto(int id, PostDTO postDTO) {
+-        Posts post = fromDto(postDTO);
++    public Post fromDto(int id, PostDTO postDTO) {
++        Post post = fromDto(postDTO);
+         post.setId(id);
+         return post;
+     }
+ 
+-    public PostDTO toDto(Posts post) {
++    public PostDTO toDto(Post post) {
+         PostDTO postDTO = new PostDTO();
+         postDTO.setTitle(post.getTitle());
+         postDTO.setContent(post.getContent());
+Index: demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.User;\r\nimport org.hibernate.Session;\r\nimport org.hibernate.SessionFactory;\r\nimport org.hibernate.query.Query;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Repository;\r\n\r\nimport java.util.List;\r\n\r\n@Repository\r\npublic class UserRepositoryImpl implements UserRepository{\r\n\r\n    private final SessionFactory sessionFactory;\r\n    @Autowired\r\n    public UserRepositoryImpl(SessionFactory sessionFactory){\r\n        this.sessionFactory = sessionFactory;\r\n    }\r\n\r\n    @Override\r\n    public void createUser(User user) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            session.save(user);\r\n            session.getTransaction().commit();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<User> getAllUsers() {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User\", User.class);\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User getByEmail(String email) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User where email = :email\", User.class);\r\n            query.setParameter(\"email\", email);\r\n\r\n            List<User> result = query.list();\r\n            if (result.size() == 0) {\r\n                throw new EntityNotFoundException(\"User\", \"email\", email);\r\n            }\r\n\r\n            return result.get(0);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User getByUsername(String username) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User where username = :username\", User.class);\r\n            query.setParameter(\"username\", username);\r\n\r\n            List<User> result = query.list();\r\n            if (result.size() == 0) {\r\n                throw new EntityNotFoundException(\"User\", \"username\", username);\r\n            }\r\n\r\n            return result.get(0);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<User> search(String keyword) {\r\n        try (Session session = sessionFactory.openSession()){\r\n            Query<User> query = session.createQuery(\r\n                    \"from User where username like :keyword or email like :keyword or firstName like :keyword or lastName like :keyword\", User.class\r\n            );\r\n            query.setParameter(\"keyword\", \"%\" + keyword + \"%\");\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User get(int id) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            User user = session.get(User.class, id);\r\n            if (user == null) {\r\n                throw new EntityNotFoundException(\"User\", id);\r\n            }\r\n            return user;\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void update(User user) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            session.merge(user);\r\n            session.getTransaction().commit();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java b/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java
+--- a/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java	(date 1721743768836)
+@@ -20,7 +20,7 @@
+     }
+ 
+     @Override
+-    public void createUser(User user) {
++    public User createUser(User user) {
+         try (Session session = sessionFactory.openSession()) {
+             session.beginTransaction();
+             session.save(user);
+@@ -70,7 +70,8 @@
+     public List<User> search(String keyword) {
+         try (Session session = sessionFactory.openSession()){
+             Query<User> query = session.createQuery(
+-                    "from User where username like :keyword or email like :keyword or firstName like :keyword or lastName like :keyword", User.class
++                    "from User where username like :keyword or email like :keyword" +
++                            " or firstName like :keyword or lastName like :keyword", User.class
+             );
+             query.setParameter("keyword", "%" + keyword + "%");
+             return query.list();
+@@ -78,7 +79,7 @@
+     }
+ 
+     @Override
+-    public User get(int id) {
++    public User getById(int id) {
+         try (Session session = sessionFactory.openSession()) {
+             User user = session.get(User.class, id);
+             if (user == null) {
+Index: demo/src/main/java/com/example/demo/services/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserService {\r\n    void registerUser(User user);\r\n    User updateUser(User user);\r\n    User getUserById(int id);\r\n    List<User> getUserByKeyword(String keyword);\r\n    void changePassword(int id, String newPassword);\r\n    void blockUser(int id);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/UserService.java b/demo/src/main/java/com/example/demo/services/UserService.java
+--- a/demo/src/main/java/com/example/demo/services/UserService.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/services/UserService.java	(date 1721743547084)
+@@ -5,10 +5,8 @@
+ import java.util.List;
+ 
+ public interface UserService {
+-    void registerUser(User user);
+-    User updateUser(User user);
+-    User getUserById(int id);
+-    List<User> getUserByKeyword(String keyword);
+-    void changePassword(int id, String newPassword);
+-    void blockUser(int id);
++    List<User>getUsers(User user);
++    User getById(int id);
++    User getByUsername(String username);
++    User create(User user);
+ }
+Index: demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.models.Posts;\r\nimport jakarta.persistence.EntityNotFoundException;\r\nimport org.hibernate.Session;\r\nimport org.hibernate.SessionFactory;\r\nimport org.hibernate.query.Query;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Repository;\r\n\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n@Repository\r\npublic class PostsRepositoryImpl implements PostsRepository {\r\n\r\n    private final SessionFactory sessionFactory;\r\n\r\n    @Autowired\r\n    public PostsRepositoryImpl(SessionFactory sessionFactory) {\r\n        this.sessionFactory = sessionFactory;\r\n    }\r\n\r\n    @Override\r\n    public Posts save(Posts post) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            if (post.getId() == 0) {\r\n                session.persist(post);\r\n            } else {\r\n                session.merge(post);\r\n            }\r\n            session.getTransaction().commit();\r\n            return post;\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public Optional<Posts> findById(int id) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Posts post = session.get(Posts.class, id);\r\n            return post != null ? Optional.of(post) : Optional.empty();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<Posts> findAll() {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<Posts> query = session.createQuery(\"from Posts\", Posts.class);\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void deleteById(int id) {\r\n        Posts postToDelete = findById(id).orElseThrow(() -> new EntityNotFoundException(\"Post not found with ID \" + id));\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            session.remove(postToDelete);\r\n            session.getTransaction().commit();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<Posts> findByUserId(int userId) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<Posts> query = session.createQuery(\"from Posts where user.id = :userId\", Posts.class);\r\n            query.setParameter(\"userId\", userId);\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<Posts> findByTitleContaining(String title) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<Posts> query = session.createQuery(\"from Posts where title like :title\", Posts.class);\r\n            query.setParameter(\"title\", \"%\" + title + \"%\");\r\n            return query.list();\r\n        }\r\n    }\r\n    @Override\r\n    public void update(Posts post) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            session.merge(post);\r\n            session.getTransaction().commit();\r\n        }\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java b/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java
+--- a/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java	(date 1721766789602)
+@@ -1,6 +1,6 @@
+ package com.example.demo.repositories;
+ 
+-import com.example.demo.models.Posts;
++import com.example.demo.models.Post;
+ import jakarta.persistence.EntityNotFoundException;
+ import org.hibernate.Session;
+ import org.hibernate.SessionFactory;
+@@ -22,7 +22,7 @@
+     }
+ 
+     @Override
+-    public Posts save(Posts post) {
++    public Post save(Post post) {
+         try (Session session = sessionFactory.openSession()) {
+             session.beginTransaction();
+             if (post.getId() == 0) {
+@@ -36,24 +36,24 @@
+     }
+ 
+     @Override
+-    public Optional<Posts> findById(int id) {
++    public Optional<Post> findById(int id) {
+         try (Session session = sessionFactory.openSession()) {
+-            Posts post = session.get(Posts.class, id);
++            Post post = session.get(Post.class, id);
+             return post != null ? Optional.of(post) : Optional.empty();
+         }
+     }
+ 
+     @Override
+-    public List<Posts> findAll() {
++    public List<Post> findAll() {
+         try (Session session = sessionFactory.openSession()) {
+-            Query<Posts> query = session.createQuery("from Posts", Posts.class);
++            Query<Post> query = session.createQuery("from Post", Post.class);
+             return query.list();
+         }
+     }
+ 
+     @Override
+     public void deleteById(int id) {
+-        Posts postToDelete = findById(id).orElseThrow(() -> new EntityNotFoundException("Post not found with ID " + id));
++        Post postToDelete = findById(id).orElseThrow(() -> new EntityNotFoundException("Post not found with ID " + id));
+         try (Session session = sessionFactory.openSession()) {
+             session.beginTransaction();
+             session.remove(postToDelete);
+@@ -62,24 +62,24 @@
+     }
+ 
+     @Override
+-    public List<Posts> findByUserId(int userId) {
++    public List<Post> findByUserId(int userId) {
+         try (Session session = sessionFactory.openSession()) {
+-            Query<Posts> query = session.createQuery("from Posts where user.id = :userId", Posts.class);
++            Query<Post> query = session.createQuery("from Post where user.id = :userId", Post.class);
+             query.setParameter("userId", userId);
+             return query.list();
+         }
+     }
+ 
+     @Override
+-    public List<Posts> findByTitleContaining(String title) {
++    public List<Post> findByTitleContaining(String title) {
+         try (Session session = sessionFactory.openSession()) {
+-            Query<Posts> query = session.createQuery("from Posts where title like :title", Posts.class);
++            Query<Post> query = session.createQuery("from Post where title like :title", Post.class);
+             query.setParameter("title", "%" + title + "%");
+             return query.list();
+         }
+     }
+     @Override
+-    public void update(Posts post) {
++    public void update(Post post) {
+         try (Session session = sessionFactory.openSession()) {
+             session.beginTransaction();
+             session.merge(post);
+Index: demo/src/main/java/com/example/demo/controllers/PostRestController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.controllers;\r\n\r\nimport com.example.demo.exceptions.EntityDuplicateException;\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.exceptions.AuthorizationException;\r\nimport com.example.demo.models.PostDTO;\r\nimport com.example.demo.models.Posts;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.services.PostService;\r\nimport com.example.demo.helpers.PostMapper;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.HttpHeaders;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.security.core.context.SecurityContextHolder;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport org.springframework.web.server.ResponseStatusException;\r\n\r\nimport jakarta.validation.Valid;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n@RestController\r\n@RequestMapping(\"/api/posts\")\r\npublic class PostRestController {\r\n\r\n    private final PostService postService;\r\n    private final PostMapper postMapper;\r\n\r\n    @Autowired\r\n    public PostRestController(PostService postService, PostMapper postMapper) {\r\n        this.postService = postService;\r\n        this.postMapper = postMapper;\r\n    }\r\n\r\n    private User getCurrentUser() {\r\n        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();\r\n        if (authentication == null || !(authentication.getPrincipal() instanceof User)) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, \"User not authenticated\");\r\n        }\r\n        return (User) authentication.getPrincipal();\r\n    }\r\n\r\n    @GetMapping\r\n    public List<Posts> getAllPosts() {\r\n        return postService.getAllPosts();\r\n    }\r\n\r\n    @GetMapping(\"/{id}\")\r\n    public Posts getPostById(@PathVariable int id) {\r\n        return postService.getPostById(id).orElseThrow(() ->\r\n                new ResponseStatusException(HttpStatus.NOT_FOUND, \"Post not found\")\r\n        );\r\n    }\r\n\r\n    @PostMapping\r\n    public Posts createPost(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDTO) {\r\n        try {\r\n            User user = getCurrentUser();\r\n            Posts post = postMapper.fromDto(postDTO);\r\n            return postService.savePost(post);\r\n        } catch (EntityNotFoundException e) {\r\n            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());\r\n        } catch (EntityDuplicateException e) {\r\n            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());\r\n        } catch (AuthorizationException e) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());\r\n        }\r\n    }\r\n\r\n    @PutMapping(\"/{id}\")\r\n    public Posts updatePost(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {\r\n        try {\r\n            User user = getCurrentUser();\r\n            Posts post = postMapper.fromDto(postDTO);\r\n            postService.updatePost(post, user);\r\n            return post;\r\n        } catch (EntityNotFoundException e) {\r\n            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());\r\n        } catch (EntityDuplicateException e) {\r\n            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());\r\n        } catch (AuthorizationException e) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());\r\n        }\r\n    }\r\n\r\n    @DeleteMapping(\"/{id}\")\r\n    public void deletePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {\r\n        try {\r\n            User user = getCurrentUser();\r\n            postService.deletePostById(id, user);\r\n        } catch (EntityNotFoundException e) {\r\n            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());\r\n        } catch (AuthorizationException e) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/controllers/PostRestController.java b/demo/src/main/java/com/example/demo/controllers/PostRestController.java
+--- a/demo/src/main/java/com/example/demo/controllers/PostRestController.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/controllers/PostRestController.java	(date 1721766789626)
+@@ -4,7 +4,7 @@
+ import com.example.demo.exceptions.EntityNotFoundException;
+ import com.example.demo.exceptions.AuthorizationException;
+ import com.example.demo.models.PostDTO;
+-import com.example.demo.models.Posts;
++import com.example.demo.models.Post;
+ import com.example.demo.models.User;
+ import com.example.demo.services.PostService;
+ import com.example.demo.helpers.PostMapper;
+@@ -18,7 +18,6 @@
+ 
+ import jakarta.validation.Valid;
+ import java.util.List;
+-import java.util.Optional;
+ 
+ @RestController
+ @RequestMapping("/api/posts")
+@@ -42,22 +41,22 @@
+     }
+ 
+     @GetMapping
+-    public List<Posts> getAllPosts() {
++    public List<Post> getAllPosts() {
+         return postService.getAllPosts();
+     }
+ 
+     @GetMapping("/{id}")
+-    public Posts getPostById(@PathVariable int id) {
++    public Post getPostById(@PathVariable int id) {
+         return postService.getPostById(id).orElseThrow(() ->
+                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found")
+         );
+     }
+ 
+     @PostMapping
+-    public Posts createPost(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDTO) {
++    public Post createPost(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDTO) {
+         try {
+             User user = getCurrentUser();
+-            Posts post = postMapper.fromDto(postDTO);
++            Post post = postMapper.fromDto(postDTO);
+             return postService.savePost(post);
+         } catch (EntityNotFoundException e) {
+             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+@@ -69,10 +68,10 @@
+     }
+ 
+     @PutMapping("/{id}")
+-    public Posts updatePost(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
++    public Post updatePost(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
+         try {
+             User user = getCurrentUser();
+-            Posts post = postMapper.fromDto(postDTO);
++            Post post = postMapper.fromDto(postDTO);
+             postService.updatePost(post, user);
+             return post;
+         } catch (EntityNotFoundException e) {
+Index: demo/src/main/java/com/example/demo/services/PostServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.EntityDuplicateException;\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.exceptions.AuthorizationException;\r\nimport com.example.demo.models.Posts;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.repositories.PostsRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n@Service\r\npublic class PostServiceImpl implements PostService {\r\n\r\n    private static final String MODIFY_POST_ERROR_MESSAGE = \"Only admin or post creator can modify a post.\";\r\n\r\n    private final PostsRepository postsRepository;\r\n\r\n    @Autowired\r\n    public PostServiceImpl(PostsRepository postsRepository) {\r\n        this.postsRepository = postsRepository;\r\n    }\r\n\r\n    @Override\r\n    public Posts savePost(Posts post) {\r\n        return postsRepository.save(post);\r\n    }\r\n\r\n    @Override\r\n    public Optional<Posts> getPostById(int id) {\r\n        return postsRepository.findById(id);\r\n    }\r\n\r\n    @Override\r\n    public List<Posts> getAllPosts() {\r\n        return postsRepository.findAll();\r\n    }\r\n\r\n\r\n    @Override\r\n    public void deletePostById(int id, User user) {\r\n        checkModifyPermissions(id, user);\r\n        postsRepository.deleteById(id);\r\n    }\r\n\r\n    @Override\r\n    public List<Posts> getPostsByUserId(int userId) {\r\n        return postsRepository.findByUserId(userId);\r\n    }\r\n\r\n    @Override\r\n    public List<Posts> getPostsByTitleContaining(String title) {\r\n        return postsRepository.findByTitleContaining(title);\r\n    }\r\n\r\n\r\n    @Override\r\n    public void updatePost(Posts post, User user) {\r\n        checkModifyPermissions(post.getId(), user);\r\n\r\n        boolean duplicateExists = true;\r\n        try {\r\n            List<Posts> existingPosts = postsRepository.findByTitleContaining(post.getTitle());\r\n            if (existingPosts.isEmpty() || (existingPosts.size() == 1 && existingPosts.get(0).getId() == post.getId())) {\r\n                duplicateExists = false;\r\n            }\r\n        } catch (EntityNotFoundException e) {\r\n            duplicateExists = false;\r\n        }\r\n\r\n        if (duplicateExists) {\r\n            throw new EntityDuplicateException(\"Post\", \"title\", post.getTitle());\r\n        }\r\n\r\n        postsRepository.update(post);\r\n    }\r\n\r\n    private void checkModifyPermissions(int postId, User user) {\r\n        Posts post = postsRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException(\"Post\", postId));\r\n        if (!post.getUser().equals(user)) {\r\n            throw new AuthorizationException(MODIFY_POST_ERROR_MESSAGE);\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/PostServiceImpl.java b/demo/src/main/java/com/example/demo/services/PostServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/PostServiceImpl.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/services/PostServiceImpl.java	(date 1721766789577)
+@@ -3,7 +3,7 @@
+ import com.example.demo.exceptions.EntityDuplicateException;
+ import com.example.demo.exceptions.EntityNotFoundException;
+ import com.example.demo.exceptions.AuthorizationException;
+-import com.example.demo.models.Posts;
++import com.example.demo.models.Post;
+ import com.example.demo.models.User;
+ import com.example.demo.repositories.PostsRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -25,17 +25,17 @@
+     }
+ 
+     @Override
+-    public Posts savePost(Posts post) {
++    public Post savePost(Post post) {
+         return postsRepository.save(post);
+     }
+ 
+     @Override
+-    public Optional<Posts> getPostById(int id) {
++    public Optional<Post> getPostById(int id) {
+         return postsRepository.findById(id);
+     }
+ 
+     @Override
+-    public List<Posts> getAllPosts() {
++    public List<Post> getAllPosts() {
+         return postsRepository.findAll();
+     }
+ 
+@@ -47,23 +47,23 @@
+     }
+ 
+     @Override
+-    public List<Posts> getPostsByUserId(int userId) {
++    public List<Post> getPostsByUserId(int userId) {
+         return postsRepository.findByUserId(userId);
+     }
+ 
+     @Override
+-    public List<Posts> getPostsByTitleContaining(String title) {
++    public List<Post> getPostsByTitleContaining(String title) {
+         return postsRepository.findByTitleContaining(title);
+     }
+ 
+ 
+     @Override
+-    public void updatePost(Posts post, User user) {
++    public void updatePost(Post post, User user) {
+         checkModifyPermissions(post.getId(), user);
+ 
+         boolean duplicateExists = true;
+         try {
+-            List<Posts> existingPosts = postsRepository.findByTitleContaining(post.getTitle());
++            List<Post> existingPosts = postsRepository.findByTitleContaining(post.getTitle());
+             if (existingPosts.isEmpty() || (existingPosts.size() == 1 && existingPosts.get(0).getId() == post.getId())) {
+                 duplicateExists = false;
+             }
+@@ -79,7 +79,7 @@
+     }
+ 
+     private void checkModifyPermissions(int postId, User user) {
+-        Posts post = postsRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Post", postId));
++        Post post = postsRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Post", postId));
+         if (!post.getUser().equals(user)) {
+             throw new AuthorizationException(MODIFY_POST_ERROR_MESSAGE);
+         }
+Index: demo/src/main/java/com/example/demo/repositories/CommentRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\n\r\n\r\npublic interface CommentRepository {\r\n    List<Comment> getAll(Comment comment);\r\n\r\n    Comment getById(int id);\r\n\r\n    void create(Comment comment);\r\n\r\n    void update(Comment comment);\r\n\r\n    void delete(int id);\r\n\r\n    void getLikes(int id);\r\n\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/CommentRepository.java b/demo/src/main/java/com/example/demo/repositories/CommentRepository.java
+--- a/demo/src/main/java/com/example/demo/repositories/CommentRepository.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/repositories/CommentRepository.java	(date 1721747557072)
+@@ -7,7 +7,7 @@
+ 
+ 
+ public interface CommentRepository {
+-    List<Comment> getAll(Comment comment);
++    List<Comment> getAll();
+ 
+     Comment getById(int id);
+ 
+Index: demo/src/main/java/com/example/demo/repositories/PostsRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.models.Posts;\r\n\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\npublic interface PostsRepository {\r\n    Posts save(Posts post);\r\n    Optional<Posts> findById(int id);\r\n    List<Posts> findAll();\r\n    void deleteById(int id);\r\n\r\n    List<Posts> findByUserId(int userId);\r\n\r\n    List<Posts> findByTitleContaining(String title);\r\n\r\n    void update(Posts post);\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/PostsRepository.java b/demo/src/main/java/com/example/demo/repositories/PostsRepository.java
+--- a/demo/src/main/java/com/example/demo/repositories/PostsRepository.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/repositories/PostsRepository.java	(date 1721766789614)
+@@ -1,19 +1,19 @@
+ package com.example.demo.repositories;
+ 
+-import com.example.demo.models.Posts;
++import com.example.demo.models.Post;
+ 
+ import java.util.List;
+ import java.util.Optional;
+ 
+ public interface PostsRepository {
+-    Posts save(Posts post);
+-    Optional<Posts> findById(int id);
+-    List<Posts> findAll();
++    Post save(Post post);
++    Optional<Post> findById(int id);
++    List<Post> findAll();
+     void deleteById(int id);
+ 
+-    List<Posts> findByUserId(int userId);
++    List<Post> findByUserId(int userId);
+ 
+-    List<Posts> findByTitleContaining(String title);
++    List<Post> findByTitleContaining(String title);
+ 
+-    void update(Posts post);
++    void update(Post post);
+ }
+\ No newline at end of file
+Index: demo/src/main/java/com/example/demo/services/PostService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.Posts;\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\npublic interface PostService {\r\n    Posts savePost(Posts post);\r\n    Optional<Posts> getPostById(int id);\r\n    List<Posts> getAllPosts();\r\n\r\n    void deletePostById(int id, User user);\r\n\r\n    List<Posts> getPostsByUserId(int userId);\r\n    List<Posts> getPostsByTitleContaining(String title);\r\n\r\n    void updatePost(Posts post, User user);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/PostService.java b/demo/src/main/java/com/example/demo/services/PostService.java
+--- a/demo/src/main/java/com/example/demo/services/PostService.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/services/PostService.java	(date 1721766789554)
+@@ -1,20 +1,20 @@
+ package com.example.demo.services;
+ 
+-import com.example.demo.models.Posts;
++import com.example.demo.models.Post;
+ import com.example.demo.models.User;
+ 
+ import java.util.List;
+ import java.util.Optional;
+ 
+ public interface PostService {
+-    Posts savePost(Posts post);
+-    Optional<Posts> getPostById(int id);
+-    List<Posts> getAllPosts();
++    Post savePost(Post post);
++    Optional<Post> getPostById(int id);
++    List<Post> getAllPosts();
+ 
+     void deletePostById(int id, User user);
+ 
+-    List<Posts> getPostsByUserId(int userId);
+-    List<Posts> getPostsByTitleContaining(String title);
++    List<Post> getPostsByUserId(int userId);
++    List<Post> getPostsByTitleContaining(String title);
+ 
+-    void updatePost(Posts post, User user);
++    void updatePost(Post post, User user);
+ }
+Index: demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.User;\r\nimport org.hibernate.Session;\r\nimport org.hibernate.SessionFactory;\r\nimport org.hibernate.Transaction;\r\n\r\nimport java.util.List;\r\n\r\npublic class CommentRepositoryImpl implements CommentRepository{\r\n\r\n    private final SessionFactory sessionFactory;\r\n\r\n    public CommentRepositoryImpl(SessionFactory sessionFactory) {\r\n        this.sessionFactory = sessionFactory;\r\n    }\r\n\r\n    @Override\r\n    public List<Comment> getAll(Comment comment) {\r\n        try (Session session = sessionFactory.openSession()){\r\n            return session.createQuery(\"from Comment\", Comment.class).list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public Comment getById(int id) throws EntityNotFoundException {\r\n        try (Session session = sessionFactory.openSession()){\r\n            Comment comment = session.get(Comment.class, id);\r\n            if (comment == null){\r\n                throw new EntityNotFoundException(\"Comment\", id);\r\n            }\r\n            return comment;\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void create(Comment comment) {\r\n        try(Session session = sessionFactory.openSession()){\r\n            session.beginTransaction();\r\n            session.persist(comment);\r\n            session.getTransaction().commit();\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public void update(Comment comment) {\r\n        try (Session session = sessionFactory.openSession()){\r\n            session.beginTransaction();\r\n            session.merge(comment);\r\n            session.getTransaction().commit();\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public void delete(int id) {\r\n        Comment commentToDelete = getById(id);\r\n        try(Session session = sessionFactory.openSession()){\r\n            session.beginTransaction();\r\n            session.remove(commentToDelete);\r\n            session.getTransaction().commit();\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public void getLikes(int id){\r\n        try(Session session = sessionFactory.openSession()){\r\n            Transaction transaction = session.beginTransaction();\r\n            Comment comment = session.get(Comment.class, id);\r\n            if (comment != null){\r\n                comment.setLikes(comment.getLikes() + 1);\r\n                session.update(comment);\r\n            }\r\n            transaction.commit();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java b/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java
+--- a/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java	(date 1721747557082)
+@@ -6,9 +6,11 @@
+ import org.hibernate.Session;
+ import org.hibernate.SessionFactory;
+ import org.hibernate.Transaction;
++import org.springframework.stereotype.Repository;
+ 
+ import java.util.List;
+ 
++@Repository
+ public class CommentRepositoryImpl implements CommentRepository{
+ 
+     private final SessionFactory sessionFactory;
+@@ -18,7 +20,7 @@
+     }
+ 
+     @Override
+-    public List<Comment> getAll(Comment comment) {
++    public List<Comment> getAll() {
+         try (Session session = sessionFactory.openSession()){
+             return session.createQuery("from Comment", Comment.class).list();
+         }
+Index: demo/src/main/java/com/example/demo/services/CommentService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface CommentService {\r\n    List<Comment> getAll(Comment comment);\r\n    Comment getById(int id);\r\n    void create(Comment comment, User user);\r\n    void update(Comment comment, User user);\r\n    void delete(int id, User user);\r\n    void like(int id, User user);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/CommentService.java b/demo/src/main/java/com/example/demo/services/CommentService.java
+--- a/demo/src/main/java/com/example/demo/services/CommentService.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/services/CommentService.java	(date 1721766380543)
+@@ -6,10 +6,11 @@
+ import java.util.List;
+ 
+ public interface CommentService {
+-    List<Comment> getAll(Comment comment);
++    List<Comment> getAll();
+     Comment getById(int id);
+     void create(Comment comment, User user);
+     void update(Comment comment, User user);
+     void delete(int id, User user);
+     void like(int id, User user);
++
+ }
+Index: demo/src/main/java/com/example/demo/services/CommentServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.AuthorizationException;\r\nimport com.example.demo.exceptions.EntityDuplicateException;\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.Role;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.repositories.CommentRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\n\r\nimport java.util.List;\r\n\r\npublic class CommentServiceImpl  implements CommentService{\r\n    private final CommentRepository repository;\r\n\r\n    @Autowired\r\n    public CommentServiceImpl(CommentRepository repository) {\r\n        this.repository = repository;\r\n    }\r\n\r\n    @Override\r\n    public List<Comment> getAll(Comment comment) {\r\n        return repository.getAll(comment);\r\n    }\r\n\r\n    @Override\r\n    public Comment getById(int id) {\r\n        return repository.getById(id);\r\n    }\r\n\r\n    @Override\r\n    public void create(Comment comment, User user) {\r\n        comment.setUser(user);\r\n        repository.create(comment);\r\n\r\n    }\r\n\r\n    @Override\r\n    public void update(Comment comment, User user) {\r\n        Comment existingCommnet = repository.getById(comment.getId());\r\n        if (existingCommnet == null){\r\n            throw new EntityNotFoundException(\"Comment\", comment.getId());\r\n        }\r\n        if (!existingCommnet.getUser().equals(user)){\r\n            throw new AuthorizationException(\"User not authorised\");\r\n        }\r\n\r\n        existingCommnet.setContent(comment.getContent());\r\n        repository.update(existingCommnet);\r\n\r\n    }\r\n\r\n    @Override\r\n    public void delete(int id, User user) {\r\n        Comment commentToDelete = repository.getById(id);\r\n        if (commentToDelete == null){\r\n            throw new EntityNotFoundException(\"Comment\", id);\r\n        }\r\n\r\n        if (user.getRole().getName() == Role.RoleType.ADMIN){\r\n            repository.delete(id);\r\n        }else{\r\n            throw new AuthorizationException(\"You are not authorized to delete the post\");\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public void like(int id, User user){\r\n        Comment comment = repository.getById(id);\r\n        if (comment == null){\r\n            throw new EntityNotFoundException(\"Comment not found\", id);\r\n        }\r\n        repository.getLikes(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java b/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java	(date 1721747557061)
+@@ -7,11 +7,15 @@
+ import com.example.demo.models.Role;
+ import com.example.demo.models.User;
+ import com.example.demo.repositories.CommentRepository;
++import jakarta.websocket.server.ServerEndpoint;
+ import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
+ 
++@Service
+ public class CommentServiceImpl  implements CommentService{
++
+     private final CommentRepository repository;
+ 
+     @Autowired
+@@ -20,8 +24,8 @@
+     }
+ 
+     @Override
+-    public List<Comment> getAll(Comment comment) {
+-        return repository.getAll(comment);
++    public List<Comment> getAll() {
++        return repository.getAll();
+     }
+ 
+     @Override
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"5ff856fa-9527-47b3-aada-19a767595685\" name=\"Changes\" comment=\"Add PostService and PostServiceImpl\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$/demo\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand />\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PUSH_AUTO_UPDATE\" value=\"true\" />\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"KubernetesApiProvider\">{\r\n  &quot;isMigrated&quot;: true\r\n}</component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 3\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2jQEzCc1tzcPPGsSbh9q76hHNLt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Gradle.Build demo.executor&quot;: &quot;Run&quot;,\r\n    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,\r\n    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,\r\n    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,\r\n    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;Spring Boot.DemoApplication.executor&quot;: &quot;Run&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/ForumProject&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  },\r\n  &quot;keyToStringList&quot;: {\r\n    &quot;DatabaseDriversLRU&quot;: [\r\n      &quot;mariadb&quot;,\r\n      &quot;azure&quot;\r\n    ]\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\ForumProject\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\ForumProject\\.idea\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"com.example.demo.exceptions\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"DemoApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\r\n      <module name=\"demo.main\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"com.example.demo.DemoApplication\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4\" />\r\n        <option value=\"jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"5ff856fa-9527-47b3-aada-19a767595685\" name=\"Changes\" comment=\"\" />\r\n      <created>1721311160531</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1721311160531</updated>\r\n      <workItem from=\"1721311161614\" duration=\"5815000\" />\r\n      <workItem from=\"1721317552345\" duration=\"609000\" />\r\n      <workItem from=\"1721464840537\" duration=\"788000\" />\r\n      <workItem from=\"1721465784607\" duration=\"21000\" />\r\n      <workItem from=\"1721487708551\" duration=\"7181000\" />\r\n      <workItem from=\"1721536332151\" duration=\"131000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"database changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721315598863</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721315598864</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"database changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721315724829</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721315724829</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"database changes with docker\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721502469098</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721502469098</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"models - tags and posts\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721657994025</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721657994025</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"database changes with docker\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721665834523</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721665834523</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"models comments and postdto\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721665971459</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721665971459</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Implement PostsRepository interface and PostsRepositoryImpl\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721719219233</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721719219233</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"Add PostService and PostServiceImpl\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721721433367</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721721433367</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"9\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"UpdateCopyrightCheckinHandler\">\r\n    <option name=\"UPDATE_COPYRIGHT\" value=\"true\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT\" value=\"false\" />\r\n    <option name=\"CHECK_NEW_TODO\" value=\"false\" />\r\n    <MESSAGE value=\"database changes\" />\r\n    <MESSAGE value=\"models - tags and posts\" />\r\n    <MESSAGE value=\"models - comments and postdto\" />\r\n    <MESSAGE value=\"database changes with docker\" />\r\n    <MESSAGE value=\"models comments and postdto\" />\r\n    <MESSAGE value=\"Implement PostsRepository interface and PostsRepositoryImpl\" />\r\n    <MESSAGE value=\"Add PostService and PostServiceImpl\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Add PostService and PostServiceImpl\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/.idea/workspace.xml	(date 1721767677483)
+@@ -4,8 +4,34 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Add PostService and PostServiceImpl">
++    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="creating services and repositories for Commnet">
++      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/master.YiqNvw.meta" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___17_15__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___17_15__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___18_17__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___18_17__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___22_23__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___22_23__Changes_.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___22_49__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___22_49__Changes_.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/md5-checksums.bin" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/PostMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/PostMapper.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Comment.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Posts.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Post.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Tags.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Tag.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/UserDto.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/CommentRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentService.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostService.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -41,6 +67,12 @@
+     <option name="PUSH_AUTO_UPDATE" value="true" />
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/ForumManagmentSystem9/ForumProject.git",
++    "accountId": "2faa2bd5-8493-4b66-a5d2-e6877e3cef0d"
++  }
++}]]></component>
+   <component name="KubernetesApiProvider">{
+   &quot;isMigrated&quot;: true
+ }</component>
+@@ -193,7 +225,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1721721433367</updated>
+     </task>
+-    <option name="localTasksCounter" value="9" />
++    <task id="LOCAL-00009" summary="creating services and repositories for Commnet">
++      <option name="closed" value="true" />
++      <created>1721724831782</created>
++      <option name="number" value="00009" />
++      <option name="presentableId" value="LOCAL-00009" />
++      <option name="project" value="LOCAL" />
++      <updated>1721724831782</updated>
++    </task>
++    <option name="localTasksCounter" value="10" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -223,6 +263,8 @@
+     <MESSAGE value="models comments and postdto" />
+     <MESSAGE value="Implement PostsRepository interface and PostsRepositoryImpl" />
+     <MESSAGE value="Add PostService and PostServiceImpl" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Add PostService and PostServiceImpl" />
++    <MESSAGE value="Add PostRestController and PostMapper" />
++    <MESSAGE value="creating services and repositories for Commnet" />
++    <option name="LAST_COMMIT_MESSAGE" value="creating services and repositories for Commnet" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: demo/src/main/java/com/example/demo/models/Tags.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/Tags.java b/demo/src/main/java/com/example/demo/models/Tag.java
+rename from demo/src/main/java/com/example/demo/models/Tags.java
+rename to demo/src/main/java/com/example/demo/models/Tag.java
+--- a/demo/src/main/java/com/example/demo/models/Tags.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/models/Tag.java	(date 1721766789565)
+@@ -3,11 +3,10 @@
+ import jakarta.persistence.*;
+ 
+ import java.util.Objects;
+-import java.util.Set;
+ 
+ @Entity
+ @Table(name = "tags")
+-public class Tags {
++public class Tag {
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     @Column(name = "tag_id")
+@@ -36,7 +35,7 @@
+     public boolean equals(Object o) {
+         if (this == o) return true;
+         if (o == null || getClass() != o.getClass()) return false;
+-        Tags tag = (Tags) o;
++        Tag tag = (Tag) o;
+         return id == tag.id;
+     }
+ 
+Index: demo/src/main/java/com/example/demo/models/Comment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.models;\r\n\r\nimport jakarta.persistence.*;\r\n\r\nimport java.util.Objects;\r\n\r\n@Entity\r\n@Table(name = \"comments\")\r\npublic class Comment {\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    @Column(name = \"comment_id\")\r\n    private int id;\r\n\r\n    @Column(name = \"content\")\r\n    private String content;\r\n\r\n    @Column(name = \"comment_likes\")\r\n    private int likes;\r\n\r\n    @ManyToOne\r\n    @JoinColumn(name = \"post_id\")\r\n    private Posts post;\r\n\r\n    @ManyToOne\r\n    @JoinColumn(name = \"user_id\")\r\n\r\n    private User user;\r\n\r\n    public Comment(){}\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(String content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public int getLikes() {\r\n        return likes;\r\n    }\r\n\r\n    public void setLikes(int likes) {\r\n        this.likes = likes;\r\n    }\r\n\r\n    public Posts getPost() {\r\n        return post;\r\n    }\r\n\r\n    public void setPost(Posts post) {\r\n        this.post = post;\r\n    }\r\n\r\n    public User getUser() {\r\n        return user;\r\n    }\r\n\r\n    public void setUser(User user) {\r\n        this.user = user;\r\n    }\r\n    @Override\r\n    public boolean equals(Object o) {\r\n        if (this == o) return true;\r\n        if (o == null || getClass() != o.getClass()) return false;\r\n        Comment comment = (Comment) o;\r\n        return id == comment.id;\r\n    }\r\n\r\n    @Override\r\n    public int hashCode() {\r\n        return Objects.hash(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/Comment.java b/demo/src/main/java/com/example/demo/models/Comment.java
+--- a/demo/src/main/java/com/example/demo/models/Comment.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/models/Comment.java	(date 1721766789636)
+@@ -20,7 +20,7 @@
+ 
+     @ManyToOne
+     @JoinColumn(name = "post_id")
+-    private Posts post;
++    private Post post;
+ 
+     @ManyToOne
+     @JoinColumn(name = "user_id")
+@@ -53,11 +53,11 @@
+         this.likes = likes;
+     }
+ 
+-    public Posts getPost() {
++    public Post getPost() {
+         return post;
+     }
+ 
+-    public void setPost(Posts post) {
++    public void setPost(Post post) {
+         this.post = post;
+     }
+ 
+Index: demo/src/main/java/com/example/demo/models/Posts.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/Posts.java b/demo/src/main/java/com/example/demo/models/Post.java
+rename from demo/src/main/java/com/example/demo/models/Posts.java
+rename to demo/src/main/java/com/example/demo/models/Post.java
+--- a/demo/src/main/java/com/example/demo/models/Posts.java	(revision 337e6ecef015c7d59aa5668b1fce9602ce6b6c8a)
++++ b/demo/src/main/java/com/example/demo/models/Post.java	(date 1721766789656)
+@@ -6,7 +6,7 @@
+ 
+ @Entity
+ @Table(name = "posts")
+-public class Posts {
++public class Post {
+ 
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+@@ -27,9 +27,9 @@
+             joinColumns = @JoinColumn(name = "post_id"),
+             inverseJoinColumns = @JoinColumn(name = "tag_id")
+     )
+-    private Set<Tags> tags;
++    private Set<Tag> tags;
+ 
+-    public Posts(){}
++    public Post(){}
+ 
+     public int getId() {
+         return id;
+@@ -39,11 +39,11 @@
+         this.id = id;
+     }
+ 
+-    public Set<Tags> getTags() {
++    public Set<Tag> getTags() {
+         return tags;
+     }
+ 
+-    public void setTags(Set<Tags> tags) {
++    public void setTags(Set<Tag> tags) {
+         this.tags = tags;
+     }
+ 
+@@ -83,7 +83,7 @@
+     public boolean equals(Object o) {
+         if (this == o) return true;
+         if (o == null || getClass() != o.getClass()) return false;
+-        Posts post = (Posts) o;
++        Post post = (Post) o;
+         return id == post.id;
+     }
+ 

@@ -1,0 +1,19 @@
+<changelist name="Uncommitted_changes_before_Update_at_7_23_2024_9_56_AM_[Changes]" date="1721717818986" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_23_2024_9_56_AM_[Changes]/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Update at 7/23/2024 9:56 AM [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value=".idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/master.YiqNvw.meta" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value=".idea/dataSources/d94264c0-5fd7-49ac-916d-21c97173f9c2/storage_v2/_src_/schema/forum_project.-83m7A.meta" />
+    <option name="AFTER_PATH" />
+    <option name="SHELVED_PATH" />
+  </binary>
+</changelist>
