@@ -3,7 +3,7 @@ package com.example.demo.filter;
 import com.example.demo.models.UserDto;
 import com.example.demo.services.JWTService;
 import com.example.demo.services.UserService;
-import com.example.demo.helper.AuthenticationHelper;
+import com.example.demo.helpers.AuthenticationHelper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

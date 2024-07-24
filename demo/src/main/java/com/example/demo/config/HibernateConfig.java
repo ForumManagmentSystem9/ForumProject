@@ -22,9 +22,9 @@ public class HibernateConfig {
 
     @Autowired
     public HibernateConfig(Environment env) {
-        dbUrl = env.getProperty("database.dbUrl");
-        dbUsername = env.getProperty("database.dbUsername");
-        dbPassword = env.getProperty("database.dbPassword");
+        dbUrl = env.getProperty("spring.datasource.url");
+        dbUsername = env.getProperty("spring.datasource.username");
+        dbPassword = env.getProperty("spring.datasource.password");
     }
 
     @Bean (name = "entityManagerFactory")
@@ -50,9 +50,6 @@ public class HibernateConfig {
     private Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect");
-
-        // Configure code-first capabilities
-        //hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
 
         return hibernateProperties;
     }

@@ -1,8 +1,8 @@
 package com.example.demo.config;
 
-import com.example.demo.filter.EmailPasswordAuthenticationFilter;
 import com.example.demo.filter.JWTAuthenticationFilter;
 import com.example.demo.services.UserService;
+import com.example.demo.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,16 +16,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JWTAuthenticationFilter authenticationFilter;
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public SecurityConfig(JWTAuthenticationFilter authenticationFilter, UserService userService) {
+    public SecurityConfig(JWTAuthenticationFilter authenticationFilter, UserServiceImpl userService) {
         this.authenticationFilter = authenticationFilter;
         this.userService = userService;
     }
@@ -33,12 +34,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> {
-                    req.requestMatchers("/public/**").permitAll() // "/login/**, /signup/**"
+                    req.requestMatchers("/login/**", "/register/**").permitAll()
                             .anyRequest().authenticated();
                 })
-                .userDetailsService((UserDetailsService) userService).sessionManagement(session ->{
+                .userDetailsService(userService).sessionManagement(session ->{
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                }).addFilterBefore(authenticationFilter, EmailPasswordAuthenticationFilter.class).build();
+                }).addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

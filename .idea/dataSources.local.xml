@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="dataSourceStorageLocal" created-in="IU-241.17890.1">
-    <data-source name="@mariadbservertelerik.database.windows.net" uuid="91604ca4-fcc1-449b-af2b-fdbbe403631f">
+  <component name="dataSourceStorageLocal" created-in="IU-233.14015.106">
+    <data-source name="ForumDB_2024-07-22T12-10Z@mariadbservertelerik.database.windows.net" uuid="679e753d-2f3b-4d0b-b37d-2bf3d2b44231">
       <database-info product="Microsoft SQL Server" version="12.00.5564" jdbc-version="4.2" driver-name="Microsoft JDBC Driver 12.2 for SQL Server" driver-version="12.2.0.0" dbms="AZURE" exact-version="12.0.5564" exact-driver-version="12.2">
         <extra-name-characters>$#@</extra-name-characters>
         <identifier-quote-string>&quot;</identifier-quote-string>
@@ -11,11 +11,8 @@
       <user-name>mariadbuser</user-name>
       <schema-mapping>
         <introspection-scope>
-          <node negative="1">
-            <node kind="database" negative="1" />
-            <node kind="database" qname="ForumDB_2024-07-22T12-10Z">
-              <node kind="schema" qname="dbo" />
-            </node>
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
           </node>
         </introspection-scope>
       </schema-mapping>
