@@ -26,6 +26,7 @@ public class UserRepositoryImpl implements UserRepository{
             session.save(user);
             session.getTransaction().commit();
         }
+        return user;
     }
 
     @Override

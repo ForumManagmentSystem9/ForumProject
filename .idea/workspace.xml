@@ -4,68 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Added UserRepository and register on UserService">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/INFORMATION_SCHEMA.NBgcMw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_accessadmin.KqpDJg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_backupoperator.R9Ifpg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_datareader.To823g.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_datawriter._tp55w.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_ddladmin.hGWOrg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_denydatareader.2lWItw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_denydatawriter.iqHLwA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_owner.souIfA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/db_securityadmin.Dj5jKg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/dbo.sYMBAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/forum_schema.f84d0g.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/guest.2C3iBQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/ForumDB.P2nbOg/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/INFORMATION_SCHEMA.NBgcMw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_accessadmin.KqpDJg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_backupoperator.R9Ifpg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_datareader.To823g.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_datawriter._tp55w.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_ddladmin.hGWOrg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_denydatareader.2lWItw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_denydatawriter.iqHLwA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_owner.souIfA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/db_securityadmin.Dj5jKg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/guest.2C3iBQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0ce9a0bd-4c3c-4eeb-8fa8-49107808fa89/storage_v2/_src_/database/master.YiqNvw/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4f26a3a0-62d5-41f1-94be-28c2d32872f1.xml" beforeDir="false" />
+    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="updating the services, repositories and adding mappers">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/INFORMATION_SCHEMA.NBgcMw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/SalesLT.dNdM0g.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_accessadmin.KqpDJg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_backupoperator.R9Ifpg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_datareader.To823g.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_datawriter._tp55w.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_ddladmin.hGWOrg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_denydatareader.2lWItw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_denydatawriter.iqHLwA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_owner.souIfA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/db_securityadmin.Dj5jKg.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/dbo.sYMBAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/guest.2C3iBQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/master.YiqNvw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/master.YiqNvw/schema/INFORMATION_SCHEMA.NBgcMw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/master.YiqNvw/schema/dbo.sYMBAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/b45b373a-38cf-41be-8c66-5547b68a9fd3/storage_v2/_src_/database/master.YiqNvw/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/d3e73534-f4eb-47fb-ae5f-ce01dff83d11/storage_v2/_src_/schema/forum_project.-83m7A.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,6 +52,9 @@
 }</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -291,6 +235,7 @@
     <MESSAGE value="Added UserRepository and register on UserService" />
     <MESSAGE value="Implement PostsRepository interface and PostsRepositoryImpl" />
     <MESSAGE value="Add PostService and PostServiceImpl" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add PostService and PostServiceImpl" />
+    <MESSAGE value="updating the services, repositories and adding mappers" />
+    <option name="LAST_COMMIT_MESSAGE" value="updating the services, repositories and adding mappers" />
   </component>
 </project>
