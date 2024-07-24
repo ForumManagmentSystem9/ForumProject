@@ -6,5 +6,6 @@
       <module name="demo.main" target="17" />
       <module name="demo.test" target="17" />
     </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="17" />
   </component>
 </project>
