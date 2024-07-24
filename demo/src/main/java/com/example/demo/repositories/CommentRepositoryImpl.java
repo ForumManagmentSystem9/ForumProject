@@ -6,9 +6,11 @@ import com.example.demo.models.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class CommentRepositoryImpl implements CommentRepository{
 
     private final SessionFactory sessionFactory;
@@ -18,7 +20,7 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public List<Comment> getAll(Comment comment) {
+    public List<Comment> getAll() {
         try (Session session = sessionFactory.openSession()){
             return session.createQuery("from Comment", Comment.class).list();
         }

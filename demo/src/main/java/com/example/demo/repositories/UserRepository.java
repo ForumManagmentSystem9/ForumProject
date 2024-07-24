@@ -5,7 +5,7 @@ import com.example.demo.models.User;
 import java.util.List;
 
 public interface UserRepository {
-    void createUser(User user);
+    User createUser(User user);
 
     List<User> getAllUsers();
 
@@ -14,6 +14,6 @@ public interface UserRepository {
     User getByUsername(String username);
 
     List<User> search(String keyword);
-    User get(int id);
+    User getById(int id);
     void update(User user);
 }

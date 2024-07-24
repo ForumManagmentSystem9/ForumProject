@@ -3,7 +3,7 @@ package com.example.demo.services;
 import com.example.demo.exceptions.EntityDuplicateException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.AuthorizationException;
-import com.example.demo.models.Posts;
+import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.repositories.PostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +25,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Posts savePost(Posts post) {
+    public Post savePost(Post post) {
         return postsRepository.save(post);
     }
 
     @Override
-    public Optional<Posts> getPostById(int id) {
+    public Optional<Post> getPostById(int id) {
         return postsRepository.findById(id);
     }
 
     @Override
-    public List<Posts> getAllPosts() {
+    public List<Post> getAllPosts() {
         return postsRepository.findAll();
     }
 
@@ -47,23 +47,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Posts> getPostsByUserId(int userId) {
+    public List<Post> getPostsByUserId(int userId) {
         return postsRepository.findByUserId(userId);
     }
 
     @Override
-    public List<Posts> getPostsByTitleContaining(String title) {
+    public List<Post> getPostsByTitleContaining(String title) {
         return postsRepository.findByTitleContaining(title);
     }
 
 
     @Override
-    public void updatePost(Posts post, User user) {
+    public void updatePost(Post post, User user) {
         checkModifyPermissions(post.getId(), user);
 
         boolean duplicateExists = true;
         try {
-            List<Posts> existingPosts = postsRepository.findByTitleContaining(post.getTitle());
+            List<Post> existingPosts = postsRepository.findByTitleContaining(post.getTitle());
             if (existingPosts.isEmpty() || (existingPosts.size() == 1 && existingPosts.get(0).getId() == post.getId())) {
                 duplicateExists = false;
             }
@@ -79,7 +79,7 @@ public class PostServiceImpl implements PostService {
     }
 
     private void checkModifyPermissions(int postId, User user) {
-        Posts post = postsRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Post", postId));
+        Post post = postsRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Post", postId));
         if (!post.getUser().equals(user)) {
             throw new AuthorizationException(MODIFY_POST_ERROR_MESSAGE);
         }

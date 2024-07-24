@@ -63,8 +63,8 @@ public class UserDto {
         return lastName;
     }
 
-    public void setLastName(String lasrName) {
-        this.lastName = lasrName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

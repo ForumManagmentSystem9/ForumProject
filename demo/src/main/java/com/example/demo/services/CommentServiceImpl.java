@@ -7,11 +7,15 @@ import com.example.demo.models.Comment;
 import com.example.demo.models.Role;
 import com.example.demo.models.User;
 import com.example.demo.repositories.CommentRepository;
+import jakarta.websocket.server.ServerEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CommentServiceImpl  implements CommentService{
+
     private final CommentRepository repository;
 
     @Autowired
@@ -20,8 +24,8 @@ public class CommentServiceImpl  implements CommentService{
     }
 
     @Override
-    public List<Comment> getAll(Comment comment) {
-        return repository.getAll(comment);
+    public List<Comment> getAll() {
+        return repository.getAll();
     }
 
     @Override

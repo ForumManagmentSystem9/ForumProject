@@ -3,11 +3,10 @@ package com.example.demo.models;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "tags")
-public class Tags {
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
@@ -36,7 +35,7 @@ public class Tags {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Tags tag = (Tags) o;
+        Tag tag = (Tag) o;
         return id == tag.id;
     }
 

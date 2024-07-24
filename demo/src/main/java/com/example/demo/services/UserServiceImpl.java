@@ -1,58 +1,56 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.EntityDuplicateException;
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.exceptions.UserRegistrationException;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
-    private final UserRepository repository;
-    private final PasswordEncoder encoder;
+
+    private UserRepository repository;
+
     @Autowired
-    public UserServiceImpl(UserRepository repository, PasswordEncoder encoder){
+    public UserServiceImpl(UserRepository repository){
         this.repository = repository;
-        this.encoder = encoder;
     }
+
     @Override
-    public void registerUser(User user) {
-        Optional<User> existingUser = Optional.ofNullable(repository.getByUsername(user.getUsername()));
-        if (existingUser.isPresent()) {
-            throw new EntityNotFoundException("User", "email", user.getEmail());
-        } else {
-            user.setPassword(encoder.encode(user.getPassword()));
-            repository.createUser(user);
+    public List<User> getUsers(User user) {
+        return repository.getAllUsers();
+    }
+
+    @Override
+    public User getById(int id) {
+        return repository.getById(id);
+
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return repository.getByUsername(username);
+
+    }
+
+    @Override
+    public User create(User user) {
+        boolean duplicate = true;
+
+        try {
+            repository.getByUsername(user.getUsername());
+        }catch (EntityNotFoundException e){
+            duplicate = false;
         }
-    }
 
-    @Override
-    public User updateUser(User user) {
-        return null;
-    }
+        if (duplicate){
+            throw new EntityDuplicateException("User", "username", user.getUsername());
+        }
 
-    @Override
-    public User getUserById(int id) {
-        return null;
-    }
-
-    @Override
-    public List<User> getUserByKeyword(String keyword) {
-        return null;
-    }
-
-    @Override
-    public void changePassword(int id, String newPassword) {
-
-    }
-
-    @Override
-    public void blockUser(int id) {
+        return repository.createUser(user);
 
     }
 }

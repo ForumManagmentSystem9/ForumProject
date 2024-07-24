@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface CommentRepository {
-    List<Comment> getAll(Comment comment);
+    List<Comment> getAll();
 
     Comment getById(int id);
 

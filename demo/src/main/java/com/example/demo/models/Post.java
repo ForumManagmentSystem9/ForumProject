@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "posts")
-public class Posts {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +27,9 @@ public class Posts {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tags> tags;
+    private Set<Tag> tags;
 
-    public Posts(){}
+    public Post(){}
 
     public int getId() {
         return id;
@@ -39,11 +39,11 @@ public class Posts {
         this.id = id;
     }
 
-    public Set<Tags> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tags> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
@@ -83,7 +83,7 @@ public class Posts {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Posts post = (Posts) o;
+        Post post = (Post) o;
         return id == post.id;
     }
 

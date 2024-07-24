@@ -1,6 +1,6 @@
 package com.example.demo.repositories;
 
-import com.example.demo.models.Posts;
+import com.example.demo.models.Post;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,7 +22,7 @@ public class PostsRepositoryImpl implements PostsRepository {
     }
 
     @Override
-    public Posts save(Posts post) {
+    public Post save(Post post) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             if (post.getId() == 0) {
@@ -36,24 +36,24 @@ public class PostsRepositoryImpl implements PostsRepository {
     }
 
     @Override
-    public Optional<Posts> findById(int id) {
+    public Optional<Post> findById(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Posts post = session.get(Posts.class, id);
+            Post post = session.get(Post.class, id);
             return post != null ? Optional.of(post) : Optional.empty();
         }
     }
 
     @Override
-    public List<Posts> findAll() {
+    public List<Post> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Posts> query = session.createQuery("from Posts", Posts.class);
+            Query<Post> query = session.createQuery("from Post", Post.class);
             return query.list();
         }
     }
 
     @Override
     public void deleteById(int id) {
-        Posts postToDelete = findById(id).orElseThrow(() -> new EntityNotFoundException("Post not found with ID " + id));
+        Post postToDelete = findById(id).orElseThrow(() -> new EntityNotFoundException("Post not found with ID " + id));
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.remove(postToDelete);
@@ -62,24 +62,24 @@ public class PostsRepositoryImpl implements PostsRepository {
     }
 
     @Override
-    public List<Posts> findByUserId(int userId) {
+    public List<Post> findByUserId(int userId) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Posts> query = session.createQuery("from Posts where user.id = :userId", Posts.class);
+            Query<Post> query = session.createQuery("from Post where user.id = :userId", Post.class);
             query.setParameter("userId", userId);
             return query.list();
         }
     }
 
     @Override
-    public List<Posts> findByTitleContaining(String title) {
+    public List<Post> findByTitleContaining(String title) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Posts> query = session.createQuery("from Posts where title like :title", Posts.class);
+            Query<Post> query = session.createQuery("from Post where title like :title", Post.class);
             query.setParameter("title", "%" + title + "%");
             return query.list();
         }
     }
     @Override
-    public void update(Posts post) {
+    public void update(Post post) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(post);

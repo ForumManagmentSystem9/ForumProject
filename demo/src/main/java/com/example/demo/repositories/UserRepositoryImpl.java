@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public void createUser(User user) {
+    public User createUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.save(user);
@@ -70,7 +70,8 @@ public class UserRepositoryImpl implements UserRepository{
     public List<User> search(String keyword) {
         try (Session session = sessionFactory.openSession()){
             Query<User> query = session.createQuery(
-                    "from User where username like :keyword or email like :keyword or firstName like :keyword or lastName like :keyword", User.class
+                    "from User where username like :keyword or email like :keyword" +
+                            " or firstName like :keyword or lastName like :keyword", User.class
             );
             query.setParameter("keyword", "%" + keyword + "%");
             return query.list();
@@ -78,7 +79,7 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public User get(int id) {
+    public User getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             User user = session.get(User.class, id);
             if (user == null) {
