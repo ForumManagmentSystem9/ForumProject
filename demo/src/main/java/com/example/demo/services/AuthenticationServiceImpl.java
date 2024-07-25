@@ -11,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService{
     private final UserRepository repository;
@@ -36,11 +38,9 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         if (duplicate){
             throw new EntityDuplicateException("User", "email", request.getEmail());
         }
-        User user = new User();
-        fillUserData(request);
-
-        repository.createUser(user);
-        String token = jwtService.generateToken(user);
+        request.setPassword(encoder.encode(request.getPassword()));
+        repository.createUser(request);
+        String token = jwtService.generateToken(request);
 
         return new AuthenticationResponse(token);
     }
@@ -57,14 +57,15 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
         return new AuthenticationResponse(token);
     }
-    private User fillUserData(User newUser){
-        User user = new User();
-        user.setUsername(newUser.getUsername());
-        user.setEmail(newUser.getEmail());
-        user.setPassword(encoder.encode(newUser.getPassword()));
-        user.setFirstName(newUser.getFirstName());
-        user.setLastName(newUser.getLastName());
-
-        return user;
-    }
+//    private User fillUserData(User newUser){
+//        User user = new User();
+//        user.setUsername(newUser.getUsername());
+//        user.setEmail(newUser.getEmail());
+//        user.setPassword(encoder.encode(newUser.getPassword()));
+//        user.setFirstName(newUser.getFirstName());
+//        user.setLastName(newUser.getLastName());
+//        user.setRole(newUser.getRole());
+//
+//        return user;
+//    }
 }

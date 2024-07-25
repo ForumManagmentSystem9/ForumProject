@@ -27,10 +27,10 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody UserDto request
+            @RequestBody User request
     ) {
-        User user = userMapper.fromDto(request);
-        return ResponseEntity.ok(authService.registerUser(user));
+//        User user = userMapper.fromDto(request);
+        return ResponseEntity.ok(authService.registerUser(request));
     }
 
     @PostMapping("/login")

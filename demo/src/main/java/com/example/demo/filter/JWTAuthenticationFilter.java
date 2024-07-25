@@ -34,26 +34,34 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                                     @NotNull HttpServletResponse response,
                                     @NotNull FilterChain filterChain)
             throws ServletException, IOException {
-        String header = request.getHeader("Authorization");
-        if (header == null || !header.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        String token = header.substring(7);
-        String email = service.extractEmail(token);
-
-        if (email!=null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = userService.getUserByEmail(email);
-
-            if (service.isValid(token,(UserDto) userDetails)){
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                AuthenticationHelper helper = new AuthenticationHelper(request);
-                authentication.setDetails(helper);
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            String header = request.getHeader("Authorization");
+            if (header == null || !header.startsWith("Bearer ")) {
+                filterChain.doFilter(request, response);
+                return;
             }
+            String token = header.substring(7);
+            String email = service.extractEmail(token);
+
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userService.getUserByEmail(email);
+
+                if (service.isValid(token, (UserDto) userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    AuthenticationHelper helper = new AuthenticationHelper(request);
+                    authentication.setDetails(helper);
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+        } catch (Exception e) {
+            // Log the error and handle the exception
+            // logger.error("Error processing authentication", e);
+            // Optionally, you might want to set an error response or a different status code
+        } finally {
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
+
     }
 }
