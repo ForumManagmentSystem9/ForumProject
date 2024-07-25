@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.User;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User updateUser(User user) {
+        User findUser = repository.getById(user.getId());
+
         return null;
     }
 

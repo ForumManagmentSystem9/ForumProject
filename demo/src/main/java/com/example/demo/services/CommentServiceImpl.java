@@ -37,7 +37,6 @@ public class CommentServiceImpl  implements CommentService{
     public void create(Comment comment, User user) {
         comment.setUser(user);
         repository.create(comment);
-
     }
 
     @Override
