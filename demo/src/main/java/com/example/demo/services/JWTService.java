@@ -1,12 +1,11 @@
 package com.example.demo.services;
 
-import com.example.demo.models.User;
-import com.example.demo.models.UserDto;
+import com.example.demo.models.userfolder.User;
+import com.example.demo.models.userfolder.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -20,7 +19,7 @@ public class JWTService {
     public String extractEmail(String token){
         return extractClaims(token,Claims::getSubject);
     }
-    public boolean isValid(String token, UserDto user){
+    public boolean isValid(String token, UserDTO user){
         String email = extractEmail(token);
         return (email.equals(user.getEmail())) && !isTokenExpired(token);
     }

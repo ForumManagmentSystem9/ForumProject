@@ -1,16 +1,12 @@
 package com.example.demo.controllers;
 
+import com.example.demo.helpers.UserLoginMapper;
 import com.example.demo.helpers.UserMapper;
-import com.example.demo.models.User;
-import com.example.demo.models.UserDto;
+import com.example.demo.models.userfolder.User;
 import com.example.demo.response.AuthenticationResponse;
 import com.example.demo.services.AuthenticationService;
-import com.example.demo.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,26 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     private final AuthenticationService authService;
     private final UserMapper userMapper;
+    private final UserLoginMapper userLoginMapper;
 
     @Autowired
-    public AuthenticationController(AuthenticationService authService, UserMapper userMapper) {
+    public AuthenticationController(AuthenticationService authService, UserMapper userMapper, UserLoginMapper userLoginMapper) {
         this.authService = authService;
         this.userMapper = userMapper;
+        this.userLoginMapper = userLoginMapper;
     }
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody UserDto request
+            @RequestBody User request
     ) {
-        User user = userMapper.fromDto(request);
-        return ResponseEntity.ok(authService.registerUser(user));
+//        User user = userMapper.fromDto(request);
+        return ResponseEntity.ok(authService.registerUser(request));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
-            @RequestBody UserDto request
+            @RequestBody User request
     ) {
-        User user = userMapper.fromDto(request);
-        return ResponseEntity.ok(authService.authenticate(user));
+//        User user = userLoginMapper.fromDto(request);
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 }

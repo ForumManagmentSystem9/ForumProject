@@ -16807,8 +16807,8 @@
     </schema>
     <schema id="5581" parent="5542" name="dbo">
       <Current>1</Current>
-      <IntrospectionTimestamp>2024-07-25.07:57:53.793</IntrospectionTimestamp>
-      <LastIntrospectionLocalTimestamp>2024-07-25.04:57:53</LastIntrospectionLocalTimestamp>
+      <IntrospectionTimestamp>2024-07-25.14:53:43.230</IntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-07-25.11:53:43</LastIntrospectionLocalTimestamp>
       <ObjectId>1</ObjectId>
     </schema>
     <schema id="5582" parent="5542" name="guest">
@@ -16915,7 +16915,7 @@
     </table>
     <table id="5602" parent="5581" name="users">
       <CreatedTimestamp>2024-07-21.17:56:00.160</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:15:22.863</ModifiedTimestamp>
+      <ModifiedTimestamp>2024-07-25.16:02:50.883</ModifiedTimestamp>
       <ObjectId>1154103152</ObjectId>
     </table>
     <column id="5603" parent="5590" name="ParentProductCategoryName">
@@ -17316,7 +17316,7 @@
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(6)</SequenceIdentity>
+      <SequenceIdentity>1(14)</SequenceIdentity>
     </column>
     <column id="5664" parent="5602" name="first_name">
       <DasType>nvarchar(32 char)|0s</DasType>
@@ -17347,16 +17347,25 @@
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
+      <DefaultConstraintId>110623437</DefaultConstraintId>
+      <DefaultConstraintName>DF__users__role_id__0697FACD</DefaultConstraintName>
     </column>
     <column id="5670" parent="5602" name="phone_number">
       <DasType>nvarchar(20 char)|0s</DasType>
       <Position>8</Position>
     </column>
     <column id="5671" parent="5602" name="blocked">
-      <DasType>tinyint|0s</DasType>
+      <DasType>bit|0s</DasType>
       <Position>9</Position>
     </column>
-    <foreign-key id="5672" parent="5602" name="FK_users_roles">
+    <default id="5672" parent="5602" name="DF__users__role_id__0697FACD">
+      <ColNames>role_id</ColNames>
+      <DefaultExpression>3</DefaultExpression>
+      <ModifiedTimestamp>2024-07-25.16:02:50.883</ModifiedTimestamp>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>110623437</ObjectId>
+    </default>
+    <foreign-key id="5673" parent="5602" name="FK_users_roles">
       <ColNames>role_id</ColNames>
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
@@ -17365,7 +17374,7 @@
       <RefTableId>1106102981</RefTableId>
       <RefTableName>roles</RefTableName>
     </foreign-key>
-    <index id="5673" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
+    <index id="5674" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
       <Clustering>1</Clustering>
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17373,14 +17382,14 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <index id="5674" parent="5602" name="UQ__users__AB6E6164B11BD345">
+    <index id="5675" parent="5602" name="UQ__users__AB6E6164B11BD345">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Position>2</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5675" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
+    <key id="5676" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17388,50 +17397,50 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__users__B9BE370F1BDEB4D6</UnderlyingIndexName>
     </key>
-    <key id="5676" parent="5602" name="UQ__users__AB6E6164B11BD345">
+    <key id="5677" parent="5602" name="UQ__users__AB6E6164B11BD345">
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1186103266</ObjectId>
       <UnderlyingIndexName>UQ__users__AB6E6164B11BD345</UnderlyingIndexName>
     </key>
-    <partition id="5677" parent="5618">
+    <partition id="5678" parent="5618">
       <ObjectId>72057594050510848</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5678" parent="5627">
+    <partition id="5679" parent="5627">
       <ObjectId>72057594049593344</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5679" parent="5628">
+    <partition id="5680" parent="5628">
       <ObjectId>72057594049658880</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5680" parent="5635">
+    <partition id="5681" parent="5635">
       <ObjectId>72057594050445312</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5681" parent="5642">
+    <partition id="5682" parent="5642">
       <ObjectId>72057594050379776</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5682" parent="5650">
+    <partition id="5683" parent="5650">
       <ObjectId>72057594049789952</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5683" parent="5655">
+    <partition id="5684" parent="5655">
       <ObjectId>72057594049396736</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5684" parent="5661">
+    <partition id="5685" parent="5661">
       <ObjectId>72057594050052096</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5685" parent="5673">
+    <partition id="5686" parent="5674">
       <ObjectId>72057594049462272</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5686" parent="5674">
+    <partition id="5687" parent="5675">
       <ObjectId>72057594049527808</ObjectId>
       <Position>1</Position>
     </partition>

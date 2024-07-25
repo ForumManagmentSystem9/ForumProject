@@ -1,11 +1,11 @@
-package com.example.demo.models;
+package com.example.demo.models.userfolder;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.checkerframework.common.aliasing.qual.Unique;
 
-public class UserDto {
+public class UserDTO {
     @NotNull
     @Size(min = 4, max = 32,
             message = "Username should be between 4 and 32 symbols")
@@ -33,7 +33,7 @@ public class UserDto {
 
     private String phone;
 
-    public UserDto(){}
+    public UserDTO(){}
 
     public String getUsername(){
         return username;

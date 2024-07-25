@@ -22,7 +22,6 @@ public class Role {
         ADMIN
     }
     public Role(){}
-
     public int getId(){
         return id;
     }

@@ -4,7 +4,7 @@ import com.example.demo.exceptions.EntityDuplicateException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.models.Post;
-import com.example.demo.models.User;
+import com.example.demo.models.userfolder.User;
 import com.example.demo.repositories.PostsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

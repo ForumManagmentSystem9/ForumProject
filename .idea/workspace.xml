@@ -4,27 +4,46 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Authentication fix">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/INFORMATION_SCHEMA.NBgcMw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/dbo.sYMBAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/dbo.sYMBAA.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/ForumDB_2024-07-22T12-10Z.6l9sgw/schema/sys.zb4BAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/master.YiqNvw/schema/INFORMATION_SCHEMA.NBgcMw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91604ca4-fcc1-449b-af2b-fdbbe403631f/storage_v2/_src_/database/master.YiqNvw/schema/sys.zb4BAA.meta" beforeDir="false" />
+    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Authorization changes">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_core_10_1_25.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_core_10_1_25.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_web_6_3_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_web_6_3_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_webmvc_6_1_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_webmvc_6_1_10.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/AuthenticationHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/AuthenticationHelper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/UserMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Role.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/UserDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/UserDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/CommentServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/CommentServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/resources/main/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationServiceImpl.class.uniqueId0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestControler.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/AuthenticationHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/AuthenticationHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/UserDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,6 +108,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.Build demo.executor": "Run",
+    "Gradle.Download Sources.executor": "Run",
     "Gradle.JWTtest.testTokenGenerationAndValidation.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -97,7 +117,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.DemoApplication.executor": "Debug",
+    "Spring Boot.DemoApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/ForumProject",
@@ -195,7 +215,8 @@
       <workItem from="1721722524837" duration="4312000" />
       <workItem from="1721801564098" duration="9420000" />
       <workItem from="1721819482121" duration="16716000" />
-      <workItem from="1721883414003" duration="5864000" />
+      <workItem from="1721883414003" duration="8049000" />
+      <workItem from="1721900016473" duration="8066000" />
     </task>
     <task id="LOCAL-00001" summary="database changes">
       <option name="closed" value="true" />
@@ -285,7 +306,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721883783664</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Authorization changes">
+      <option name="closed" value="true" />
+      <created>1721898606929</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1721898606929</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -320,16 +349,12 @@
     <MESSAGE value="Added Security files" />
     <MESSAGE value="Security changes" />
     <MESSAGE value="Authentication fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Authentication fix" />
+    <MESSAGE value="Authorization changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Authorization changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java</url>
           <line>30</line>
@@ -337,8 +362,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>
-          <line>41</line>
-          <option name="timeStamp" value="3" />
+          <line>40</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
