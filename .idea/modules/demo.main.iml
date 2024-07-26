@@ -4,10 +4,14 @@
     <facet external-system-id="GRADLE" type="web" name="Web">
       <configuration>
         <webroots />
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/../../demo/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../demo/src/main/resources" />
+        </sourceRoots>
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17">
     <output url="file://$MODULE_DIR$/../../demo/build/classes/java/main" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../demo/src/main">
@@ -18,7 +22,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../demo/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../demo/src/main/resources" type="java-resource" />
     </content>
-    <orderEntry type="jdk" jdkName="corretto-17" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="jbr-17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-jpa:3.3.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:3.3.1" level="project" />

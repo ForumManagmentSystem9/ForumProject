@@ -8,6 +8,7 @@ import com.example.demo.models.Post;
 import com.example.demo.models.User;
 import com.example.demo.services.PostService;
 import com.example.demo.helpers.PostMapper;
+import com.example.demo.helpers.AuthorizationHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,13 @@ public class PostRestController {
 
     private final PostService postService;
     private final PostMapper postMapper;
+    private final AuthorizationHelper authorizationHelper;
 
     @Autowired
-    public PostRestController(PostService postService, PostMapper postMapper) {
+    public PostRestController(PostService postService, PostMapper postMapper, AuthorizationHelper authorizationHelper) {
         this.postService = postService;
         this.postMapper = postMapper;
+        this.authorizationHelper = authorizationHelper;
     }
 
     private User getCurrentUser() {
@@ -55,7 +58,7 @@ public class PostRestController {
     @PostMapping
     public Post createPost(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDTO) {
         try {
-            User user = getCurrentUser();
+            User user = authorizationHelper.extractUserFromHeaders(headers);
             Post post = postMapper.fromDto(postDTO);
             return postService.savePost(post);
         } catch (EntityNotFoundException e) {
@@ -70,7 +73,7 @@ public class PostRestController {
     @PutMapping("/{id}")
     public Post updatePost(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
         try {
-            User user = getCurrentUser();
+            User user = authorizationHelper.extractUserFromHeaders(headers);
             Post post = postMapper.fromDto(postDTO);
             postService.updatePost(post, user);
             return post;
@@ -86,7 +89,7 @@ public class PostRestController {
     @DeleteMapping("/{id}")
     public void deletePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = getCurrentUser();
+            User user = authorizationHelper.extractUserFromHeaders(headers);
             postService.deletePostById(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

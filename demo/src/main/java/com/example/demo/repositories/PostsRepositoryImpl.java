@@ -8,6 +8,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,5 +87,4 @@ public class PostsRepositoryImpl implements PostsRepository {
             session.getTransaction().commit();
         }
     }
-
 }

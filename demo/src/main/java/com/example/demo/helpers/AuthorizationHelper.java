@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Component
 public class AuthorizationHelper {
     public static final String ADMIN_ERROR_MESSAGE = "You are not admin";

@@ -7,7 +7,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_17">
     <output-test url="file://$MODULE_DIR$/../../demo/build/classes/java/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../demo/src/test">
@@ -16,7 +16,7 @@
     <content url="file://$MODULE_DIR$/../../demo/src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../demo/src/test/java" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="corretto-17" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="jbr-17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="demo.main" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-jpa:3.3.1" level="project" />
