@@ -5,6 +5,8 @@ import com.example.demo.helpers.UserMapper;
 import com.example.demo.models.userfolder.User;
 import com.example.demo.response.AuthenticationResponse;
 import com.example.demo.services.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

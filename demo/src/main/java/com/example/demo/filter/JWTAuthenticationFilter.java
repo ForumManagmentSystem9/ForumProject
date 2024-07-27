@@ -1,6 +1,7 @@
 package com.example.demo.filter;
 
-import com.example.demo.models.userfolder.UserDTO;
+import com.example.demo.models.userfolder.CustomUserDetails;
+import com.example.demo.models.userfolder.User;
 import com.example.demo.services.JWTService;
 import com.example.demo.services.UserService;
 import com.example.demo.helpers.AuthenticationHelper;
@@ -41,24 +42,28 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
             String token = header.substring(7);
+            logger.debug("Extracted token: " + token);
             String email = service.extractEmail(token);
+            logger.debug("Extracted email: " + email);
 
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = (UserDetails) userService.getUserByEmail(email);
+                CustomUserDetails userDetails = new CustomUserDetails(userService.getUserByEmail(email));
 
-                if (service.isValid(token, (UserDTO) userDetails)) {
+                if (service.isValid(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     AuthenticationHelper helper = new AuthenticationHelper(request);
                     authentication.setDetails(helper);
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    logger.debug("Authentication set for user: " + email);
+                }
+                else {
+                    logger.warn("JWT token is invalid or expired");
                 }
             }
         } catch (Exception e) {
-            // Log the error and handle the exception
-            // logger.error("Error processing authentication", e);
-            // Optionally, you might want to set an error response or a different status code
+            logger.error("Error processing authentication", e);
         } finally {
             filterChain.doFilter(request, response);
         }

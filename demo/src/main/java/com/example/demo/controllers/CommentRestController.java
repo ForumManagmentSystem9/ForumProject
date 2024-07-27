@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,9 +33,10 @@ public class CommentRestController {
     }
 
     @GetMapping
-    public List<Comment> getAll(@RequestHeader HttpHeaders headers){
+    public List<Comment> getAll(){
         try{
-            User user = authorizationHelper.extractUserFromHeaders(headers);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = authorizationHelper.extractUserFromToken(authentication);
             authorizationHelper.isUserAdmin(user);
             return service.getAll();
         }catch (AuthorizationException e){
@@ -42,9 +45,10 @@ public class CommentRestController {
         }
     }
     @GetMapping("/{id}")
-    public Comment getCommentById(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public Comment getCommentById(@PathVariable int id) {
         try {
-            User user = authorizationHelper.extractUserFromHeaders(headers);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = authorizationHelper.extractUserFromToken(authentication);
             return service.getById(user.getId());
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -52,9 +56,10 @@ public class CommentRestController {
     }
 
     @PostMapping
-    public void createComment(@RequestHeader HttpHeaders headers, @RequestBody Comment comment) {
+    public void createComment(@RequestBody Comment comment) {
         try {
-            User user = authorizationHelper.extractUserFromHeaders(headers);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = authorizationHelper.extractUserFromToken(authentication);
             comment.setUser(user);
             service.create(comment, user);
         } catch (AuthorizationException e) {
@@ -63,9 +68,10 @@ public class CommentRestController {
     }
 
     @PostMapping("/{id}/like")
-    public void likeComment(@RequestHeader HttpHeaders headers, @PathVariable int id) {
+    public void likeComment(@PathVariable int id) {
         try {
-            User user = authorizationHelper.extractUserFromHeaders(headers);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = authorizationHelper.extractUserFromToken(authentication);
             service.like(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

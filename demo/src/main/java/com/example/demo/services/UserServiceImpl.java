@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService{
     private final UserRepository repository;
@@ -36,11 +38,15 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     }
 
     @Override
-    public UserDetails getUserByEmail(String email) {
-        return new CustomUserDetails(repository.getByEmail(email));
+    public User getUserByEmail(String email) {
+        return repository.getByEmail(email);
     }
 
-//    @Override
+    @Override
+    public List<User> userList() {
+        return repository.getUsers();
+    }
+    //    @Override
 //    public List<User> getUserByKeyword(String keyword) {
 //        return repository.search(keyword);
 //    }
