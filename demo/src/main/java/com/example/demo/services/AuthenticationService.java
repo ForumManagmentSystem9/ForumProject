@@ -2,6 +2,9 @@ package com.example.demo.services;
 
 import com.example.demo.models.userfolder.User;
 import com.example.demo.response.AuthenticationResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 
 public interface AuthenticationService {
     AuthenticationResponse registerUser(User request);

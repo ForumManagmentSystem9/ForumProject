@@ -1,6 +1,5 @@
 package com.example.demo.models.userfolder;
 
-import com.example.demo.models.userfolder.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,6 +12,9 @@ public class CustomUserDetails implements UserDetails{
 
     public CustomUserDetails(User user) {
         this.user = user;
+    }
+    public String getEmail() {
+        return user.getEmail();
     }
 
     @Override

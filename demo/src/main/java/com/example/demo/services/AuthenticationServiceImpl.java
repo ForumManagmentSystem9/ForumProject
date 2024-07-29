@@ -12,11 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService{
+public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository repository;
     private final PasswordEncoder encoder;
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
+
     @Autowired
     public AuthenticationServiceImpl(UserRepository repository, PasswordEncoder encoder, JWTService jwtService, AuthenticationManager authenticationManager) {
         this.repository = repository;
@@ -24,16 +25,16 @@ public class AuthenticationServiceImpl implements AuthenticationService{
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
+
     @Override
     public AuthenticationResponse registerUser(User request) {
         boolean duplicate = true;
         try {
             repository.getByEmail(request.getEmail());
-        }
-        catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             duplicate = false;
         }
-        if (duplicate){
+        if (duplicate) {
             throw new EntityDuplicateException("User", "email", request.getEmail());
         }
         request.setPassword(encoder.encode(request.getPassword()));
@@ -51,19 +52,8 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                         request.getPassword())
         );
         User user = repository.getByEmail(request.getEmail());
-        String token  = jwtService.generateToken(user);
+        String token = jwtService.generateToken(user);
 
         return new AuthenticationResponse(token);
     }
-//    private User fillUserData(User newUser){
-//        User user = new User();
-//        user.setUsername(newUser.getUsername());
-//        user.setEmail(newUser.getEmail());
-//        user.setPassword(encoder.encode(newUser.getPassword()));
-//        user.setFirstName(newUser.getFirstName());
-//        user.setLastName(newUser.getLastName());
-//        user.setRole(newUser.getRole());
-//
-//        return user;
-//    }
 }
