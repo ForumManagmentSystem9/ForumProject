@@ -2,7 +2,7 @@ package com.example.demo.helpers;
 
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.models.Role;
-import com.example.demo.models.User;
+import com.example.demo.models.userfolder.User;
 import com.example.demo.services.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.example.demo.filter;
 
-import com.example.demo.models.UserDto;
+import com.example.demo.models.userfolder.UserDTO;
 import com.example.demo.services.JWTService;
 import com.example.demo.services.UserService;
 import com.example.demo.helpers.AuthenticationHelper;
@@ -44,9 +44,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             String email = service.extractEmail(token);
 
             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userService.getUserByEmail(email);
+                UserDetails userDetails = (UserDetails) userService.getUserByEmail(email);
 
-                if (service.isValid(token, (UserDto) userDetails)) {
+                if (service.isValid(token, (UserDTO) userDetails)) {
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     AuthenticationHelper helper = new AuthenticationHelper(request);

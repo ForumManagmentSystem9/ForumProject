@@ -1,6 +1,6 @@
 package com.example.demo.repositories;
 
-import com.example.demo.models.User;
+import com.example.demo.models.userfolder.User;
 
 import java.util.List;
 

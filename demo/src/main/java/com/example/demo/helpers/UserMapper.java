@@ -1,7 +1,7 @@
 package com.example.demo.helpers;
 
-import com.example.demo.models.User;
-import com.example.demo.models.UserDto;
+import com.example.demo.models.userfolder.User;
+import com.example.demo.models.userfolder.UserDTO;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,20 +16,20 @@ public class UserMapper {
         this.service = service;
     }
 
-    public User fromDto(int id, UserDto userDto){
+    public User fromDto(int id, UserDTO userDto){
         User user = fromDto(userDto);
         user.setId(id);
 
         return user;
     }
 
-    public User fromDto(UserDto userDto){
+    public User fromDto(UserDTO userDto){
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
-        user.setEmail(user.getEmail());
+        user.setEmail(userDto.getEmail());
 
         return user;
     }

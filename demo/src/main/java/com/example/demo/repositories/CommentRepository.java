@@ -1,7 +1,6 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.Comment;
-import com.example.demo.models.User;
 
 import java.util.List;
 

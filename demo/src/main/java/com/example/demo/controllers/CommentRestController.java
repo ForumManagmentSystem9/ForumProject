@@ -1,21 +1,16 @@
 package com.example.demo.controllers;
 
-
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.helpers.AuthenticationHelper;
 import com.example.demo.helpers.AuthorizationHelper;
 import com.example.demo.models.Comment;
-import com.example.demo.models.Role;
-import com.example.demo.models.User;
+import com.example.demo.models.userfolder.User;
 import com.example.demo.services.CommentService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,14 +20,12 @@ import java.util.List;
 @RequestMapping("api/comment")
 public class CommentRestController {
     private final CommentService service;
-    private final AuthenticationHelper authenticationHelper;
     private final UserService userService;
     private final AuthorizationHelper authorizationHelper;
 
     @Autowired
-    public CommentRestController(CommentService service, AuthenticationHelper authenticationHelper, UserService userService, AuthorizationHelper authorizationHelper) {
+    public CommentRestController(CommentService service, UserService userService, AuthorizationHelper authorizationHelper) {
         this.service = service;
-        this.authenticationHelper = authenticationHelper;
         this.userService = userService;
         this.authorizationHelper = authorizationHelper;
     }

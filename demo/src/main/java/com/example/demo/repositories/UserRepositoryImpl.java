@@ -1,7 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.models.User;
+import com.example.demo.models.userfolder.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

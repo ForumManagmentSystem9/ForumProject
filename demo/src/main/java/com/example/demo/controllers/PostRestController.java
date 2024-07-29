@@ -5,7 +5,7 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.models.PostDTO;
 import com.example.demo.models.Post;
-import com.example.demo.models.User;
+import com.example.demo.models.userfolder.User;
 import com.example.demo.services.PostService;
 import com.example.demo.helpers.PostMapper;
 import com.example.demo.helpers.AuthorizationHelper;

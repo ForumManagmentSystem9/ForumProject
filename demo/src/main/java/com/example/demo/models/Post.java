@@ -1,5 +1,6 @@
 package com.example.demo.models;
 
+import com.example.demo.models.userfolder.User;
 import jakarta.persistence.*;
 import java.util.Objects;
 import java.util.Set;

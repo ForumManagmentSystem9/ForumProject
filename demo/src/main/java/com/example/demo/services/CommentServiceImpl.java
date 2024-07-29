@@ -1,13 +1,11 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.AuthorizationException;
-import com.example.demo.exceptions.EntityDuplicateException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.Comment;
 import com.example.demo.models.Role;
-import com.example.demo.models.User;
+import com.example.demo.models.userfolder.User;
 import com.example.demo.repositories.CommentRepository;
-import jakarta.websocket.server.ServerEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

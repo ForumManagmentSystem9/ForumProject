@@ -1,10 +1,12 @@
-package com.example.demo.models;
+package com.example.demo.models.userfolder;
 
+import com.example.demo.models.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import java.lang.Object;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +23,8 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @Unique
+    @Email
     @Column(name = "email")
     private String email;
 

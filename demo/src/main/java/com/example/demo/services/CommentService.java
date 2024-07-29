@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.models.Comment;
-import com.example.demo.models.User;
+import com.example.demo.models.userfolder.User;
 
 import java.util.List;
 
