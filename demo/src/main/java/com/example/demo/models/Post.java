@@ -2,6 +2,9 @@ package com.example.demo.models;
 
 import com.example.demo.models.userfolder.User;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -79,6 +82,12 @@ public class Post {
     public void setUser(User user) {
         this.user = user;
     }
+
+    private LocalDateTime createdDate;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
 
     @Override
     public boolean equals(Object o) {

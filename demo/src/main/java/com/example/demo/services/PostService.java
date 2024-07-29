@@ -17,4 +17,7 @@ public interface PostService {
     List<Post> getPostsByTitleContaining(String title);
 
     void updatePost(Post post, User user);
+
+    List<Post> getTop10MostCommentedPosts();
+    List<Post> getTop10NewestPosts();
 }

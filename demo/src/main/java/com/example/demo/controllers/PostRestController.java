@@ -34,19 +34,19 @@ public class PostRestController {
         this.postMapper = postMapper;
         this.authorizationHelper = authorizationHelper;
     }
-
-    private User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !(authentication.getPrincipal() instanceof User)) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
-        }
-        return (User) authentication.getPrincipal();
-    }
-
     @GetMapping
-    public List<Post> getAllPosts() {
-        return postService.getAllPosts();
+    public List<Post> getAllPosts(@RequestHeader HttpHeaders headers) {
+        try {
+            User user = authorizationHelper.extractUserFromHeaders(headers);
+            return postService.getAllPosts();
+        } catch (AuthorizationException e) {
+            List<Post> top10MostCommented = postService.getTop10MostCommentedPosts();
+            List<Post> top10Newest = postService.getTop10NewestPosts();
+            top10MostCommented.addAll(top10Newest);
+            return top10MostCommented;
+        }
     }
+
 
     @GetMapping("/{id}")
     public Post getPostById(@PathVariable int id) {

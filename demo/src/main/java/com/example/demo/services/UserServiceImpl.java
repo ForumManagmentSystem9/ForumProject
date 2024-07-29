@@ -64,4 +64,5 @@ public class UserServiceImpl implements UserService, UserDetailsService{
         User user = repository.getByEmail(email);
         return new CustomUserDetails(user);
     }
+
 }

@@ -45,6 +45,15 @@ public class PostServiceImpl implements PostService {
         checkModifyPermissions(id, user);
         postsRepository.deleteById(id);
     }
+    @Override
+    public List<Post> getTop10MostCommentedPosts() {
+        return postsRepository.findTop10ByOrderByCommentsCountDesc();
+    }
+
+    @Override
+    public List<Post> getTop10NewestPosts() {
+        return postsRepository.findTop10ByOrderByCreatedDateDesc();
+    }
 
     @Override
     public List<Post> getPostsByUserId(int userId) {
@@ -77,6 +86,7 @@ public class PostServiceImpl implements PostService {
 
         postsRepository.update(post);
     }
+
 
     private void checkModifyPermissions(int postId, User user) {
         Post post = postsRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Post", postId));

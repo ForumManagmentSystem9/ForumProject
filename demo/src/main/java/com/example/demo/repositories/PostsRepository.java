@@ -16,4 +16,7 @@ public interface PostsRepository {
     List<Post> findByTitleContaining(String title);
 
     void update(Post post);
+
+    List<Post> findTop10ByOrderByCreatedDateDesc();
+    List<Post> findTop10ByOrderByCommentsCountDesc();
 }

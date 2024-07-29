@@ -1,0 +1,1163 @@
+Index: .idea/libraries/Gradle__org_springframework_security_spring_security_web_6_3_1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\r\n  <library name=\"Gradle: org.springframework.security:spring-security-web:6.3.1\" type=\"java-imported\" external-system-id=\"GRADLE\">\r\n    <properties groupId=\"org.springframework.security\" artifactId=\"spring-security-web\" version=\"6.3.1\" />\r\n    <CLASSES>\r\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/6.3.1/aff43933f28c808252b2d31f768b92fa61b634f6/spring-security-web-6.3.1.jar!/\" />\r\n    </CLASSES>\r\n    <JAVADOC />\r\n    <SOURCES />\r\n  </library>\r\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Gradle__org_springframework_security_spring_security_web_6_3_1.xml b/.idea/libraries/Gradle__org_springframework_security_spring_security_web_6_3_1.xml
+--- a/.idea/libraries/Gradle__org_springframework_security_spring_security_web_6_3_1.xml	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/.idea/libraries/Gradle__org_springframework_security_spring_security_web_6_3_1.xml	(date 1721979667527)
+@@ -5,6 +5,8 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/6.3.1/aff43933f28c808252b2d31f768b92fa61b634f6/spring-security-web-6.3.1.jar!/" />
+     </CLASSES>
+     <JAVADOC />
+-    <SOURCES />
++    <SOURCES>
++      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/6.3.1/80340dc1bdde9b174d17bcf766378572e766b303/spring-security-web-6.3.1-sources.jar!/" />
++    </SOURCES>
+   </library>
+ </component>
+\ No newline at end of file
+Index: demo/src/main/java/com/example/demo/controllers/UserOperationController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/controllers/UserOperationController.java b/demo/src/main/java/com/example/demo/controllers/UserOperationController.java
+new file mode 100644
+--- /dev/null	(date 1721979668050)
++++ b/demo/src/main/java/com/example/demo/controllers/UserOperationController.java	(date 1721979668050)
+@@ -0,0 +1,15 @@
++package com.example.demo.controllers;
++
++import com.example.demo.models.userfolder.UserDTO;
++import org.springframework.http.HttpStatus;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.PostMapping;
++import org.springframework.web.bind.annotation.RestController;
++
++@RestController
++public class UserOperationController {
++    @PostMapping("/update")
++    public ResponseEntity<HttpStatus> updateUser(UserDTO userDto){
++        return ResponseEntity.ok(HttpStatus.ACCEPTED);
++    }
++}
+Index: demo/src/main/java/com/example/demo/models/User.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/User.java b/demo/src/main/java/com/example/demo/models/userfolder/User.java
+rename from demo/src/main/java/com/example/demo/models/User.java
+rename to demo/src/main/java/com/example/demo/models/userfolder/User.java
+--- a/demo/src/main/java/com/example/demo/models/User.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/models/userfolder/User.java	(date 1721979668132)
+@@ -1,10 +1,12 @@
+-package com.example.demo.models;
++package com.example.demo.models.userfolder;
+ 
++import com.example.demo.models.Role;
+ import jakarta.persistence.*;
++import jakarta.validation.constraints.Email;
++import org.checkerframework.common.aliasing.qual.Unique;
+ 
+ import java.lang.Object;
+ import java.util.Objects;
+-import java.util.Set;
+ 
+ @Entity
+ @Table(name = "users")
+@@ -21,6 +23,8 @@
+     @Column(name = "last_name")
+     private String lastName;
+ 
++    @Unique
++    @Email
+     @Column(name = "email")
+     private String email;
+ 
+Index: demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java b/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java
+new file mode 100644
+--- /dev/null	(date 1721979668124)
++++ b/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java	(date 1721979668124)
+@@ -0,0 +1,53 @@
++package com.example.demo.models.userfolder;
++
++import com.example.demo.models.userfolder.User;
++import org.springframework.security.core.GrantedAuthority;
++import org.springframework.security.core.userdetails.UserDetails;
++
++import java.util.Collection;
++import java.util.Collections;
++
++public class CustomUserDetails implements UserDetails{
++
++    private final User user;
++
++    public CustomUserDetails(User user) {
++        this.user = user;
++    }
++
++    @Override
++    public Collection<? extends GrantedAuthority> getAuthorities() {
++        return Collections.singletonList(() -> user.getRole().getName().name());
++    }
++
++    @Override
++    public String getPassword() {
++        return user.getPassword();
++    }
++
++    @Override
++    public String getUsername() {
++        return user.getUsername();
++    }
++
++    @Override
++    public boolean isAccountNonExpired() {
++        return true;
++    }
++
++    @Override
++    public boolean isAccountNonLocked() {
++        return !user.isBlocked();
++    }
++
++    @Override
++    public boolean isCredentialsNonExpired() {
++        return true;
++    }
++
++    @Override
++    public boolean isEnabled() {
++        return true;
++    }
++}
++
+Index: demo/src/main/java/com/example/demo/helpers/UserLoginMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/helpers/UserLoginMapper.java b/demo/src/main/java/com/example/demo/helpers/UserLoginMapper.java
+new file mode 100644
+--- /dev/null	(date 1721979668081)
++++ b/demo/src/main/java/com/example/demo/helpers/UserLoginMapper.java	(date 1721979668081)
+@@ -0,0 +1,26 @@
++package com.example.demo.helpers;
++
++import com.example.demo.models.userfolder.User;
++import com.example.demo.models.userfolder.UserLoginDTO;
++import com.example.demo.services.UserService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Component;
++
++@Component
++public class UserLoginMapper {
++    private UserService service;
++
++    @Autowired
++    public UserLoginMapper(UserService service){
++        this.service = service;
++    }
++
++
++    public User fromDto(UserLoginDTO userDto) {
++        User user = new User();
++        user.setEmail(userDto.getEmail());
++        user.setPassword(userDto.getPassword());
++
++        return user;
++    }
++}
+Index: .idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_core_10_1_25.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\r\n  <library name=\"Gradle: org.apache.tomcat.embed:tomcat-embed-core:10.1.25\" type=\"java-imported\" external-system-id=\"GRADLE\">\r\n    <properties groupId=\"org.apache.tomcat.embed\" artifactId=\"tomcat-embed-core\" version=\"10.1.25\" />\r\n    <CLASSES>\r\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/10.1.25/c1e5ee12f537e6b4fea2b98a7160dcf0db610561/tomcat-embed-core-10.1.25.jar!/\" />\r\n    </CLASSES>\r\n    <JAVADOC />\r\n    <SOURCES />\r\n  </library>\r\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_core_10_1_25.xml b/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_core_10_1_25.xml
+--- a/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_core_10_1_25.xml	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_core_10_1_25.xml	(date 1721979667519)
+@@ -5,6 +5,8 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/10.1.25/c1e5ee12f537e6b4fea2b98a7160dcf0db610561/tomcat-embed-core-10.1.25.jar!/" />
+     </CLASSES>
+     <JAVADOC />
+-    <SOURCES />
++    <SOURCES>
++      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/10.1.25/fc8a207096379a2d8210a572ab6d75dfbc4ed6ff/tomcat-embed-core-10.1.25-sources.jar!/" />
++    </SOURCES>
+   </library>
+ </component>
+\ No newline at end of file
+Index: demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.helpers;\r\n\r\nimport com.example.demo.exceptions.AuthorizationException;\r\nimport com.example.demo.models.Role;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.services.UserService;\r\nimport org.springframework.http.HttpHeaders;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.security.core.context.SecurityContextHolder;\r\nimport org.springframework.stereotype.Component;\r\nimport org.springframework.web.server.ResponseStatusException;\r\n\r\nimport java.util.List;\r\n\r\n@Component\r\npublic class AuthorizationHelper {\r\n    public static final String ADMIN_ERROR_MESSAGE = \"You are not admin\";\r\n    private final UserService service;\r\n\r\n    public AuthorizationHelper(UserService service){\r\n        this.service = service;\r\n    }\r\n    public User extractUserFromHeaders(HttpHeaders headers) throws AuthorizationException {\r\n        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();\r\n        if (authentication != null && authentication.getDetails() instanceof AuthenticationHelper) {\r\n            AuthenticationHelper authHelper = (AuthenticationHelper) authentication.getDetails();\r\n            String email = authHelper.getCustomField();\r\n            User user = (User) service.getUserByEmail(email);\r\n            if (user == null) {\r\n                throw new AuthorizationException(\"User not found\");\r\n            }\r\n            return user;\r\n        }\r\n        throw new AuthorizationException(\"Authentication details are missing or invalid\");\r\n    }\r\n    public boolean isUserAdmin(User user){\r\n        if (!user.getRole().getName().equals(Role.RoleType.ADMIN)){\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,\r\n                    ADMIN_ERROR_MESSAGE);\r\n        }\r\n        return true;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java b/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java
+--- a/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java	(date 1721979668075)
+@@ -2,7 +2,7 @@
+ 
+ import com.example.demo.exceptions.AuthorizationException;
+ import com.example.demo.models.Role;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.services.UserService;
+ import org.springframework.http.HttpHeaders;
+ import org.springframework.http.HttpStatus;
+Index: demo/src/main/java/com/example/demo/models/userfolder/UserLoginDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/userfolder/UserLoginDTO.java b/demo/src/main/java/com/example/demo/models/userfolder/UserLoginDTO.java
+new file mode 100644
+--- /dev/null	(date 1721979668146)
++++ b/demo/src/main/java/com/example/demo/models/userfolder/UserLoginDTO.java	(date 1721979668146)
+@@ -0,0 +1,26 @@
++package com.example.demo.models.userfolder;
++
++import jakarta.validation.constraints.Email;
++import jakarta.validation.constraints.NotNull;
++import jakarta.validation.constraints.Size;
++import org.checkerframework.common.aliasing.qual.Unique;
++
++public class UserLoginDTO {
++    @NotNull
++    @Unique
++    @Email
++    private String email;
++    @NotNull
++    @Size(min = 4, max = 32,
++            message = "Password should be between 4 and 32 symbols")
++    private String password;
++    public UserLoginDTO(){}
++
++    public String getEmail() {
++        return email;
++    }
++
++    public String getPassword() {
++        return password;
++    }
++}
+Index: demo/src/main/java/com/example/demo/models/UserDto.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/UserDto.java b/demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java
+rename from demo/src/main/java/com/example/demo/models/UserDto.java
+rename to demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java
+--- a/demo/src/main/java/com/example/demo/models/UserDto.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java	(date 1721979668139)
+@@ -1,11 +1,11 @@
+-package com.example.demo.models;
++package com.example.demo.models.userfolder;
+ 
+ import jakarta.validation.constraints.Email;
+ import jakarta.validation.constraints.NotNull;
+ import jakarta.validation.constraints.Size;
+ import org.checkerframework.common.aliasing.qual.Unique;
+ 
+-public class UserDto {
++public class UserDTO {
+     @NotNull
+     @Size(min = 4, max = 32,
+             message = "Username should be between 4 and 32 symbols")
+@@ -33,7 +33,7 @@
+ 
+     private String phone;
+ 
+-    public UserDto(){}
++    public UserDTO(){}
+ 
+     public String getUsername(){
+         return username;
+Index: demo/src/main/java/com/example/demo/controllers/CommentRestController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.controllers;\r\n\r\n\r\nimport com.example.demo.exceptions.AuthorizationException;\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.helpers.AuthenticationHelper;\r\nimport com.example.demo.helpers.AuthorizationHelper;\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.Role;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.services.CommentService;\r\nimport com.example.demo.services.UserService;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.HttpHeaders;\r\n\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.security.core.context.SecurityContextHolder;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport org.springframework.web.server.ResponseStatusException;\r\n\r\nimport java.util.List;\r\n\r\n@RestController\r\n@RequestMapping(\"api/comment\")\r\npublic class CommentRestController {\r\n    private final CommentService service;\r\n    private final AuthenticationHelper authenticationHelper;\r\n    private final UserService userService;\r\n    private final AuthorizationHelper authorizationHelper;\r\n\r\n    @Autowired\r\n    public CommentRestController(CommentService service, AuthenticationHelper authenticationHelper, UserService userService, AuthorizationHelper authorizationHelper) {\r\n        this.service = service;\r\n        this.authenticationHelper = authenticationHelper;\r\n        this.userService = userService;\r\n        this.authorizationHelper = authorizationHelper;\r\n    }\r\n\r\n    @GetMapping\r\n    public List<Comment> getAll(@RequestHeader HttpHeaders headers){\r\n        try{\r\n            User user = authorizationHelper.extractUserFromHeaders(headers);\r\n            authorizationHelper.isUserAdmin(user);\r\n            return service.getAll();\r\n        }catch (AuthorizationException e){\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,\r\n                    e.getMessage());\r\n        }\r\n    }\r\n    @GetMapping(\"/{id}\")\r\n    public Comment getCommentById(@RequestHeader HttpHeaders headers, @PathVariable int id) {\r\n        try {\r\n            User user = authorizationHelper.extractUserFromHeaders(headers);\r\n            return service.getById(user.getId());\r\n        } catch (EntityNotFoundException e) {\r\n            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());\r\n        }\r\n    }\r\n\r\n    @PostMapping\r\n    public void createComment(@RequestHeader HttpHeaders headers, @RequestBody Comment comment) {\r\n        try {\r\n            User user = authorizationHelper.extractUserFromHeaders(headers);\r\n            comment.setUser(user);\r\n            service.create(comment, user);\r\n        } catch (AuthorizationException e) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());\r\n        }\r\n    }\r\n\r\n    @PostMapping(\"/{id}/like\")\r\n    public void likeComment(@RequestHeader HttpHeaders headers, @PathVariable int id) {\r\n        try {\r\n            User user = authorizationHelper.extractUserFromHeaders(headers);\r\n            service.like(id, user);\r\n        } catch (EntityNotFoundException e) {\r\n            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/controllers/CommentRestController.java b/demo/src/main/java/com/example/demo/controllers/CommentRestController.java
+--- a/demo/src/main/java/com/example/demo/controllers/CommentRestController.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/controllers/CommentRestController.java	(date 1721979668035)
+@@ -1,21 +1,16 @@
+ package com.example.demo.controllers;
+ 
+-
+ import com.example.demo.exceptions.AuthorizationException;
+ import com.example.demo.exceptions.EntityNotFoundException;
+-import com.example.demo.helpers.AuthenticationHelper;
+ import com.example.demo.helpers.AuthorizationHelper;
+ import com.example.demo.models.Comment;
+-import com.example.demo.models.Role;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.services.CommentService;
+ import com.example.demo.services.UserService;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.http.HttpHeaders;
+ 
+ import org.springframework.http.HttpStatus;
+-import org.springframework.security.core.Authentication;
+-import org.springframework.security.core.context.SecurityContextHolder;
+ import org.springframework.web.bind.annotation.*;
+ import org.springframework.web.server.ResponseStatusException;
+ 
+@@ -25,14 +20,12 @@
+ @RequestMapping("api/comment")
+ public class CommentRestController {
+     private final CommentService service;
+-    private final AuthenticationHelper authenticationHelper;
+     private final UserService userService;
+     private final AuthorizationHelper authorizationHelper;
+ 
+     @Autowired
+-    public CommentRestController(CommentService service, AuthenticationHelper authenticationHelper, UserService userService, AuthorizationHelper authorizationHelper) {
++    public CommentRestController(CommentService service, UserService userService, AuthorizationHelper authorizationHelper) {
+         this.service = service;
+-        this.authenticationHelper = authenticationHelper;
+         this.userService = userService;
+         this.authorizationHelper = authorizationHelper;
+     }
+Index: demo/src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.application.name=demo\r\nspring.datasource.url=jdbc:sqlserver://mariadbservertelerik.database.windows.net:1433;database=ForumDB_2024-07-22T12-10Z\r\nspring.datasource.username=mariadbuser\r\nspring.datasource.password=Server123\r\n\r\n#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MariaDB103Dialect\r\n#spring.jpa.database-platform=org.hibernate.dialect.SQLServer2012Dialect\r\nspring.jpa.show-sql=true\r\nspring.jpa.properties.hibernate.format_sql=true\r\n\r\nspring.jpa.hibernate.ddl-auto=update\r\nlogging.level.org.hibernate.SQL=DEBUG\r\nlogging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE\r\n\r\ndebug=true\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/demo/src/main/resources/application.properties b/demo/src/main/resources/application.properties
+--- a/demo/src/main/resources/application.properties	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/resources/application.properties	(date 1721979668256)
+@@ -12,4 +12,4 @@
+ logging.level.org.hibernate.SQL=DEBUG
+ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+ 
+-debug=true
++debug=true
+\ No newline at end of file
+Index: demo/src/main/java/com/example/demo/services/PostService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.Post;\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\npublic interface PostService {\r\n    Post savePost(Post post);\r\n    Optional<Post> getPostById(int id);\r\n    List<Post> getAllPosts();\r\n\r\n    void deletePostById(int id, User user);\r\n\r\n    List<Post> getPostsByUserId(int userId);\r\n    List<Post> getPostsByTitleContaining(String title);\r\n\r\n    void updatePost(Post post, User user);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/PostService.java b/demo/src/main/java/com/example/demo/services/PostService.java
+--- a/demo/src/main/java/com/example/demo/services/PostService.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/PostService.java	(date 1721979668223)
+@@ -1,7 +1,7 @@
+ package com.example.demo.services;
+ 
+ import com.example.demo.models.Post;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ 
+ import java.util.List;
+ import java.util.Optional;
+Index: demo/src/main/java/com/example/demo/services/PostServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.EntityDuplicateException;\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.exceptions.AuthorizationException;\r\nimport com.example.demo.models.Post;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.repositories.PostsRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n@Service\r\npublic class PostServiceImpl implements PostService {\r\n\r\n    private static final String MODIFY_POST_ERROR_MESSAGE = \"Only admin or post creator can modify a post.\";\r\n\r\n    private final PostsRepository postsRepository;\r\n\r\n    @Autowired\r\n    public PostServiceImpl(PostsRepository postsRepository) {\r\n        this.postsRepository = postsRepository;\r\n    }\r\n\r\n    @Override\r\n    public Post savePost(Post post) {\r\n        return postsRepository.save(post);\r\n    }\r\n\r\n    @Override\r\n    public Optional<Post> getPostById(int id) {\r\n        return postsRepository.findById(id);\r\n    }\r\n\r\n    @Override\r\n    public List<Post> getAllPosts() {\r\n        return postsRepository.findAll();\r\n    }\r\n\r\n\r\n    @Override\r\n    public void deletePostById(int id, User user) {\r\n        checkModifyPermissions(id, user);\r\n        postsRepository.deleteById(id);\r\n    }\r\n\r\n    @Override\r\n    public List<Post> getPostsByUserId(int userId) {\r\n        return postsRepository.findByUserId(userId);\r\n    }\r\n\r\n    @Override\r\n    public List<Post> getPostsByTitleContaining(String title) {\r\n        return postsRepository.findByTitleContaining(title);\r\n    }\r\n\r\n\r\n    @Override\r\n    public void updatePost(Post post, User user) {\r\n        checkModifyPermissions(post.getId(), user);\r\n\r\n        boolean duplicateExists = true;\r\n        try {\r\n            List<Post> existingPosts = postsRepository.findByTitleContaining(post.getTitle());\r\n            if (existingPosts.isEmpty() || (existingPosts.size() == 1 && existingPosts.get(0).getId() == post.getId())) {\r\n                duplicateExists = false;\r\n            }\r\n        } catch (EntityNotFoundException e) {\r\n            duplicateExists = false;\r\n        }\r\n\r\n        if (duplicateExists) {\r\n            throw new EntityDuplicateException(\"Post\", \"title\", post.getTitle());\r\n        }\r\n\r\n        postsRepository.update(post);\r\n    }\r\n\r\n    private void checkModifyPermissions(int postId, User user) {\r\n        Post post = postsRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException(\"Post\", postId));\r\n        if (!post.getUser().equals(user)) {\r\n            throw new AuthorizationException(MODIFY_POST_ERROR_MESSAGE);\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/PostServiceImpl.java b/demo/src/main/java/com/example/demo/services/PostServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/PostServiceImpl.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/PostServiceImpl.java	(date 1721979668229)
+@@ -4,7 +4,7 @@
+ import com.example.demo.exceptions.EntityNotFoundException;
+ import com.example.demo.exceptions.AuthorizationException;
+ import com.example.demo.models.Post;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.repositories.PostsRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Service;
+Index: .idea/libraries/Gradle__org_springframework_spring_webmvc_6_1_10.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\r\n  <library name=\"Gradle: org.springframework:spring-webmvc:6.1.10\" type=\"java-imported\" external-system-id=\"GRADLE\">\r\n    <properties groupId=\"org.springframework\" artifactId=\"spring-webmvc\" version=\"6.1.10\" />\r\n    <CLASSES>\r\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/6.1.10/476344c2f21ab070bc72108375d9355f2ec0ddd1/spring-webmvc-6.1.10.jar!/\" />\r\n    </CLASSES>\r\n    <JAVADOC />\r\n    <SOURCES />\r\n  </library>\r\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Gradle__org_springframework_spring_webmvc_6_1_10.xml b/.idea/libraries/Gradle__org_springframework_spring_webmvc_6_1_10.xml
+--- a/.idea/libraries/Gradle__org_springframework_spring_webmvc_6_1_10.xml	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/.idea/libraries/Gradle__org_springframework_spring_webmvc_6_1_10.xml	(date 1721979667535)
+@@ -5,6 +5,9 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/6.1.10/476344c2f21ab070bc72108375d9355f2ec0ddd1/spring-webmvc-6.1.10.jar!/" />
+     </CLASSES>
+     <JAVADOC />
+-    <SOURCES />
++    <SOURCES>
++      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/6.1.10/3d932bf92edf303b19627d8535b3503d55ffcf77/spring-webmvc-6.1.10-sources.jar!/" />
++      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/6.1.10/3d932bf92edf303b19627d8535b3503d55ffcf77/spring-webmvc-6.1.10-sources.jar!/" />
++    </SOURCES>
+   </library>
+ </component>
+\ No newline at end of file
+Index: demo/build/resources/main/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.application.name=demo\r\nspring.datasource.url=jdbc:sqlserver://mariadbservertelerik.database.windows.net:1433;database=ForumDB_2024-07-22T12-10Z\r\nspring.datasource.username=mariadbuser\r\nspring.datasource.password=Server123\r\n\r\n#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MariaDB103Dialect\r\n#spring.jpa.database-platform=org.hibernate.dialect.SQLServer2012Dialect\r\nspring.jpa.show-sql=true\r\nspring.jpa.properties.hibernate.format_sql=true\r\n\r\nspring.jpa.hibernate.ddl-auto=update\r\nlogging.level.org.hibernate.SQL=DEBUG\r\nlogging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE\r\n\r\ndebug=true\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/demo/build/resources/main/application.properties b/demo/build/resources/main/application.properties
+--- a/demo/build/resources/main/application.properties	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/build/resources/main/application.properties	(date 1721982287467)
+@@ -12,4 +12,4 @@
+ logging.level.org.hibernate.SQL=DEBUG
+ logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
+ 
+-debug=true
++debug=true
+\ No newline at end of file
+Index: demo/src/main/java/com/example/demo/models/Comment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.models;\r\n\r\nimport jakarta.persistence.*;\r\n\r\nimport java.util.Objects;\r\n\r\n@Entity\r\n@Table(name = \"comments\")\r\npublic class Comment {\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    @Column(name = \"comment_id\")\r\n    private int id;\r\n\r\n    @Column(name = \"content\")\r\n    private String content;\r\n\r\n    @Column(name = \"comment_likes\")\r\n    private int likes;\r\n\r\n    @ManyToOne\r\n    @JoinColumn(name = \"post_id\")\r\n    private Post post;\r\n\r\n    @ManyToOne\r\n    @JoinColumn(name = \"user_id\")\r\n\r\n    private User user;\r\n\r\n    public Comment(){}\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(String content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public int getLikes() {\r\n        return likes;\r\n    }\r\n\r\n    public void setLikes(int likes) {\r\n        this.likes = likes;\r\n    }\r\n\r\n    public Post getPost() {\r\n        return post;\r\n    }\r\n\r\n    public void setPost(Post post) {\r\n        this.post = post;\r\n    }\r\n\r\n    public User getUser() {\r\n        return user;\r\n    }\r\n\r\n    public void setUser(User user) {\r\n        this.user = user;\r\n    }\r\n    @Override\r\n    public boolean equals(Object o) {\r\n        if (this == o) return true;\r\n        if (o == null || getClass() != o.getClass()) return false;\r\n        Comment comment = (Comment) o;\r\n        return id == comment.id;\r\n    }\r\n\r\n    @Override\r\n    public int hashCode() {\r\n        return Objects.hash(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/Comment.java b/demo/src/main/java/com/example/demo/models/Comment.java
+--- a/demo/src/main/java/com/example/demo/models/Comment.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/models/Comment.java	(date 1721979668097)
+@@ -1,5 +1,6 @@
+ package com.example.demo.models;
+ 
++import com.example.demo.models.userfolder.User;
+ import jakarta.persistence.*;
+ 
+ import java.util.Objects;
+Index: demo/src/main/java/com/example/demo/controllers/PostRestController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.controllers;\r\n\r\nimport com.example.demo.exceptions.EntityDuplicateException;\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.exceptions.AuthorizationException;\r\nimport com.example.demo.models.PostDTO;\r\nimport com.example.demo.models.Post;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.services.PostService;\r\nimport com.example.demo.helpers.PostMapper;\r\nimport com.example.demo.helpers.AuthorizationHelper;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.HttpHeaders;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.security.core.Authentication;\r\nimport org.springframework.security.core.context.SecurityContextHolder;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport org.springframework.web.server.ResponseStatusException;\r\n\r\nimport jakarta.validation.Valid;\r\nimport java.util.List;\r\n\r\n@RestController\r\n@RequestMapping(\"/api/posts\")\r\npublic class PostRestController {\r\n\r\n    private final PostService postService;\r\n    private final PostMapper postMapper;\r\n    private final AuthorizationHelper authorizationHelper;\r\n\r\n    @Autowired\r\n    public PostRestController(PostService postService, PostMapper postMapper, AuthorizationHelper authorizationHelper) {\r\n        this.postService = postService;\r\n        this.postMapper = postMapper;\r\n        this.authorizationHelper = authorizationHelper;\r\n    }\r\n\r\n    private User getCurrentUser() {\r\n        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();\r\n        if (authentication == null || !(authentication.getPrincipal() instanceof User)) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, \"User not authenticated\");\r\n        }\r\n        return (User) authentication.getPrincipal();\r\n    }\r\n\r\n    @GetMapping\r\n    public List<Post> getAllPosts() {\r\n        return postService.getAllPosts();\r\n    }\r\n\r\n    @GetMapping(\"/{id}\")\r\n    public Post getPostById(@PathVariable int id) {\r\n        return postService.getPostById(id).orElseThrow(() ->\r\n                new ResponseStatusException(HttpStatus.NOT_FOUND, \"Post not found\")\r\n        );\r\n    }\r\n\r\n    @PostMapping\r\n    public Post createPost(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDTO) {\r\n        try {\r\n            User user = authorizationHelper.extractUserFromHeaders(headers);\r\n            Post post = postMapper.fromDto(postDTO);\r\n            return postService.savePost(post);\r\n        } catch (EntityNotFoundException e) {\r\n            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());\r\n        } catch (EntityDuplicateException e) {\r\n            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());\r\n        } catch (AuthorizationException e) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());\r\n        }\r\n    }\r\n\r\n    @PutMapping(\"/{id}\")\r\n    public Post updatePost(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {\r\n        try {\r\n            User user = authorizationHelper.extractUserFromHeaders(headers);\r\n            Post post = postMapper.fromDto(postDTO);\r\n            postService.updatePost(post, user);\r\n            return post;\r\n        } catch (EntityNotFoundException e) {\r\n            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());\r\n        } catch (EntityDuplicateException e) {\r\n            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());\r\n        } catch (AuthorizationException e) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());\r\n        }\r\n    }\r\n\r\n    @DeleteMapping(\"/{id}\")\r\n    public void deletePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {\r\n        try {\r\n            User user = authorizationHelper.extractUserFromHeaders(headers);\r\n            postService.deletePostById(id, user);\r\n        } catch (EntityNotFoundException e) {\r\n            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());\r\n        } catch (AuthorizationException e) {\r\n            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/controllers/PostRestController.java b/demo/src/main/java/com/example/demo/controllers/PostRestController.java
+--- a/demo/src/main/java/com/example/demo/controllers/PostRestController.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/controllers/PostRestController.java	(date 1721991126526)
+@@ -5,7 +5,7 @@
+ import com.example.demo.exceptions.AuthorizationException;
+ import com.example.demo.models.PostDTO;
+ import com.example.demo.models.Post;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.services.PostService;
+ import com.example.demo.helpers.PostMapper;
+ import com.example.demo.helpers.AuthorizationHelper;
+@@ -35,13 +35,13 @@
+         this.authorizationHelper = authorizationHelper;
+     }
+ 
+-    private User getCurrentUser() {
+-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+-        if (authentication == null || !(authentication.getPrincipal() instanceof User)) {
+-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
+-        }
+-        return (User) authentication.getPrincipal();
+-    }
++//    private User getCurrentUser() {
++//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
++//        if (authentication == null || !(authentication.getPrincipal() instanceof User)) {
++//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not authenticated");
++//        }
++//        return (User) authentication.getPrincipal();
++//    }
+ 
+     @GetMapping
+     public List<Post> getAllPosts() {
+Index: demo/src/main/java/com/example/demo/services/CommentService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface CommentService {\r\n    List<Comment> getAll();\r\n    Comment getById(int id);\r\n    void create(Comment comment, User user);\r\n    void update(Comment comment, User user);\r\n    void delete(int id, User user);\r\n    void like(int id, User user);\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/CommentService.java b/demo/src/main/java/com/example/demo/services/CommentService.java
+--- a/demo/src/main/java/com/example/demo/services/CommentService.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/CommentService.java	(date 1721979668202)
+@@ -1,7 +1,7 @@
+ package com.example.demo.services;
+ 
+ import com.example.demo.models.Comment;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ 
+ import java.util.List;
+ 
+Index: demo/src/main/java/com/example/demo/services/CommentServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.AuthorizationException;\r\nimport com.example.demo.exceptions.EntityDuplicateException;\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.Role;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.repositories.CommentRepository;\r\nimport jakarta.websocket.server.ServerEndpoint;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class CommentServiceImpl  implements CommentService{\r\n\r\n    private final CommentRepository repository;\r\n\r\n    @Autowired\r\n    public CommentServiceImpl(CommentRepository repository) {\r\n        this.repository = repository;\r\n    }\r\n\r\n    @Override\r\n    public List<Comment> getAll() {\r\n        return repository.getAll();\r\n    }\r\n\r\n    @Override\r\n    public Comment getById(int id) {\r\n        return repository.getById(id);\r\n    }\r\n\r\n    @Override\r\n    public void create(Comment comment, User user) {\r\n        comment.setUser(user);\r\n        repository.create(comment);\r\n    }\r\n\r\n    @Override\r\n    public void update(Comment comment, User user) {\r\n        Comment existingCommnet = repository.getById(comment.getId());\r\n        if (existingCommnet == null){\r\n            throw new EntityNotFoundException(\"Comment\", comment.getId());\r\n        }\r\n        if (!existingCommnet.getUser().equals(user)){\r\n            throw new AuthorizationException(\"User not authorised\");\r\n        }\r\n\r\n        existingCommnet.setContent(comment.getContent());\r\n        repository.update(existingCommnet);\r\n\r\n    }\r\n\r\n    @Override\r\n    public void delete(int id, User user) {\r\n        Comment commentToDelete = repository.getById(id);\r\n        if (commentToDelete == null){\r\n            throw new EntityNotFoundException(\"Comment\", id);\r\n        }\r\n\r\n        if (user.getRole().getName() == Role.RoleType.ADMIN){\r\n            repository.delete(id);\r\n        }else{\r\n            throw new AuthorizationException(\"You are not authorized to delete the post\");\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public void like(int id, User user){\r\n        Comment comment = repository.getById(id);\r\n        if (comment == null){\r\n            throw new EntityNotFoundException(\"Comment not found\", id);\r\n        }\r\n        repository.getLikes(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java b/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java	(date 1721979668209)
+@@ -1,13 +1,11 @@
+ package com.example.demo.services;
+ 
+ import com.example.demo.exceptions.AuthorizationException;
+-import com.example.demo.exceptions.EntityDuplicateException;
+ import com.example.demo.exceptions.EntityNotFoundException;
+ import com.example.demo.models.Comment;
+ import com.example.demo.models.Role;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.repositories.CommentRepository;
+-import jakarta.websocket.server.ServerEndpoint;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Service;
+ 
+Index: demo/src/main/java/com/example/demo/repositories/CommentRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\n\r\n\r\npublic interface CommentRepository {\r\n    List<Comment> getAll();\r\n\r\n    Comment getById(int id);\r\n\r\n    void create(Comment comment);\r\n\r\n    void update(Comment comment);\r\n\r\n    void delete(int id);\r\n\r\n    void getLikes(int id);\r\n\r\n\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/CommentRepository.java b/demo/src/main/java/com/example/demo/repositories/CommentRepository.java
+--- a/demo/src/main/java/com/example/demo/repositories/CommentRepository.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/repositories/CommentRepository.java	(date 1721979668153)
+@@ -1,7 +1,6 @@
+ package com.example.demo.repositories;
+ 
+ import com.example.demo.models.Comment;
+-import com.example.demo.models.User;
+ 
+ import java.util.List;
+ 
+Index: demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.User;\r\nimport org.hibernate.Session;\r\nimport org.hibernate.SessionFactory;\r\nimport org.hibernate.Transaction;\r\nimport org.springframework.stereotype.Repository;\r\n\r\nimport java.util.List;\r\n\r\n@Repository\r\npublic class CommentRepositoryImpl implements CommentRepository{\r\n\r\n    private final SessionFactory sessionFactory;\r\n\r\n    public CommentRepositoryImpl(SessionFactory sessionFactory) {\r\n        this.sessionFactory = sessionFactory;\r\n    }\r\n\r\n    @Override\r\n    public List<Comment> getAll() {\r\n        try (Session session = sessionFactory.openSession()){\r\n            return session.createQuery(\"from Comment\", Comment.class).list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public Comment getById(int id) throws EntityNotFoundException {\r\n        try (Session session = sessionFactory.openSession()){\r\n            Comment comment = session.get(Comment.class, id);\r\n            if (comment == null){\r\n                throw new EntityNotFoundException(\"Comment\", id);\r\n            }\r\n            return comment;\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void create(Comment comment) {\r\n        try(Session session = sessionFactory.openSession()){\r\n            session.beginTransaction();\r\n            session.persist(comment);\r\n            session.getTransaction().commit();\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public void update(Comment comment) {\r\n        try (Session session = sessionFactory.openSession()){\r\n            session.beginTransaction();\r\n            session.merge(comment);\r\n            session.getTransaction().commit();\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public void delete(int id) {\r\n        Comment commentToDelete = getById(id);\r\n        try(Session session = sessionFactory.openSession()){\r\n            session.beginTransaction();\r\n            session.remove(commentToDelete);\r\n            session.getTransaction().commit();\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public void getLikes(int id){\r\n        try(Session session = sessionFactory.openSession()){\r\n            Transaction transaction = session.beginTransaction();\r\n            Comment comment = session.get(Comment.class, id);\r\n            if (comment != null){\r\n                comment.setLikes(comment.getLikes() + 1);\r\n                session.update(comment);\r\n            }\r\n            transaction.commit();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java b/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java
+--- a/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java	(date 1721979668161)
+@@ -2,7 +2,6 @@
+ 
+ import com.example.demo.exceptions.EntityNotFoundException;
+ import com.example.demo.models.Comment;
+-import com.example.demo.models.User;
+ import org.hibernate.Session;
+ import org.hibernate.SessionFactory;
+ import org.hibernate.Transaction;
+Index: demo/src/main/java/com/example/demo/helpers/UserMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.helpers;\r\n\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.models.UserDto;\r\nimport com.example.demo.services.UserService;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Component;\r\n\r\n@Component\r\npublic class UserMapper {\r\n\r\n    private UserService service;\r\n\r\n    @Autowired\r\n    public UserMapper(UserService service){\r\n        this.service = service;\r\n    }\r\n\r\n    public User fromDto(int id, UserDto userDto){\r\n        User user = fromDto(userDto);\r\n        user.setId(id);\r\n\r\n        return user;\r\n    }\r\n\r\n    public User fromDto(UserDto userDto){\r\n        User user = new User();\r\n        user.setUsername(userDto.getUsername());\r\n        user.setPassword(userDto.getPassword());\r\n        user.setFirstName(userDto.getFirstName());\r\n        user.setLastName(userDto.getLastName());\r\n        user.setEmail(user.getEmail());\r\n\r\n        return user;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/helpers/UserMapper.java b/demo/src/main/java/com/example/demo/helpers/UserMapper.java
+--- a/demo/src/main/java/com/example/demo/helpers/UserMapper.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/helpers/UserMapper.java	(date 1721979668087)
+@@ -1,7 +1,7 @@
+ package com.example.demo.helpers;
+ 
+-import com.example.demo.models.User;
+-import com.example.demo.models.UserDto;
++import com.example.demo.models.userfolder.User;
++import com.example.demo.models.userfolder.UserDTO;
+ import com.example.demo.services.UserService;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Component;
+@@ -16,20 +16,20 @@
+         this.service = service;
+     }
+ 
+-    public User fromDto(int id, UserDto userDto){
++    public User fromDto(int id, UserDTO userDto){
+         User user = fromDto(userDto);
+         user.setId(id);
+ 
+         return user;
+     }
+ 
+-    public User fromDto(UserDto userDto){
++    public User fromDto(UserDTO userDto){
+         User user = new User();
+         user.setUsername(userDto.getUsername());
+         user.setPassword(userDto.getPassword());
+         user.setFirstName(userDto.getFirstName());
+         user.setLastName(userDto.getLastName());
+-        user.setEmail(user.getEmail());
++        user.setEmail(userDto.getEmail());
+ 
+         return user;
+     }
+Index: demo/src/main/java/com/example/demo/helpers/AuthenticationHelper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.helpers;\r\n\r\nimport jakarta.servlet.http.HttpServletRequest;\r\nimport org.springframework.security.web.authentication.WebAuthenticationDetails;\r\nimport org.springframework.stereotype.Component;\r\n\r\n@Component\r\npublic class AuthenticationHelper extends WebAuthenticationDetails {\r\n    private final String customField;\r\n\r\n    public AuthenticationHelper(HttpServletRequest request) {\r\n        super(request);\r\n        this.customField = request.getParameter(\"customField\");\r\n    }\r\n\r\n    public String getCustomField() {\r\n        return customField;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/helpers/AuthenticationHelper.java b/demo/src/main/java/com/example/demo/helpers/AuthenticationHelper.java
+--- a/demo/src/main/java/com/example/demo/helpers/AuthenticationHelper.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/helpers/AuthenticationHelper.java	(date 1721979668066)
+@@ -4,7 +4,6 @@
+ import org.springframework.security.web.authentication.WebAuthenticationDetails;
+ import org.springframework.stereotype.Component;
+ 
+-@Component
+ public class AuthenticationHelper extends WebAuthenticationDetails {
+     private final String customField;
+ 
+Index: demo/src/main/java/com/example/demo/services/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.response.AuthenticationResponse;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserService {\r\n    User updateUser(User user);\r\n    User getUserById(int id);\r\n    UserDetails getUserByEmail(String email);\r\n    List<User> getUserByKeyword(String keyword);\r\n    void changePassword(int id, String newPassword);\r\n    void blockUser(int id);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/UserService.java b/demo/src/main/java/com/example/demo/services/UserService.java
+--- a/demo/src/main/java/com/example/demo/services/UserService.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/UserService.java	(date 1721979668237)
+@@ -1,16 +1,13 @@
+ package com.example.demo.services;
+ 
+-import com.example.demo.models.User;
+-import com.example.demo.response.AuthenticationResponse;
++import com.example.demo.models.userfolder.User;
+ import org.springframework.security.core.userdetails.UserDetails;
+ 
+-import java.util.List;
+-
+ public interface UserService {
+-    User updateUser(User user);
+-    User getUserById(int id);
++    void updateUser(User user);
++    UserDetails getUserById(int id);
+     UserDetails getUserByEmail(String email);
+-    List<User> getUserByKeyword(String keyword);
++//    List<UserDetails> getUserByKeyword(String keyword);
+     void changePassword(int id, String newPassword);
+     void blockUser(int id);
+ }
+Index: demo/src/main/java/com/example/demo/services/UserServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.repositories.UserRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\nimport org.springframework.security.core.userdetails.UserDetailsService;\r\nimport org.springframework.security.core.userdetails.UsernameNotFoundException;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class UserServiceImpl implements UserDetailsService, UserService {\r\n    private final UserRepository repository;\r\n\r\n    @Autowired\r\n    public UserServiceImpl(UserRepository repository) {\r\n        this.repository = repository;\r\n    }\r\n\r\n    @Override\r\n    public User updateUser(User user) {\r\n        User findUser = repository.getById(user.getId());\r\n\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public User getUserById(int id) {\r\n        return repository.getById(id);\r\n    }\r\n\r\n    @Override\r\n    public UserDetails getUserByEmail(String email) {\r\n        return (UserDetails) repository.getByEmail(email);\r\n    }\r\n\r\n    @Override\r\n    public List<User> getUserByKeyword(String keyword) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public void changePassword(int id, String newPassword) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void blockUser(int id) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {\r\n        return (UserDetails) repository.getByUsername(username);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/UserServiceImpl.java b/demo/src/main/java/com/example/demo/services/UserServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/UserServiceImpl.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/UserServiceImpl.java	(date 1721991126611)
+@@ -1,7 +1,8 @@
+ package com.example.demo.services;
+ 
+-import com.example.demo.exceptions.EntityNotFoundException;
+-import com.example.demo.models.User;
++import com.example.demo.exceptions.EntityDuplicateException;
++import com.example.demo.models.userfolder.CustomUserDetails;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.repositories.UserRepository;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.security.core.userdetails.UserDetails;
+@@ -9,10 +10,8 @@
+ import org.springframework.security.core.userdetails.UsernameNotFoundException;
+ import org.springframework.stereotype.Service;
+ 
+-import java.util.List;
+-
+ @Service
+-public class UserServiceImpl implements UserDetailsService, UserService {
++public class UserServiceImpl implements UserService, UserDetailsService{
+     private final UserRepository repository;
+ 
+     @Autowired
+@@ -21,39 +20,49 @@
+     }
+ 
+     @Override
+-    public User updateUser(User user) {
+-        User findUser = repository.getById(user.getId());
+-
+-        return null;
++    public void updateUser(User user) {
++        boolean duplicateExists = false;
++        User updateUser = repository.getById(user.getId());
++        String email = user.getEmail();
++        if (repository.getByEmail(email) != null) {
++            throw new EntityDuplicateException("User", "email", user.getEmail());
++        }
++        repository.update(user);
+     }
+ 
+     @Override
+-    public User getUserById(int id) {
+-        return repository.getById(id);
++    public UserDetails getUserById(int id) {
++        return new CustomUserDetails(repository.getById(id));
+     }
+ 
+     @Override
+     public UserDetails getUserByEmail(String email) {
+-        return (UserDetails) repository.getByEmail(email);
++        return new CustomUserDetails(repository.getByEmail(email));
+     }
+ 
+-    @Override
+-    public List<User> getUserByKeyword(String keyword) {
+-        return null;
+-    }
++//    @Override
++//    public List<User> getUserByKeyword(String keyword) {
++//        return repository.search(keyword);
++//    }
+ 
+     @Override
+     public void changePassword(int id, String newPassword) {
+-
++        User user = repository.getById(id);
++        user.setPassword(newPassword);
++        repository.update(user);
+     }
+ 
+     @Override
+     public void blockUser(int id) {
+-
++        User user = repository.getById(id);
++        user.setBlocked(true);
++        repository.update(user);
+     }
+ 
+     @Override
+-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+-        return (UserDetails) repository.getByUsername(username);
++    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
++        User user = repository.getByEmail(email);
++        return new CustomUserDetails(user);
+     }
++
+ }
+Index: .idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml b/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml
+--- a/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml	(date 1721979667508)
+@@ -16807,8 +16807,8 @@
+     </schema>
+     <schema id="5581" parent="5542" name="dbo">
+       <Current>1</Current>
+-      <IntrospectionTimestamp>2024-07-25.07:57:53.793</IntrospectionTimestamp>
+-      <LastIntrospectionLocalTimestamp>2024-07-25.04:57:53</LastIntrospectionLocalTimestamp>
++      <IntrospectionTimestamp>2024-07-25.14:53:43.230</IntrospectionTimestamp>
++      <LastIntrospectionLocalTimestamp>2024-07-25.11:53:43</LastIntrospectionLocalTimestamp>
+       <ObjectId>1</ObjectId>
+     </schema>
+     <schema id="5582" parent="5542" name="guest">
+@@ -16915,7 +16915,7 @@
+     </table>
+     <table id="5602" parent="5581" name="users">
+       <CreatedTimestamp>2024-07-21.17:56:00.160</CreatedTimestamp>
+-      <ModifiedTimestamp>2024-07-22.18:15:22.863</ModifiedTimestamp>
++      <ModifiedTimestamp>2024-07-25.16:02:50.883</ModifiedTimestamp>
+       <ObjectId>1154103152</ObjectId>
+     </table>
+     <column id="5603" parent="5590" name="ParentProductCategoryName">
+@@ -17316,7 +17316,7 @@
+       <DasType>int|0s</DasType>
+       <NotNull>1</NotNull>
+       <Position>1</Position>
+-      <SequenceIdentity>1(6)</SequenceIdentity>
++      <SequenceIdentity>1(14)</SequenceIdentity>
+     </column>
+     <column id="5664" parent="5602" name="first_name">
+       <DasType>nvarchar(32 char)|0s</DasType>
+@@ -17347,16 +17347,25 @@
+       <DasType>int|0s</DasType>
+       <NotNull>1</NotNull>
+       <Position>7</Position>
++      <DefaultConstraintId>110623437</DefaultConstraintId>
++      <DefaultConstraintName>DF__users__role_id__0697FACD</DefaultConstraintName>
+     </column>
+     <column id="5670" parent="5602" name="phone_number">
+       <DasType>nvarchar(20 char)|0s</DasType>
+       <Position>8</Position>
+     </column>
+     <column id="5671" parent="5602" name="blocked">
+-      <DasType>tinyint|0s</DasType>
++      <DasType>bit|0s</DasType>
+       <Position>9</Position>
+     </column>
+-    <foreign-key id="5672" parent="5602" name="FK_users_roles">
++    <default id="5672" parent="5602" name="DF__users__role_id__0697FACD">
++      <ColNames>role_id</ColNames>
++      <DefaultExpression>3</DefaultExpression>
++      <ModifiedTimestamp>2024-07-25.16:02:50.883</ModifiedTimestamp>
++      <NameSurrogate>1</NameSurrogate>
++      <ObjectId>110623437</ObjectId>
++    </default>
++    <foreign-key id="5673" parent="5602" name="FK_users_roles">
+       <ColNames>role_id</ColNames>
+       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
+       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
+@@ -17365,7 +17374,7 @@
+       <RefTableId>1106102981</RefTableId>
+       <RefTableName>roles</RefTableName>
+     </foreign-key>
+-    <index id="5673" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
++    <index id="5674" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
+       <Clustering>1</Clustering>
+       <ColNames>user_id</ColNames>
+       <NameSurrogate>1</NameSurrogate>
+@@ -17373,14 +17382,14 @@
+       <Unique>1</Unique>
+       <PartitionDataSpaceId>1</PartitionDataSpaceId>
+     </index>
+-    <index id="5674" parent="5602" name="UQ__users__AB6E6164B11BD345">
++    <index id="5675" parent="5602" name="UQ__users__AB6E6164B11BD345">
+       <ColNames>email</ColNames>
+       <NameSurrogate>1</NameSurrogate>
+       <Position>2</Position>
+       <Unique>1</Unique>
+       <PartitionDataSpaceId>1</PartitionDataSpaceId>
+     </index>
+-    <key id="5675" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
++    <key id="5676" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
+       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
+       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
+       <NameSurrogate>1</NameSurrogate>
+@@ -17388,50 +17397,50 @@
+       <Primary>1</Primary>
+       <UnderlyingIndexName>PK__users__B9BE370F1BDEB4D6</UnderlyingIndexName>
+     </key>
+-    <key id="5676" parent="5602" name="UQ__users__AB6E6164B11BD345">
++    <key id="5677" parent="5602" name="UQ__users__AB6E6164B11BD345">
+       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
+       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
+       <NameSurrogate>1</NameSurrogate>
+       <ObjectId>1186103266</ObjectId>
+       <UnderlyingIndexName>UQ__users__AB6E6164B11BD345</UnderlyingIndexName>
+     </key>
+-    <partition id="5677" parent="5618">
++    <partition id="5678" parent="5618">
+       <ObjectId>72057594050510848</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5678" parent="5627">
++    <partition id="5679" parent="5627">
+       <ObjectId>72057594049593344</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5679" parent="5628">
++    <partition id="5680" parent="5628">
+       <ObjectId>72057594049658880</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5680" parent="5635">
++    <partition id="5681" parent="5635">
+       <ObjectId>72057594050445312</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5681" parent="5642">
++    <partition id="5682" parent="5642">
+       <ObjectId>72057594050379776</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5682" parent="5650">
++    <partition id="5683" parent="5650">
+       <ObjectId>72057594049789952</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5683" parent="5655">
++    <partition id="5684" parent="5655">
+       <ObjectId>72057594049396736</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5684" parent="5661">
++    <partition id="5685" parent="5661">
+       <ObjectId>72057594050052096</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5685" parent="5673">
++    <partition id="5686" parent="5674">
+       <ObjectId>72057594049462272</ObjectId>
+       <Position>1</Position>
+     </partition>
+-    <partition id="5686" parent="5674">
++    <partition id="5687" parent="5675">
+       <ObjectId>72057594049527808</ObjectId>
+       <Position>1</Position>
+     </partition>
+Index: demo/src/main/java/com/example/demo/models/Post.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.models;\r\n\r\nimport jakarta.persistence.*;\r\nimport java.util.Objects;\r\nimport java.util.Set;\r\n\r\n@Entity\r\n@Table(name = \"posts\")\r\npublic class Post {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    @Column(name = \"post_id\")\r\n    private int id;\r\n    @Column(name = \"post_title\")\r\n    private String title;\r\n    @Column(name = \"content\")\r\n    private String content;\r\n    @Column(name = \"likes\")\r\n    private int likes;\r\n    @ManyToOne\r\n    @JoinColumn(name = \"user_id\")\r\n    private User user;\r\n    @ManyToMany(fetch = FetchType.EAGER)\r\n    @JoinTable(\r\n            name = \"post_tag\",\r\n            joinColumns = @JoinColumn(name = \"post_id\"),\r\n            inverseJoinColumns = @JoinColumn(name = \"tag_id\")\r\n    )\r\n    private Set<Tag> tags;\r\n\r\n    public Post(){}\r\n\r\n    public int getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public Set<Tag> getTags() {\r\n        return tags;\r\n    }\r\n\r\n    public void setTags(Set<Tag> tags) {\r\n        this.tags = tags;\r\n    }\r\n\r\n    public String getTitle() {\r\n        return title;\r\n    }\r\n\r\n    public void setTitle(String title) {\r\n        this.title = title;\r\n    }\r\n\r\n    public String getContent() {\r\n        return content;\r\n    }\r\n\r\n    public void setContent(String content) {\r\n        this.content = content;\r\n    }\r\n\r\n    public int getLikes() {\r\n        return likes;\r\n    }\r\n\r\n    public void setLikes(int likes) {\r\n        this.likes = likes;\r\n    }\r\n\r\n    public User getUser() {\r\n        return user;\r\n    }\r\n\r\n    public void setUser(User user) {\r\n        this.user = user;\r\n    }\r\n\r\n    @Override\r\n    public boolean equals(Object o) {\r\n        if (this == o) return true;\r\n        if (o == null || getClass() != o.getClass()) return false;\r\n        Post post = (Post) o;\r\n        return id == post.id;\r\n    }\r\n\r\n    @Override\r\n    public int hashCode() {\r\n        return Objects.hash(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/Post.java b/demo/src/main/java/com/example/demo/models/Post.java
+--- a/demo/src/main/java/com/example/demo/models/Post.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/models/Post.java	(date 1721979668105)
+@@ -1,5 +1,6 @@
+ package com.example.demo.models;
+ 
++import com.example.demo.models.userfolder.User;
+ import jakarta.persistence.*;
+ import java.util.Objects;
+ import java.util.Set;
+Index: demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.EntityDuplicateException;\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.repositories.UserRepository;\r\nimport com.example.demo.response.AuthenticationResponse;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.security.authentication.AuthenticationManager;\r\nimport org.springframework.security.authentication.UsernamePasswordAuthenticationToken;\r\nimport org.springframework.security.crypto.password.PasswordEncoder;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.Optional;\r\n\r\n@Service\r\npublic class AuthenticationServiceImpl implements AuthenticationService{\r\n    private final UserRepository repository;\r\n    private final PasswordEncoder encoder;\r\n    private final JWTService jwtService;\r\n    private final AuthenticationManager authenticationManager;\r\n    @Autowired\r\n    public AuthenticationServiceImpl(UserRepository repository, PasswordEncoder encoder, JWTService jwtService, AuthenticationManager authenticationManager) {\r\n        this.repository = repository;\r\n        this.encoder = encoder;\r\n        this.jwtService = jwtService;\r\n        this.authenticationManager = authenticationManager;\r\n    }\r\n    @Override\r\n    public AuthenticationResponse registerUser(User request) {\r\n        boolean duplicate = true;\r\n        try {\r\n            repository.getByEmail(request.getEmail());\r\n        }\r\n        catch (EntityNotFoundException e){\r\n            duplicate = false;\r\n        }\r\n        if (duplicate){\r\n            throw new EntityDuplicateException(\"User\", \"email\", request.getEmail());\r\n        }\r\n        request.setPassword(encoder.encode(request.getPassword()));\r\n        repository.createUser(request);\r\n        String token = jwtService.generateToken(request);\r\n\r\n        return new AuthenticationResponse(token);\r\n    }\r\n\r\n    @Override\r\n    public AuthenticationResponse authenticate(User request) {\r\n        authenticationManager.authenticate(\r\n                new UsernamePasswordAuthenticationToken(\r\n                        request.getEmail(),\r\n                        request.getPassword())\r\n        );\r\n        User user = repository.getByEmail(request.getEmail());\r\n        String token  = jwtService.generateToken(user);\r\n\r\n        return new AuthenticationResponse(token);\r\n    }\r\n//    private User fillUserData(User newUser){\r\n//        User user = new User();\r\n//        user.setUsername(newUser.getUsername());\r\n//        user.setEmail(newUser.getEmail());\r\n//        user.setPassword(encoder.encode(newUser.getPassword()));\r\n//        user.setFirstName(newUser.getFirstName());\r\n//        user.setLastName(newUser.getLastName());\r\n//        user.setRole(newUser.getRole());\r\n//\r\n//        return user;\r\n//    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java b/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java	(date 1721979668194)
+@@ -2,7 +2,7 @@
+ 
+ import com.example.demo.exceptions.EntityDuplicateException;
+ import com.example.demo.exceptions.EntityNotFoundException;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.repositories.UserRepository;
+ import com.example.demo.response.AuthenticationResponse;
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -11,8 +11,6 @@
+ import org.springframework.security.crypto.password.PasswordEncoder;
+ import org.springframework.stereotype.Service;
+ 
+-import java.util.Optional;
+-
+ @Service
+ public class AuthenticationServiceImpl implements AuthenticationService{
+     private final UserRepository repository;
+Index: demo/src/main/java/com/example/demo/services/AuthenticationService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.response.AuthenticationResponse;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\n\r\nimport java.util.Optional;\r\n\r\npublic interface AuthenticationService {\r\n    AuthenticationResponse registerUser(User request);\r\n    AuthenticationResponse authenticate(User request);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/AuthenticationService.java b/demo/src/main/java/com/example/demo/services/AuthenticationService.java
+--- a/demo/src/main/java/com/example/demo/services/AuthenticationService.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/AuthenticationService.java	(date 1721979668185)
+@@ -1,10 +1,7 @@
+ package com.example.demo.services;
+ 
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.response.AuthenticationResponse;
+-import org.springframework.data.jpa.repository.JpaRepository;
+-
+-import java.util.Optional;
+ 
+ public interface AuthenticationService {
+     AuthenticationResponse registerUser(User request);
+Index: demo/src/main/java/com/example/demo/controllers/AuthenticationController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.controllers;\r\n\r\nimport com.example.demo.helpers.UserMapper;\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.models.UserDto;\r\nimport com.example.demo.response.AuthenticationResponse;\r\nimport com.example.demo.services.AuthenticationService;\r\nimport com.example.demo.services.UserService;\r\nimport jakarta.servlet.http.HttpServletRequest;\r\nimport jakarta.servlet.http.HttpServletResponse;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RestController;\r\n\r\n@RestController\r\npublic class AuthenticationController {\r\n    private final AuthenticationService authService;\r\n    private final UserMapper userMapper;\r\n\r\n    @Autowired\r\n    public AuthenticationController(AuthenticationService authService, UserMapper userMapper) {\r\n        this.authService = authService;\r\n        this.userMapper = userMapper;\r\n    }\r\n\r\n    @PostMapping(\"/register\")\r\n    public ResponseEntity<AuthenticationResponse> register(\r\n            @RequestBody UserDto request\r\n    ) {\r\n        User user = userMapper.fromDto(request);\r\n        return ResponseEntity.ok(authService.registerUser(user));\r\n    }\r\n\r\n    @PostMapping(\"/login\")\r\n    public ResponseEntity<AuthenticationResponse> login(\r\n            @RequestBody UserDto request\r\n    ) {\r\n        User user = userMapper.fromDto(request);\r\n        return ResponseEntity.ok(authService.authenticate(user));\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java b/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java
+--- a/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java	(date 1721979668027)
+@@ -1,16 +1,12 @@
+ package com.example.demo.controllers;
+ 
++import com.example.demo.helpers.UserLoginMapper;
+ import com.example.demo.helpers.UserMapper;
+-import com.example.demo.models.User;
+-import com.example.demo.models.UserDto;
++import com.example.demo.models.userfolder.User;
+ import com.example.demo.response.AuthenticationResponse;
+ import com.example.demo.services.AuthenticationService;
+-import com.example.demo.services.UserService;
+-import jakarta.servlet.http.HttpServletRequest;
+-import jakarta.servlet.http.HttpServletResponse;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.http.ResponseEntity;
+-import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.PostMapping;
+ import org.springframework.web.bind.annotation.RequestBody;
+ import org.springframework.web.bind.annotation.RestController;
+@@ -19,26 +15,28 @@
+ public class AuthenticationController {
+     private final AuthenticationService authService;
+     private final UserMapper userMapper;
++    private final UserLoginMapper userLoginMapper;
+ 
+     @Autowired
+-    public AuthenticationController(AuthenticationService authService, UserMapper userMapper) {
++    public AuthenticationController(AuthenticationService authService, UserMapper userMapper, UserLoginMapper userLoginMapper) {
+         this.authService = authService;
+         this.userMapper = userMapper;
++        this.userLoginMapper = userLoginMapper;
+     }
+ 
+     @PostMapping("/register")
+     public ResponseEntity<AuthenticationResponse> register(
+-            @RequestBody UserDto request
++            @RequestBody User request
+     ) {
+-        User user = userMapper.fromDto(request);
+-        return ResponseEntity.ok(authService.registerUser(user));
++//        User user = userMapper.fromDto(request);
++        return ResponseEntity.ok(authService.registerUser(request));
+     }
+ 
+     @PostMapping("/login")
+     public ResponseEntity<AuthenticationResponse> login(
+-            @RequestBody UserDto request
++            @RequestBody User request
+     ) {
+-        User user = userMapper.fromDto(request);
+-        return ResponseEntity.ok(authService.authenticate(user));
++//        User user = userLoginMapper.fromDto(request);
++        return ResponseEntity.ok(authService.authenticate(request));
+     }
+ }
+Index: demo/src/main/java/com/example/demo/repositories/UserRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.models.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserRepository {\r\n    User createUser(User user);\r\n\r\n    List<User> getAllUsers();\r\n\r\n    User getByEmail(String email);\r\n\r\n    User getByUsername(String username);\r\n\r\n    List<User> search(String keyword);\r\n    User getById(int id);\r\n    void update(User user);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/UserRepository.java b/demo/src/main/java/com/example/demo/repositories/UserRepository.java
+--- a/demo/src/main/java/com/example/demo/repositories/UserRepository.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/repositories/UserRepository.java	(date 1721979668167)
+@@ -1,6 +1,6 @@
+ package com.example.demo.repositories;
+ 
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ 
+ import java.util.List;
+ 
+Index: demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.User;\r\nimport org.hibernate.Session;\r\nimport org.hibernate.SessionFactory;\r\nimport org.hibernate.query.Query;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Repository;\r\n\r\nimport java.util.List;\r\n\r\n@Repository\r\npublic class UserRepositoryImpl implements UserRepository{\r\n\r\n    private final SessionFactory sessionFactory;\r\n    @Autowired\r\n    public UserRepositoryImpl(SessionFactory sessionFactory){\r\n        this.sessionFactory = sessionFactory;\r\n    }\r\n\r\n    @Override\r\n    public User createUser(User user) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            session.save(user);\r\n            session.getTransaction().commit();\r\n        }\r\n        return user;\r\n    }\r\n\r\n    @Override\r\n    public List<User> getAllUsers() {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User\", User.class);\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User getByEmail(String email) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User where email = :email\", User.class);\r\n            query.setParameter(\"email\", email);\r\n\r\n            List<User> result = query.list();\r\n            if (result.size() == 0) {\r\n                throw new EntityNotFoundException(\"User\", \"email\", email);\r\n            }\r\n\r\n            return result.get(0);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User getByUsername(String username) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User where username = :username\", User.class);\r\n            query.setParameter(\"username\", username);\r\n\r\n            List<User> result = query.list();\r\n            if (result.size() == 0) {\r\n                throw new EntityNotFoundException(\"User\", \"username\", username);\r\n            }\r\n\r\n            return result.get(0);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<User> search(String keyword) {\r\n        try (Session session = sessionFactory.openSession()){\r\n            Query<User> query = session.createQuery(\r\n                    \"from User where username like :keyword or email like :keyword\" +\r\n                            \" or firstName like :keyword or lastName like :keyword\", User.class\r\n            );\r\n            query.setParameter(\"keyword\", \"%\" + keyword + \"%\");\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User getById(int id) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            User user = session.get(User.class, id);\r\n            if (user == null) {\r\n                throw new EntityNotFoundException(\"User\", id);\r\n            }\r\n            return user;\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void update(User user) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            session.merge(user);\r\n            session.getTransaction().commit();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java b/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java
+--- a/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java	(date 1721979668177)
+@@ -1,7 +1,7 @@
+ package com.example.demo.repositories;
+ 
+ import com.example.demo.exceptions.EntityNotFoundException;
+-import com.example.demo.models.User;
++import com.example.demo.models.userfolder.User;
+ import org.hibernate.Session;
+ import org.hibernate.SessionFactory;
+ import org.hibernate.query.Query;
+Index: demo/src/main/java/com/example/demo/models/Role.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.models;\r\n\r\nimport jakarta.persistence.*;\r\nimport java.util.Objects;\r\n\r\n@Entity\r\n@Table(name = \"roles\")\r\npublic class Role {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    @Column(name = \"role_id\")\r\n    private int id;\r\n\r\n    @Enumerated(EnumType.STRING)\r\n    @Column(name = \"name\")\r\n    private RoleType name;\r\n\r\n    public enum RoleType{\r\n        USER,\r\n        MODERATOR,\r\n        ADMIN\r\n    }\r\n    public Role(){}\r\n\r\n    public int getId(){\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id){\r\n        this.id = id;\r\n    }\r\n\r\n    public RoleType getName(){\r\n        return name;\r\n    }\r\n\r\n    public void setName(RoleType name){\r\n        this.name = name;\r\n    }\r\n\r\n    @Override\r\n    public boolean equals(Object o) {\r\n        if (this == o) return true;\r\n        if (o == null || getClass() != o.getClass()) return false;\r\n        Role role = (Role) o;\r\n        return id == role.id;\r\n    }\r\n\r\n    @Override\r\n    public int hashCode() {\r\n        return Objects.hash(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/Role.java b/demo/src/main/java/com/example/demo/models/Role.java
+--- a/demo/src/main/java/com/example/demo/models/Role.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/models/Role.java	(date 1721979668114)
+@@ -22,7 +22,6 @@
+         ADMIN
+     }
+     public Role(){}
+-
+     public int getId(){
+         return id;
+     }
+Index: demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.filter;\r\n\r\nimport com.example.demo.models.UserDto;\r\nimport com.example.demo.services.JWTService;\r\nimport com.example.demo.services.UserService;\r\nimport com.example.demo.helpers.AuthenticationHelper;\r\nimport jakarta.servlet.FilterChain;\r\nimport jakarta.servlet.ServletException;\r\nimport jakarta.servlet.http.HttpServletRequest;\r\nimport jakarta.servlet.http.HttpServletResponse;\r\nimport jakarta.validation.constraints.NotNull;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.security.authentication.UsernamePasswordAuthenticationToken;\r\nimport org.springframework.security.core.context.SecurityContextHolder;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\nimport org.springframework.stereotype.Component;\r\nimport org.springframework.web.filter.OncePerRequestFilter;\r\n\r\nimport java.io.IOException;\r\n\r\n@Component\r\npublic class JWTAuthenticationFilter extends OncePerRequestFilter {\r\n    private final JWTService service;\r\n    private final UserService userService;\r\n\r\n    @Autowired\r\n    public JWTAuthenticationFilter(JWTService service, UserService userService) {\r\n        this.service = service;\r\n        this.userService = userService;\r\n    }\r\n\r\n    @Override\r\n    protected void doFilterInternal(@NotNull HttpServletRequest request,\r\n                                    @NotNull HttpServletResponse response,\r\n                                    @NotNull FilterChain filterChain)\r\n            throws ServletException, IOException {\r\n        try {\r\n            String header = request.getHeader(\"Authorization\");\r\n            if (header == null || !header.startsWith(\"Bearer \")) {\r\n                filterChain.doFilter(request, response);\r\n                return;\r\n            }\r\n            String token = header.substring(7);\r\n            String email = service.extractEmail(token);\r\n\r\n            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {\r\n                UserDetails userDetails = userService.getUserByEmail(email);\r\n\r\n                if (service.isValid(token, (UserDto) userDetails)) {\r\n                    UsernamePasswordAuthenticationToken authentication =\r\n                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());\r\n                    AuthenticationHelper helper = new AuthenticationHelper(request);\r\n                    authentication.setDetails(helper);\r\n\r\n                    SecurityContextHolder.getContext().setAuthentication(authentication);\r\n                }\r\n            }\r\n        } catch (Exception e) {\r\n            // Log the error and handle the exception\r\n            // logger.error(\"Error processing authentication\", e);\r\n            // Optionally, you might want to set an error response or a different status code\r\n        } finally {\r\n            filterChain.doFilter(request, response);\r\n        }\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java b/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java
+--- a/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java	(date 1721979668057)
+@@ -1,6 +1,6 @@
+ package com.example.demo.filter;
+ 
+-import com.example.demo.models.UserDto;
++import com.example.demo.models.userfolder.UserDTO;
+ import com.example.demo.services.JWTService;
+ import com.example.demo.services.UserService;
+ import com.example.demo.helpers.AuthenticationHelper;
+@@ -44,9 +44,9 @@
+             String email = service.extractEmail(token);
+ 
+             if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+-                UserDetails userDetails = userService.getUserByEmail(email);
++                UserDetails userDetails = (UserDetails) userService.getUserByEmail(email);
+ 
+-                if (service.isValid(token, (UserDto) userDetails)) {
++                if (service.isValid(token, (UserDTO) userDetails)) {
+                     UsernamePasswordAuthenticationToken authentication =
+                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                     AuthenticationHelper helper = new AuthenticationHelper(request);
+Index: demo/src/main/java/com/example/demo/services/JWTService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.User;\r\nimport com.example.demo.models.UserDto;\r\nimport io.jsonwebtoken.Claims;\r\nimport io.jsonwebtoken.Jwts;\r\nimport io.jsonwebtoken.io.Decoders;\r\nimport io.jsonwebtoken.security.Keys;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport javax.crypto.SecretKey;\r\nimport java.util.Date;\r\nimport java.util.function.Function;\r\n\r\n@Service\r\npublic class JWTService {\r\n    private final String SECRET_KEY = \"f85cbf079eacded5ebe7fa095e9b4a58b137ecc84a999bac921b4822e6d5b0f1\";\r\n\r\n    public String extractEmail(String token){\r\n        return extractClaims(token,Claims::getSubject);\r\n    }\r\n    public boolean isValid(String token, UserDto user){\r\n        String email = extractEmail(token);\r\n        return (email.equals(user.getEmail())) && !isTokenExpired(token);\r\n    }\r\n\r\n    private boolean isTokenExpired(String token) {\r\n        return extractExpiration(token).before(new Date());\r\n    }\r\n\r\n    private Date extractExpiration(String token) {\r\n        return extractClaims(token, Claims::getExpiration);\r\n    }\r\n\r\n    public <T> T extractClaims(String token, Function<Claims, T> resolver){\r\n        Claims claims = extractAllClaims(token);\r\n        return resolver.apply(claims);\r\n    }\r\n    public Claims extractAllClaims(String token){\r\n        return Jwts.parserBuilder()\r\n                .setSigningKey(getSigningKey())\r\n                .build()\r\n                .parseClaimsJws(token)\r\n                .getBody();\r\n    }\r\n    public String generateToken(User user){\r\n        long expirationTime = 1000 * 60 * 60 * 10;\r\n        String token = Jwts.builder()\r\n                .setSubject(user.getEmail())\r\n                .setIssuedAt(new Date(System.currentTimeMillis()))\r\n                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))\r\n                .signWith(getSigningKey())\r\n                .compact();\r\n        return token;\r\n    }\r\n\r\n    private SecretKey getSigningKey() {\r\n        byte [] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);\r\n        return Keys.hmacShaKeyFor(keyBytes);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/JWTService.java b/demo/src/main/java/com/example/demo/services/JWTService.java
+--- a/demo/src/main/java/com/example/demo/services/JWTService.java	(revision bc4bcfa5ed0bf1707d6ded44ef036f59ff80db30)
++++ b/demo/src/main/java/com/example/demo/services/JWTService.java	(date 1721979668216)
+@@ -1,12 +1,11 @@
+ package com.example.demo.services;
+ 
+-import com.example.demo.models.User;
+-import com.example.demo.models.UserDto;
++import com.example.demo.models.userfolder.User;
++import com.example.demo.models.userfolder.UserDTO;
+ import io.jsonwebtoken.Claims;
+ import io.jsonwebtoken.Jwts;
+ import io.jsonwebtoken.io.Decoders;
+ import io.jsonwebtoken.security.Keys;
+-import org.springframework.security.core.userdetails.UserDetails;
+ import org.springframework.stereotype.Service;
+ 
+ import javax.crypto.SecretKey;
+@@ -20,7 +19,7 @@
+     public String extractEmail(String token){
+         return extractClaims(token,Claims::getSubject);
+     }
+-    public boolean isValid(String token, UserDto user){
++    public boolean isValid(String token, UserDTO user){
+         String email = extractEmail(token);
+         return (email.equals(user.getEmail())) && !isTokenExpired(token);
+     }

@@ -87,4 +87,23 @@ public class PostsRepositoryImpl implements PostsRepository {
             session.getTransaction().commit();
         }
     }
+
+    @Override
+    public List<Post> findTop10ByOrderByCreatedDateDesc() {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Post> query = session.createQuery("from Post order by createdDate desc", Post.class);
+            query.setMaxResults(10);
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<Post> findTop10ByOrderByCommentsCountDesc() {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Post> query = session.createQuery("from Post order by comments.size desc", Post.class);
+            query.setMaxResults(10);
+            return query.list();
+        }
+    }
+
 }
