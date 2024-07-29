@@ -37,7 +37,8 @@ public class PostRestController {
     @GetMapping
     public List<Post> getAllPosts(@RequestHeader HttpHeaders headers) {
         try {
-            User user = authorizationHelper.extractUserFromToken(headers);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = authorizationHelper.extractUserFromToken(authentication);
             return postService.getAllPosts();
         } catch (AuthorizationException e) {
             List<Post> top10MostCommented = postService.getTop10MostCommentedPosts();
