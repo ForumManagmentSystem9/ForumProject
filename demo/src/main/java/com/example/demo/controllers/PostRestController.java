@@ -37,7 +37,7 @@ public class PostRestController {
     @GetMapping
     public List<Post> getAllPosts(@RequestHeader HttpHeaders headers) {
         try {
-            User user = authorizationHelper.extractUserFromHeaders(headers);
+            User user = authorizationHelper.extractUserFromToken(headers);
             return postService.getAllPosts();
         } catch (AuthorizationException e) {
             List<Post> top10MostCommented = postService.getTop10MostCommentedPosts();
@@ -58,7 +58,8 @@ public class PostRestController {
     @PostMapping
     public Post createPost(@RequestHeader HttpHeaders headers, @Valid @RequestBody PostDTO postDTO) {
         try {
-            User user = authorizationHelper.extractUserFromHeaders(headers);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = authorizationHelper.extractUserFromToken(authentication);
             Post post = postMapper.fromDto(postDTO);
             return postService.savePost(post);
         } catch (EntityNotFoundException e) {
@@ -73,7 +74,8 @@ public class PostRestController {
     @PutMapping("/{id}")
     public Post updatePost(@RequestHeader HttpHeaders headers, @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
         try {
-            User user = authorizationHelper.extractUserFromHeaders(headers);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = authorizationHelper.extractUserFromToken(authentication);
             Post post = postMapper.fromDto(postDTO);
             postService.updatePost(post, user);
             return post;
@@ -89,7 +91,8 @@ public class PostRestController {
     @DeleteMapping("/{id}")
     public void deletePost(@RequestHeader HttpHeaders headers, @PathVariable int id) {
         try {
-            User user = authorizationHelper.extractUserFromHeaders(headers);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = authorizationHelper.extractUserFromToken(authentication);
             postService.deletePostById(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
