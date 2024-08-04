@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PostService {
-    Post savePost(Post post);
-    Optional<Post> getPostById(int id);
+    Post createPost(Post post);
+    Post getPostById(int id);
     List<Post> getAllPosts();
 
     void deletePostById(int id, User user);
@@ -20,4 +20,6 @@ public interface PostService {
 
     List<Post> getTop10MostCommentedPosts();
     List<Post> getTop10NewestPosts();
+
+    void like(int id, User user);
 }

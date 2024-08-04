@@ -1,12 +1,14 @@
 package com.example.demo.models.userfolder;
 
+import com.example.demo.models.Like;
 import com.example.demo.models.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import org.checkerframework.common.aliasing.qual.Unique;
 
-import java.lang.Object;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -44,69 +46,72 @@ public class User {
     @Column(name = "blocked")
     private boolean isBlocked;
 
-    public User(){}
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private Set<Like> likes = new HashSet<>();
 
-    public int getId(){
+    public User() {}
+
+    public int getId() {
         return id;
     }
 
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getFirstName(){
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName){
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName(){
+    public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName){
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public Role getRole(){
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(Role role){
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public String getPhoneNumber(){
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber){
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -114,13 +119,21 @@ public class User {
         return isBlocked;
     }
 
-    public void setBlocked(boolean bloked) {
-        isBlocked = bloked;
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 
+    public Set<Like> getLikes() {
+        return likes;
+    }
+
+    public void addLike(Like like) {
+        likes.add(like);
+        like.setUser(this);
+    }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
@@ -128,8 +141,7 @@ public class User {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Objects.hash(id);
     }
-
 }

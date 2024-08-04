@@ -2,6 +2,7 @@ package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.Comment;
+import com.example.demo.models.Post;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -19,19 +20,25 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public List<Comment> getAll() {
-        try (Session session = sessionFactory.openSession()){
-            return session.createQuery("from Comment", Comment.class).list();
+    public List<Comment> getAll(int postId) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Comment where post.id = :postId", Comment.class)
+                    .setParameter("postId", postId)
+                    .list();
         }
     }
-
     @Override
-    public Comment getById(int id) throws EntityNotFoundException {
-        try (Session session = sessionFactory.openSession()){
-            Comment comment = session.get(Comment.class, id);
-            if (comment == null){
-                throw new EntityNotFoundException("Comment", id);
+    public Comment getById(int postId, int commentId) throws EntityNotFoundException {
+        try (Session session = sessionFactory.openSession()) {
+            Comment comment = session.createQuery("from Comment where id = :commentId and post.id = :postId", Comment.class)
+                    .setParameter("commentId", commentId)
+                    .setParameter("postId", postId)
+                    .uniqueResult();
+
+            if (comment == null) {
+                throw new EntityNotFoundException("Comment does not exist or does not belong to the specified Post", commentId);
             }
+
             return comment;
         }
     }
@@ -57,8 +64,8 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public void delete(int id) {
-        Comment commentToDelete = getById(id);
+    public void delete(int post_id, int comment_id) {
+        Comment commentToDelete = getById(post_id, comment_id);
         try(Session session = sessionFactory.openSession()){
             session.beginTransaction();
             session.remove(commentToDelete);
@@ -69,14 +76,14 @@ public class CommentRepositoryImpl implements CommentRepository{
 
     @Override
     public void getLikes(int id){
-        try(Session session = sessionFactory.openSession()){
-            Transaction transaction = session.beginTransaction();
-            Comment comment = session.get(Comment.class, id);
-            if (comment != null){
-                comment.setLikes(comment.getLikes() + 1);
-                session.update(comment);
-            }
-            transaction.commit();
-        }
+//        try(Session session = sessionFactory.openSession()){
+//            Transaction transaction = session.beginTransaction();
+//            Comment comment = session.get(Comment.class, id);
+//            if (comment != null){
+//                comment.setLikes(comment.getLikes() + 1);
+//                session.update(comment);
+//            }
+//            transaction.commit();
+//        }
     }
 }

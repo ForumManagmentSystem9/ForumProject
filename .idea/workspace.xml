@@ -5,7 +5,178 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Login changes">
+      <change afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PrivateController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__ch_qos_logback_logback_classic_1_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__ch_qos_logback_logback_core_1_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_classmate_1_7_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_annotations_2_17_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_core_2_17_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_core_jackson_databind_2_17_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_17_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_17_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_fasterxml_jackson_module_jackson_module_parameter_names_2_17_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jayway_jsonpath_json_path_2_9_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_microsoft_sqlserver_mssql_jdbc_9_4_1_jre8.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_mysql_mysql_connector_j_8_3_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_sun_istack_istack_commons_runtime_4_1_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_zaxxer_HikariCP_5_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_jsonwebtoken_jjwt_api_0_11_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_jsonwebtoken_jjwt_impl_0_11_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_jsonwebtoken_jjwt_jackson_0_11_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_micrometer_micrometer_commons_1_13_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_micrometer_micrometer_observation_1_13_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__io_smallrye_jandex_3_1_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_activation_jakarta_activation_api_2_1_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_annotation_jakarta_annotation_api_2_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_inject_jakarta_inject_api_2_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_persistence_jakarta_persistence_api_3_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_transaction_jakarta_transaction_api_2_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_validation_jakarta_validation_api_3_0_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__jakarta_xml_bind_jakarta_xml_bind_api_4_0_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_bytebuddy_byte_buddy_1_14_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_bytebuddy_byte_buddy_agent_1_14_17.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_minidev_accessors_smart_2_5_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__net_minidev_json_smart_2_5_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_antlr_antlr4_runtime_4_13_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_api_2_23_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_to_slf4j_2_23_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_core_10_1_25.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_el_10_1_25.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apache_tomcat_embed_tomcat_embed_websocket_10_1_25.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_apiguardian_apiguardian_api_1_1_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_aspectj_aspectjweaver_1_9_22.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_assertj_assertj_core_3_25_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_awaitility_awaitility_4_2_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_checkerframework_checker_qual_3_24_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_eclipse_angus_angus_activation_2_0_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_glassfish_jaxb_jaxb_core_4_0_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_glassfish_jaxb_jaxb_runtime_4_0_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_glassfish_jaxb_txw2_4_0_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hamcrest_hamcrest_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hibernate_common_hibernate_commons_annotations_6_0_6_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hibernate_orm_hibernate_core_6_5_2_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hibernate_validator_hibernate_validator_8_0_1_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jboss_logging_jboss_logging_3_5_3_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_5_10_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_api_5_10_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_engine_5_10_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_jupiter_junit_jupiter_params_5_10_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_commons_1_10_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_junit_platform_junit_platform_engine_1_10_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_mockito_mockito_core_5_11_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_mockito_mockito_junit_jupiter_5_11_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_objenesis_objenesis_3_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_opentest4j_opentest4j_1_3_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_ow2_asm_asm_9_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_skyscreamer_jsonassert_1_5_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_jul_to_slf4j_2_0_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_slf4j_slf4j_api_2_0_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_autoconfigure_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_aop_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_data_jpa_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_jdbc_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_json_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_logging_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_security_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_test_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_tomcat_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_validation_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_web_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_test_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_boot_spring_boot_test_autoconfigure_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_data_spring_data_commons_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_data_spring_data_jpa_3_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_config_6_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_core_6_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_crypto_6_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_security_spring_security_web_6_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_aop_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_aspects_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_beans_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_context_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_core_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_expression_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_jcl_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_jdbc_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_orm_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_test_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_tx_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_web_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_webmvc_6_1_10.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_xmlunit_xmlunit_core_2_9_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_yaml_snakeyaml_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/demo.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/demo.main.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/demo.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___17_15__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024___18_17__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024_г__17_15_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_22_7_2024_г__18_17_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024___10_20__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024___12_57__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024___17_33__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024_г__10_20_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024_г__12_57_[Changes]/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024_г__12_57_[Changes]/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024_г__12_57_[Changes]/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024_г__12_57_[Changes]/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024_г__12_57_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_7_2024_г__17_33_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024___10_29__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024___10_56__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024___16_35__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__10_29_[Changes]/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__10_29_[Changes]/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__10_29_[Changes]/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__10_29_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__10_56_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__16_35_[Changes]/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__16_35_[Changes]/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__16_35_[Changes]/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_24_7_2024_г__16_35_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024___10_47__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024___12_10__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/file-system.probe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/previous-compilation-data.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__10_47_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/file-system.probe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_7_2024_г__12_10_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_22_2024_5_20_PM_[Changes]/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_22_2024_5_20_PM_[Changes]/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_22_2024_5_20_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_22_2024_5_20_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_23_2024_11_28_AM_[Changes]/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_23_2024_11_28_AM_[Changes]/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_23_2024_11_28_AM_[Changes]/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_23_2024_11_28_AM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_23_2024_11_28_AM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_23_2024_9_56_AM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_7_23_2024_9_56_AM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock" afterDir="false" />
@@ -15,64 +186,70 @@
       <change beforePath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/CommentRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/CommentRestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/PostRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/PostRestController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/UserOperationController.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/AuthorizationHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/AuthorizationHelper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/CustomUserDetails.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/PostMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/PostMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/UserLoginMapper.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/UserMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Comment.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Comment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Post.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/PostDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/PostDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Role.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/UserLoginDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/CommentRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/CommentRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/CommentRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/CommentRepositoryImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/PostsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/PostsRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/PostsRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/PostsRepositoryImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepositoryImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/AuthenticationServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/AuthenticationServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/AuthenticationService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/AuthenticationServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/CommentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/CommentService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/CommentServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/CommentServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/PostService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/PostService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/PostServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/PostServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/resources/main/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationController.class.uniqueId1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationService.class.uniqueId26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationServiceImpl.class.uniqueId29" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthorizationHelper.class.uniqueId19" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Comment.class.uniqueId13" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepository.class.uniqueId4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepositoryImpl.class.uniqueId18" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRestController.class.uniqueId8" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentService.class.uniqueId20" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentServiceImpl.class.uniqueId28" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CustomUserDetails.class.uniqueId12" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTAuthenticationFilter.class.uniqueId10" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTService.class.uniqueId6" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Post.class.uniqueId23" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostMapper.class.uniqueId30" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostRestController.class.uniqueId17" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostService.class.uniqueId24" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostServiceImpl.class.uniqueId14" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepository.class.uniqueId15" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepositoryImpl.class.uniqueId25" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/SecurityConfig.class.uniqueId11" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/User.class.uniqueId2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserDTO.class.uniqueId27" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserLoginDTO.class.uniqueId3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserLoginMapper.class.uniqueId5" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserMapper.class.uniqueId22" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserOperationController.class.uniqueId9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepository.class.uniqueId0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepositoryImpl.class.uniqueId16" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserService.class.uniqueId21" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserServiceImpl.class.uniqueId7" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthorizationHelper.class.uniqueId1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRestController.class.uniqueId0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserController.class.uniqueId2" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileTestJava/compileTransaction/stash-dir/JWTtest.class.uniqueId0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileTestJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/tmp/compileTestJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserOperationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/exceptions/EntityNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/exceptions/EntityNotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/PostMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/PostMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/UserLoginMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Post.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/PostDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/PostDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/UserLoginDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/CommentRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/demo/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/resources/application.properties" afterDir="false" />
@@ -136,40 +313,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build demo.executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.JWTtest.testTokenGenerationAndValidation.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.DemoApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/ForumProject",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build demo.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.JWTtest.testTokenGenerationAndValidation.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.DemoApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/ForumProject&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mariadb",
-      "azure"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mariadb&quot;,
+      &quot;azure&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\ForumProject" />
@@ -251,6 +428,14 @@
       <workItem from="1721988085542" duration="4497000" />
       <workItem from="1722001048701" duration="1600000" />
       <workItem from="1722079234934" duration="13158000" />
+      <workItem from="1722256245555" duration="4517000" />
+      <workItem from="1722319032436" duration="15120000" />
+      <workItem from="1722404712955" duration="15292000" />
+      <workItem from="1722510965878" duration="762000" />
+      <workItem from="1722511752147" duration="5508000" />
+      <workItem from="1722580766843" duration="603000" />
+      <workItem from="1722674665328" duration="6922000" />
+      <workItem from="1722688772510" duration="2336000" />
     </task>
     <task id="LOCAL-00001" summary="database changes">
       <option name="closed" value="true" />
@@ -399,34 +584,84 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java</url>
-          <line>30</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>
-          <line>40</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>
-          <line>32</line>
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>
+          <line>45</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java</url>
+          <line>103</line>
+          <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>
-          <line>30</line>
-          <option name="timeStamp" value="10" />
+          <line>50</line>
+          <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java</url>
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java</url>
+          <line>60</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java</url>
+          <line>89</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java</url>
+          <line>93</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>
+          <line>79</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>
+          <line>94</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java</url>
+          <line>88</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java</url>
+          <line>68</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/RestrictHelper.java</url>
           <line>37</line>
-          <option name="timeStamp" value="11" />
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java</url>
+          <line>152</line>
+          <option name="timeStamp" value="47" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

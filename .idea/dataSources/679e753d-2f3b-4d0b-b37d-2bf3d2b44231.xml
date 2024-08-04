@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="ForumDB_2024-07-22T12-10Z@mariadbservertelerik.database.windows.net">
-  <database-model serializer="dbm" dbms="AZURE" family-id="AZURE" format-version="4.52">
+  <database-model serializer="dbm" dbms="AZURE" family-id="AZURE" format-version="4.51">
     <root id="1">
       <Dbms>AZURE</Dbms>
       <ServerVersion>12.0.5564</ServerVersion>
@@ -16807,8 +16807,8 @@
     </schema>
     <schema id="5581" parent="5542" name="dbo">
       <Current>1</Current>
-      <IntrospectionTimestamp>2024-07-25.14:53:43.230</IntrospectionTimestamp>
-      <LastIntrospectionLocalTimestamp>2024-07-25.11:53:43</LastIntrospectionLocalTimestamp>
+      <IntrospectionTimestamp>2024-07-30.12:57:41.640</IntrospectionTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-07-30.09:57:40</LastIntrospectionLocalTimestamp>
       <ObjectId>1</ObjectId>
     </schema>
     <schema id="5582" parent="5542" name="guest">
@@ -16900,7 +16900,7 @@
     </table>
     <table id="5599" parent="5581" name="posts">
       <CreatedTimestamp>2024-07-21.17:56:00.177</CreatedTimestamp>
-      <ModifiedTimestamp>2024-07-22.18:39:04.713</ModifiedTimestamp>
+      <ModifiedTimestamp>2024-07-31.09:01:58.177</ModifiedTimestamp>
       <ObjectId>1314103722</ObjectId>
     </table>
     <table id="5600" parent="5581" name="roles">
@@ -17189,7 +17189,7 @@
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1</SequenceIdentity>
+      <SequenceIdentity>1(3)</SequenceIdentity>
     </column>
     <column id="5645" parent="5599" name="post_title">
       <DasType>nvarchar(64 char)|0s</DasType>
@@ -17211,7 +17211,11 @@
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <foreign-key id="5649" parent="5599" name="FK_posts_users_user">
+    <column id="5649" parent="5599" name="created_date">
+      <DasType>datetime|0s</DasType>
+      <Position>8</Position>
+    </column>
+    <foreign-key id="5650" parent="5599" name="FK_posts_users_user">
       <ColNames>user_id</ColNames>
       <CreatedTimestamp>2024-07-21.17:56:00.177</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.177</ModifiedTimestamp>
@@ -17220,7 +17224,7 @@
       <RefTableId>1154103152</RefTableId>
       <RefTableName>users</RefTableName>
     </foreign-key>
-    <index id="5650" parent="5599" name="PK__posts__3ED78766CB794F9B">
+    <index id="5651" parent="5599" name="PK__posts__3ED78766CB794F9B">
       <Clustering>1</Clustering>
       <ColNames>post_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17228,7 +17232,7 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5651" parent="5599" name="PK__posts__3ED78766CB794F9B">
+    <key id="5652" parent="5599" name="PK__posts__3ED78766CB794F9B">
       <CreatedTimestamp>2024-07-21.17:56:00.177</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.177</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17236,7 +17240,7 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__posts__3ED78766CB794F9B</UnderlyingIndexName>
     </key>
-    <check id="5652" parent="5600" name="CK__roles__name__43D61337">
+    <check id="5653" parent="5600" name="CK__roles__name__43D61337">
       <ColNames>name</ColNames>
       <CreatedTimestamp>2024-07-21.17:56:00.160</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.160</ModifiedTimestamp>
@@ -17244,18 +17248,18 @@
       <ObjectId>1138103095</ObjectId>
       <Predicate>[name]=&apos;admin&apos; OR [name]=&apos;moderator&apos; OR [name]=&apos;user&apos;</Predicate>
     </check>
-    <column id="5653" parent="5600" name="name">
+    <column id="5654" parent="5600" name="name">
       <DasType>nvarchar(50 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="5654" parent="5600" name="role_id">
+    <column id="5655" parent="5600" name="role_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <SequenceIdentity>1(4)</SequenceIdentity>
     </column>
-    <index id="5655" parent="5600" name="PK__roles__760965CC1F9D1380">
+    <index id="5656" parent="5600" name="PK__roles__760965CC1F9D1380">
       <Clustering>1</Clustering>
       <ColNames>role_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17263,7 +17267,7 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5656" parent="5600" name="PK__roles__760965CC1F9D1380">
+    <key id="5657" parent="5600" name="PK__roles__760965CC1F9D1380">
       <CreatedTimestamp>2024-07-21.17:56:00.160</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.160</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17271,23 +17275,23 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__roles__760965CC1F9D1380</UnderlyingIndexName>
     </key>
-    <column id="5657" parent="5601" name="tag_id">
+    <column id="5658" parent="5601" name="tag_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="5658" parent="5601" name="tag_name">
+    <column id="5659" parent="5601" name="tag_name">
       <DasType>varchar(32 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="5659" parent="5601" name="post_id">
+    <column id="5660" parent="5601" name="post_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <foreign-key id="5660" parent="5601" name="tags_posts_post_id_fk">
+    <foreign-key id="5661" parent="5601" name="tags_posts_post_id_fk">
       <ColNames>post_id</ColNames>
       <CreatedTimestamp>2024-07-22.15:07:50.063</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-22.15:07:50.063</ModifiedTimestamp>
@@ -17296,7 +17300,7 @@
       <RefTableId>1314103722</RefTableId>
       <RefTableName>posts</RefTableName>
     </foreign-key>
-    <index id="5661" parent="5601" name="PK__tags__4296A2B68F0FB51D">
+    <index id="5662" parent="5601" name="PK__tags__4296A2B68F0FB51D">
       <Clustering>1</Clustering>
       <ColNames>tag_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17304,7 +17308,7 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5662" parent="5601" name="PK__tags__4296A2B68F0FB51D">
+    <key id="5663" parent="5601" name="PK__tags__4296A2B68F0FB51D">
       <CreatedTimestamp>2024-07-22.15:07:50.063</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-22.15:07:50.063</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17312,69 +17316,69 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__tags__4296A2B68F0FB51D</UnderlyingIndexName>
     </key>
-    <column id="5663" parent="5602" name="user_id">
+    <column id="5664" parent="5602" name="user_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <SequenceIdentity>1(16)</SequenceIdentity>
+      <SequenceIdentity>1(28)</SequenceIdentity>
     </column>
-    <column id="5664" parent="5602" name="first_name">
+    <column id="5665" parent="5602" name="first_name">
       <DasType>nvarchar(32 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="5665" parent="5602" name="last_name">
+    <column id="5666" parent="5602" name="last_name">
       <DasType>nvarchar(32 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="5666" parent="5602" name="email">
+    <column id="5667" parent="5602" name="email">
       <DasType>nvarchar(255 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="5667" parent="5602" name="username">
+    <column id="5668" parent="5602" name="username">
       <DasType>nvarchar(255 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="5668" parent="5602" name="password">
+    <column id="5669" parent="5602" name="password">
       <DasType>nvarchar(255 char)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="5669" parent="5602" name="role_id">
+    <column id="5670" parent="5602" name="role_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
       <DefaultConstraintId>110623437</DefaultConstraintId>
       <DefaultConstraintName>DF__users__role_id__0697FACD</DefaultConstraintName>
     </column>
-    <column id="5670" parent="5602" name="phone_number">
+    <column id="5671" parent="5602" name="phone_number">
       <DasType>nvarchar(20 char)|0s</DasType>
       <Position>8</Position>
     </column>
-    <column id="5671" parent="5602" name="blocked">
+    <column id="5672" parent="5602" name="blocked">
       <DasType>bit|0s</DasType>
       <Position>9</Position>
       <DefaultConstraintId>126623494</DefaultConstraintId>
       <DefaultConstraintName>DF__users__blocked__078C1F06</DefaultConstraintName>
     </column>
-    <default id="5672" parent="5602" name="DF__users__role_id__0697FACD">
+    <default id="5673" parent="5602" name="DF__users__role_id__0697FACD">
       <ColNames>role_id</ColNames>
       <DefaultExpression>3</DefaultExpression>
       <ModifiedTimestamp>2024-07-25.16:02:50.883</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>110623437</ObjectId>
     </default>
-    <default id="5673" parent="5602" name="DF__users__blocked__078C1F06">
+    <default id="5674" parent="5602" name="DF__users__blocked__078C1F06">
       <ColNames>blocked</ColNames>
       <DefaultExpression>0</DefaultExpression>
       <ModifiedTimestamp>2024-07-25.17:07:26.683</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>126623494</ObjectId>
     </default>
-    <foreign-key id="5674" parent="5602" name="FK_users_roles">
+    <foreign-key id="5675" parent="5602" name="FK_users_roles">
       <ColNames>role_id</ColNames>
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
@@ -17383,7 +17387,7 @@
       <RefTableId>1106102981</RefTableId>
       <RefTableName>roles</RefTableName>
     </foreign-key>
-    <index id="5675" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
+    <index id="5676" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
       <Clustering>1</Clustering>
       <ColNames>user_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
@@ -17391,14 +17395,14 @@
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <index id="5676" parent="5602" name="UQ__users__AB6E6164B11BD345">
+    <index id="5677" parent="5602" name="UQ__users__AB6E6164B11BD345">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Position>2</Position>
       <Unique>1</Unique>
       <PartitionDataSpaceId>1</PartitionDataSpaceId>
     </index>
-    <key id="5677" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
+    <key id="5678" parent="5602" name="PK__users__B9BE370F1BDEB4D6">
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
@@ -17406,50 +17410,50 @@
       <Primary>1</Primary>
       <UnderlyingIndexName>PK__users__B9BE370F1BDEB4D6</UnderlyingIndexName>
     </key>
-    <key id="5678" parent="5602" name="UQ__users__AB6E6164B11BD345">
+    <key id="5679" parent="5602" name="UQ__users__AB6E6164B11BD345">
       <CreatedTimestamp>2024-07-21.17:56:00.163</CreatedTimestamp>
       <ModifiedTimestamp>2024-07-21.17:56:00.163</ModifiedTimestamp>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>1186103266</ObjectId>
       <UnderlyingIndexName>UQ__users__AB6E6164B11BD345</UnderlyingIndexName>
     </key>
-    <partition id="5679" parent="5618">
+    <partition id="5680" parent="5618">
       <ObjectId>72057594050510848</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5680" parent="5627">
+    <partition id="5681" parent="5627">
       <ObjectId>72057594049593344</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5681" parent="5628">
+    <partition id="5682" parent="5628">
       <ObjectId>72057594049658880</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5682" parent="5635">
+    <partition id="5683" parent="5635">
       <ObjectId>72057594050445312</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5683" parent="5642">
+    <partition id="5684" parent="5642">
       <ObjectId>72057594050379776</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5684" parent="5650">
+    <partition id="5685" parent="5651">
       <ObjectId>72057594049789952</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5685" parent="5655">
+    <partition id="5686" parent="5656">
       <ObjectId>72057594049396736</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5686" parent="5661">
+    <partition id="5687" parent="5662">
       <ObjectId>72057594050052096</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5687" parent="5675">
+    <partition id="5688" parent="5676">
       <ObjectId>72057594049462272</ObjectId>
       <Position>1</Position>
     </partition>
-    <partition id="5688" parent="5676">
+    <partition id="5689" parent="5677">
       <ObjectId>72057594049527808</ObjectId>
       <Position>1</Position>
     </partition>

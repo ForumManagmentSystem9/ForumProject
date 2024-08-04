@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
-public class Comment {
+public class Comment implements Creatable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -62,7 +62,8 @@ public class Comment {
         this.post = post;
     }
 
-    public User getUser() {
+    @Override
+    public User getCreator() {
         return user;
     }
 

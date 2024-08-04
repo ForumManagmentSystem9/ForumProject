@@ -1,0 +1,683 @@
+Index: demo/src/main/java/com/example/demo/services/UserServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.EntityDuplicateException;\r\nimport com.example.demo.models.userfolder.CustomUserDetails;\r\nimport com.example.demo.models.userfolder.User;\r\nimport com.example.demo.repositories.UserRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\nimport org.springframework.security.core.userdetails.UserDetailsService;\r\nimport org.springframework.security.core.userdetails.UsernameNotFoundException;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class UserServiceImpl implements UserService, UserDetailsService{\r\n    private final UserRepository repository;\r\n\r\n    @Autowired\r\n    public UserServiceImpl(UserRepository repository){\r\n        this.repository = repository;\r\n    }\r\n\r\n    @Override\r\n    public void updateUser(User user) {\r\n        boolean duplicateExists = false;\r\n        User updateUser = repository.getById(user.getId());\r\n        String email = user.getEmail();\r\n        if (repository.getByEmail(email) != null) {\r\n            throw new EntityDuplicateException(\"User\", \"email\", user.getEmail());\r\n        }\r\n        repository.update(user);\r\n    }\r\n\r\n    @Override\r\n    public UserDetails getUserById(int id) {\r\n        return new CustomUserDetails(repository.getById(id));\r\n    }\r\n\r\n    @Override\r\n    public User getUserByEmail(String email) {\r\n        return repository.getByEmail(email);\r\n    }\r\n\r\n    @Override\r\n    public List<User> userList() {\r\n        return repository.getUsers();\r\n    }\r\n    //    @Override\r\n//    public List<User> getUserByKeyword(String keyword) {\r\n//        return repository.search(keyword);\r\n//    }\r\n\r\n    @Override\r\n    public void changePassword(int id, String newPassword) {\r\n        User user = repository.getById(id);\r\n        user.setPassword(newPassword);\r\n        repository.update(user);\r\n    }\r\n\r\n    @Override\r\n    public void blockUser(int id) {\r\n        User user = repository.getById(id);\r\n        user.setBlocked(true);\r\n        repository.update(user);\r\n    }\r\n\r\n    @Override\r\n    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {\r\n        User user = repository.getByEmail(email);\r\n        return new CustomUserDetails(user);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/UserServiceImpl.java b/demo/src/main/java/com/example/demo/services/UserServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/UserServiceImpl.java	
++++ b/demo/src/main/java/com/example/demo/services/UserServiceImpl.java	
+@@ -4,6 +4,7 @@
+ import com.example.demo.models.userfolder.CustomUserDetails;
+ import com.example.demo.models.userfolder.User;
+ import com.example.demo.repositories.UserRepository;
++import jakarta.transaction.Transactional;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.security.core.userdetails.UserDetails;
+ import org.springframework.security.core.userdetails.UserDetailsService;
+@@ -33,8 +34,8 @@
+     }
+ 
+     @Override
+-    public UserDetails getUserById(int id) {
+-        return new CustomUserDetails(repository.getById(id));
++    public User getUserById(int id) {
++        return repository.getById(id);
+     }
+ 
+     @Override
+@@ -46,10 +47,10 @@
+     public List<User> userList() {
+         return repository.getUsers();
+     }
+-    //    @Override
+-//    public List<User> getUserByKeyword(String keyword) {
+-//        return repository.search(keyword);
+-//    }
++    @Override
++    public List<User> getUserByKeyword(String keyword) {
++        return repository.search(keyword);
++    }
+ 
+     @Override
+     public void changePassword(int id, String newPassword) {
+@@ -64,10 +65,25 @@
+         user.setBlocked(true);
+         repository.update(user);
+     }
++
++    @Override
++    public void unBlockUser(int id) {
++        User user = repository.getById(id);
++        user.setBlocked(false);
++        repository.update(user);
++    }
+ 
+     @Override
+     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+         User user = repository.getByEmail(email);
+         return new CustomUserDetails(user);
+     }
++
++    @Override
++    @Transactional
++    public void changeRole(User user){
++        User updateUser = repository.getById(user.getId());
++        updateUser.setRole(user.getRole());
++        repository.update(updateUser);
++    }
+ }
+Index: demo/src/main/java/com/example/demo/services/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.models.userfolder.User;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserService {\r\n    List<User> userList();\r\n    void updateUser(User user);\r\n    UserDetails getUserById(int id);\r\n    User getUserByEmail(String email);\r\n//    List<UserDetails> getUserByKeyword(String keyword);\r\n    void changePassword(int id, String newPassword);\r\n    void blockUser(int id);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/UserService.java b/demo/src/main/java/com/example/demo/services/UserService.java
+--- a/demo/src/main/java/com/example/demo/services/UserService.java	
++++ b/demo/src/main/java/com/example/demo/services/UserService.java	
+@@ -8,9 +8,13 @@
+ public interface UserService {
+     List<User> userList();
+     void updateUser(User user);
+-    UserDetails getUserById(int id);
++    User getUserById(int id);
+     User getUserByEmail(String email);
+-//    List<UserDetails> getUserByKeyword(String keyword);
++    List<User> getUserByKeyword(String keyword);
+     void changePassword(int id, String newPassword);
+     void blockUser(int id);
++
++    void unBlockUser(int id);
++
++    void changeRole(User user);
+ }
+Index: demo/src/main/java/com/example/demo/config/SecurityConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.config;\r\n\r\nimport com.example.demo.filter.JWTAuthenticationFilter;\r\nimport com.example.demo.services.UserService;\r\nimport com.example.demo.services.UserServiceImpl;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.context.annotation.Bean;\r\nimport org.springframework.context.annotation.Configuration;\r\nimport org.springframework.security.authentication.AuthenticationManager;\r\nimport org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;\r\nimport org.springframework.security.config.annotation.web.builders.HttpSecurity;\r\nimport org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;\r\nimport org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;\r\nimport org.springframework.security.config.http.SessionCreationPolicy;\r\nimport org.springframework.security.core.userdetails.UserDetailsService;\r\nimport org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;\r\nimport org.springframework.security.crypto.password.PasswordEncoder;\r\nimport org.springframework.security.web.SecurityFilterChain;\r\nimport org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;\r\n\r\n@Configuration\r\n@EnableWebSecurity\r\npublic class SecurityConfig {\r\n\r\n    private final JWTAuthenticationFilter authenticationFilter;\r\n    private final UserServiceImpl userService;\r\n\r\n    @Autowired\r\n    public SecurityConfig(JWTAuthenticationFilter authenticationFilter, UserServiceImpl userService) {\r\n        this.authenticationFilter = authenticationFilter;\r\n        this.userService = userService;\r\n    }\r\n    @Bean\r\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {\r\n        return http.csrf(AbstractHttpConfigurer::disable)\r\n                .authorizeHttpRequests(req -> {\r\n                    req.requestMatchers(\"/login/**\", \"/register/**\").permitAll()\r\n                            .requestMatchers(\"/api/users/**\").hasAuthority(\"ADMIN\")\r\n                            .anyRequest().authenticated();\r\n                })\r\n                .userDetailsService(userService).sessionManagement(session ->{\r\n                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);\r\n                }).addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class).build();\r\n    }\r\n    @Bean\r\n    public PasswordEncoder passwordEncoder() {\r\n        return new BCryptPasswordEncoder();\r\n    }\r\n\r\n    @Bean\r\n    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {\r\n        return configuration.getAuthenticationManager();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/config/SecurityConfig.java b/demo/src/main/java/com/example/demo/config/SecurityConfig.java
+--- a/demo/src/main/java/com/example/demo/config/SecurityConfig.java	
++++ b/demo/src/main/java/com/example/demo/config/SecurityConfig.java	
+@@ -35,7 +35,8 @@
+         return http.csrf(AbstractHttpConfigurer::disable)
+                 .authorizeHttpRequests(req -> {
+                     req.requestMatchers("/login/**", "/register/**").permitAll()
+-                            .requestMatchers("/api/users/**").hasAuthority("ADMIN")
++                            .requestMatchers("/api/private/role/**").hasAuthority("ADMIN")
++                            .requestMatchers("/api/private/**").hasAnyAuthority("ADMIN", "MODERATOR")
+                             .anyRequest().authenticated();
+                 })
+                 .userDetailsService(userService).sessionManagement(session ->{
+Index: demo/src/main/java/com/example/demo/models/Role.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.models;\r\n\r\nimport jakarta.persistence.*;\r\nimport java.util.Objects;\r\n\r\n@Entity\r\n@Table(name = \"roles\")\r\npublic class Role {\r\n\r\n    @Id\r\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\r\n    @Column(name = \"role_id\")\r\n    private int id;\r\n\r\n    @Enumerated(EnumType.STRING)\r\n    @Column(name = \"name\")\r\n    private RoleType name;\r\n\r\n    public enum RoleType{\r\n        USER,\r\n        MODERATOR,\r\n        ADMIN\r\n    }\r\n    public Role(){}\r\n    public int getId(){\r\n        return id;\r\n    }\r\n\r\n    public void setId(int id){\r\n        this.id = id;\r\n    }\r\n\r\n    public RoleType getName(){\r\n        return name;\r\n    }\r\n\r\n    public void setName(RoleType name){\r\n        this.name = name;\r\n    }\r\n\r\n    @Override\r\n    public boolean equals(Object o) {\r\n        if (this == o) return true;\r\n        if (o == null || getClass() != o.getClass()) return false;\r\n        Role role = (Role) o;\r\n        return id == role.id;\r\n    }\r\n\r\n    @Override\r\n    public int hashCode() {\r\n        return Objects.hash(id);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/Role.java b/demo/src/main/java/com/example/demo/models/Role.java
+--- a/demo/src/main/java/com/example/demo/models/Role.java	
++++ b/demo/src/main/java/com/example/demo/models/Role.java	
+@@ -1,6 +1,7 @@
+ package com.example.demo.models;
+ 
+ import jakarta.persistence.*;
++
+ import java.util.Objects;
+ 
+ @Entity
+@@ -16,25 +17,32 @@
+     @Column(name = "name")
+     private RoleType name;
+ 
+-    public enum RoleType{
++    public enum RoleType {
+         USER,
+         MODERATOR,
+         ADMIN
+     }
+-    public Role(){}
+-    public int getId(){
++
++    public Role() {
++    }
++
++    public Role(int id) {
++        this.id = id;
++    }
++
++    public int getId() {
+         return id;
+     }
+ 
+-    public void setId(int id){
++    public void setId(int id) {
+         this.id = id;
+     }
+ 
+-    public RoleType getName(){
++    public RoleType getName() {
+         return name;
+     }
+ 
+-    public void setName(RoleType name){
++    public void setName(RoleType name) {
+         this.name = name;
+     }
+ 
+Index: demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.repositories;\r\n\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.models.userfolder.User;\r\nimport org.hibernate.Session;\r\nimport org.hibernate.SessionFactory;\r\nimport org.hibernate.query.Query;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Repository;\r\n\r\nimport java.util.List;\r\n\r\n@Repository\r\npublic class UserRepositoryImpl implements UserRepository{\r\n\r\n    private final SessionFactory sessionFactory;\r\n    @Autowired\r\n    public UserRepositoryImpl(SessionFactory sessionFactory){\r\n        this.sessionFactory = sessionFactory;\r\n    }\r\n\r\n    @Override\r\n    public User createUser(User user) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            session.save(user);\r\n            session.getTransaction().commit();\r\n        }\r\n        return user;\r\n    }\r\n\r\n    @Override\r\n    public List<User> getUsers() {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User\", User.class);\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<User> getAllUsers() {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User\", User.class);\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User getByEmail(String email) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User where email = :email\", User.class);\r\n            query.setParameter(\"email\", email);\r\n\r\n            List<User> result = query.list();\r\n            if (result.size() == 0) {\r\n                throw new EntityNotFoundException(\"User\", \"email\", email);\r\n            }\r\n\r\n            return result.get(0);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User getByUsername(String username) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            Query<User> query = session.createQuery(\"from User where username = :username\", User.class);\r\n            query.setParameter(\"username\", username);\r\n\r\n            List<User> result = query.list();\r\n            if (result.size() == 0) {\r\n                throw new EntityNotFoundException(\"User\", \"username\", username);\r\n            }\r\n\r\n            return result.get(0);\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public List<User> search(String keyword) {\r\n        try (Session session = sessionFactory.openSession()){\r\n            Query<User> query = session.createQuery(\r\n                    \"from User where username like :keyword or email like :keyword\" +\r\n                            \" or firstName like :keyword or lastName like :keyword\", User.class\r\n            );\r\n            query.setParameter(\"keyword\", \"%\" + keyword + \"%\");\r\n            return query.list();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public User getById(int id) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            User user = session.get(User.class, id);\r\n            if (user == null) {\r\n                throw new EntityNotFoundException(\"User\", id);\r\n            }\r\n            return user;\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public void update(User user) {\r\n        try (Session session = sessionFactory.openSession()) {\r\n            session.beginTransaction();\r\n            session.merge(user);\r\n            session.getTransaction().commit();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java b/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java
+--- a/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java	
++++ b/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java	
+@@ -1,10 +1,14 @@
+ package com.example.demo.repositories;
+ 
+ import com.example.demo.exceptions.EntityNotFoundException;
++import com.example.demo.helpers.AuthorizationHelper;
+ import com.example.demo.models.userfolder.User;
++import jakarta.persistence.Parameter;
+ import org.hibernate.Session;
+ import org.hibernate.SessionFactory;
+ import org.hibernate.query.Query;
++import org.slf4j.Logger;
++import org.slf4j.LoggerFactory;
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Repository;
+ 
+@@ -14,6 +18,7 @@
+ public class UserRepositoryImpl implements UserRepository{
+ 
+     private final SessionFactory sessionFactory;
++    private static final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
+     @Autowired
+     public UserRepositoryImpl(SessionFactory sessionFactory){
+         this.sessionFactory = sessionFactory;
+Index: demo/src/main/java/com/example/demo/controllers/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/controllers/UserController.java b/demo/src/main/java/com/example/demo/controllers/UserController.java
+deleted file mode 100644
+--- a/demo/src/main/java/com/example/demo/controllers/UserController.java	
++++ /dev/null	
+@@ -1,42 +0,0 @@
+-package com.example.demo.controllers;
+-
+-import com.example.demo.exceptions.AuthorizationException;
+-import com.example.demo.helpers.AuthorizationHelper;
+-import com.example.demo.models.userfolder.User;
+-import com.example.demo.services.UserService;
+-import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.http.HttpHeaders;
+-import org.springframework.http.HttpStatus;
+-import org.springframework.security.core.Authentication;
+-import org.springframework.security.core.context.SecurityContextHolder;
+-import org.springframework.web.bind.annotation.GetMapping;
+-import org.springframework.web.bind.annotation.RequestHeader;
+-import org.springframework.web.bind.annotation.RequestMapping;
+-import org.springframework.web.bind.annotation.RestController;
+-import org.springframework.web.server.ResponseStatusException;
+-
+-import java.util.List;
+-
+-@RestController
+-@RequestMapping("api/users")
+-public class UserController {
+-    private final UserService service;
+-    private final AuthorizationHelper helper;
+-
+-    @Autowired
+-    public UserController(UserService service, AuthorizationHelper helper){
+-        this.service = service;
+-        this.helper = helper;
+-    }
+-    @GetMapping("/all")
+-    public List<User> getUsers(Authentication auth) {
+-        try {
+-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+-            User user = helper.extractUserFromToken(authentication);
+-            helper.isUserAdminOrModerator(user);
+-            return service.userList();
+-        } catch (AuthorizationException e) {
+-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+-        }
+-    }
+-}
+Index: demo/src/main/java/com/example/demo/helpers/UserMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.helpers;\r\n\r\nimport com.example.demo.models.userfolder.User;\r\nimport com.example.demo.models.userfolder.UserDTO;\r\nimport com.example.demo.services.UserService;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Component;\r\n\r\n@Component\r\npublic class UserMapper {\r\n\r\n    private UserService service;\r\n\r\n    @Autowired\r\n    public UserMapper(UserService service){\r\n        this.service = service;\r\n    }\r\n\r\n    public User fromDto(int id, UserDTO userDto){\r\n        User user = fromDto(userDto);\r\n        user.setId(id);\r\n\r\n        return user;\r\n    }\r\n\r\n    public User fromDto(UserDTO userDto){\r\n        User user = new User();\r\n        user.setUsername(userDto.getUsername());\r\n        user.setPassword(userDto.getPassword());\r\n        user.setFirstName(userDto.getFirstName());\r\n        user.setLastName(userDto.getLastName());\r\n        user.setEmail(userDto.getEmail());\r\n\r\n        return user;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/helpers/UserMapper.java b/demo/src/main/java/com/example/demo/helpers/UserMapper.java
+--- a/demo/src/main/java/com/example/demo/helpers/UserMapper.java	
++++ b/demo/src/main/java/com/example/demo/helpers/UserMapper.java	
+@@ -1,5 +1,6 @@
+ package com.example.demo.helpers;
+ 
++import com.example.demo.models.Role;
+ import com.example.demo.models.userfolder.User;
+ import com.example.demo.models.userfolder.UserDTO;
+ import com.example.demo.services.UserService;
+@@ -30,6 +31,7 @@
+         user.setFirstName(userDto.getFirstName());
+         user.setLastName(userDto.getLastName());
+         user.setEmail(userDto.getEmail());
++        user.setRole(new Role(3));
+ 
+         return user;
+     }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"5ff856fa-9527-47b3-aada-19a767595685\" name=\"Changes\" comment=\"Login changes\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/file-system.probe\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/file-system.probe\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/CommentRestController.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/CommentRestController.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/AuthorizationHelper.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/AuthorizationHelper.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/CustomUserDetails.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepository.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepository.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepositoryImpl.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepositoryImpl.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/AuthenticationServiceImpl.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/AuthenticationServiceImpl.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserService.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserService.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/resources/main/application.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/resources/main/application.properties\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationController.class.uniqueId1\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationService.class.uniqueId26\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationServiceImpl.class.uniqueId29\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthorizationHelper.class.uniqueId19\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Comment.class.uniqueId13\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepository.class.uniqueId4\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepositoryImpl.class.uniqueId18\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRestController.class.uniqueId8\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentService.class.uniqueId20\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentServiceImpl.class.uniqueId28\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CustomUserDetails.class.uniqueId12\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTAuthenticationFilter.class.uniqueId10\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTService.class.uniqueId6\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Post.class.uniqueId23\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostMapper.class.uniqueId30\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostRestController.class.uniqueId17\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostService.class.uniqueId24\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostServiceImpl.class.uniqueId14\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepository.class.uniqueId15\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepositoryImpl.class.uniqueId25\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/SecurityConfig.class.uniqueId11\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/User.class.uniqueId2\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserDTO.class.uniqueId27\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserLoginDTO.class.uniqueId3\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserLoginMapper.class.uniqueId5\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserMapper.class.uniqueId22\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserOperationController.class.uniqueId9\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepository.class.uniqueId0\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepositoryImpl.class.uniqueId16\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserService.class.uniqueId21\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserServiceImpl.class.uniqueId7\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileTestJava/compileTransaction/stash-dir/JWTtest.class.uniqueId0\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileTestJava/previous-compilation-data.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/tmp/compileTestJava/previous-compilation-data.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserOperationController.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/resources/application.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/resources/application.properties\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$/demo\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"demo\" type=\"f1a62948:ProjectNode\" />\r\n              </path>\r\n            </expand>\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PUSH_AUTO_UPDATE\" value=\"true\" />\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"KubernetesApiProvider\">{\r\n  &quot;isMigrated&quot;: true\r\n}</component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"ProjectErrors\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 3\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2jQEzCc1tzcPPGsSbh9q76hHNLt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Gradle.Build demo.executor\": \"Run\",\r\n    \"Gradle.Download Sources.executor\": \"Run\",\r\n    \"Gradle.JWTtest.testTokenGenerationAndValidation.executor\": \"Run\",\r\n    \"RequestMappingsPanelOrder0\": \"0\",\r\n    \"RequestMappingsPanelOrder1\": \"1\",\r\n    \"RequestMappingsPanelWidth0\": \"75\",\r\n    \"RequestMappingsPanelWidth1\": \"75\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"Spring Boot.DemoApplication.executor\": \"Run\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"last_opened_file_path\": \"C:/ForumProject\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"project.structure.last.edited\": \"Project\",\r\n    \"project.structure.proportion\": \"0.0\",\r\n    \"project.structure.side.proportion\": \"0.0\",\r\n    \"settings.editor.selected.configurable\": \"reference.settingsdialog.project.gradle\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  },\r\n  \"keyToStringList\": {\r\n    \"DatabaseDriversLRU\": [\r\n      \"mariadb\",\r\n      \"azure\"\r\n    ]\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\ForumProject\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\ForumProject\\.idea\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"com.example.demo.exceptions\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Spring Boot.DemoApplication\">\r\n    <configuration name=\"JWTtest.testTokenGenerationAndValidation\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\r\n      <ExternalSystemSettings>\r\n        <option name=\"executionName\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$/demo\" />\r\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\r\n        <option name=\"scriptParameters\" value=\"\" />\r\n        <option name=\"taskDescriptions\">\r\n          <list />\r\n        </option>\r\n        <option name=\"taskNames\">\r\n          <list>\r\n            <option value=\":test\" />\r\n            <option value=\"--tests\" />\r\n            <option value=\"&quot;com.example.demo.JWTtest.testTokenGenerationAndValidation&quot;\" />\r\n          </list>\r\n        </option>\r\n        <option name=\"vmOptions\" />\r\n      </ExternalSystemSettings>\r\n      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>\r\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\r\n      <DebugAllEnabled>false</DebugAllEnabled>\r\n      <RunAsTest>true</RunAsTest>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"DemoApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\r\n      <module name=\"demo.main\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"com.example.demo.DemoApplication\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Gradle.JWTtest.testTokenGenerationAndValidation\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4\" />\r\n        <option value=\"jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021\" />\r\n        <option value=\"jdk-22-openjdk-22-4caba194b151-f504ca98\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"5ff856fa-9527-47b3-aada-19a767595685\" name=\"Changes\" comment=\"\" />\r\n      <created>1721311160531</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1721311160531</updated>\r\n      <workItem from=\"1721311161614\" duration=\"5815000\" />\r\n      <workItem from=\"1721317552345\" duration=\"609000\" />\r\n      <workItem from=\"1721464840537\" duration=\"788000\" />\r\n      <workItem from=\"1721465784607\" duration=\"21000\" />\r\n      <workItem from=\"1721487708551\" duration=\"7181000\" />\r\n      <workItem from=\"1721536332151\" duration=\"131000\" />\r\n      <workItem from=\"1721713410305\" duration=\"4720000\" />\r\n      <workItem from=\"1721722524837\" duration=\"4312000\" />\r\n      <workItem from=\"1721801564098\" duration=\"9420000\" />\r\n      <workItem from=\"1721819482121\" duration=\"16716000\" />\r\n      <workItem from=\"1721883414003\" duration=\"8049000\" />\r\n      <workItem from=\"1721900016473\" duration=\"9768000\" />\r\n      <workItem from=\"1721988085542\" duration=\"4497000\" />\r\n      <workItem from=\"1722001048701\" duration=\"1600000\" />\r\n      <workItem from=\"1722079234934\" duration=\"13158000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"database changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721315598863</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721315598864</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"database changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721315724829</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721315724829</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"database changes with docker\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721502469098</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721502469098</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"models - tags and posts\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721657994025</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721657994025</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"database changes with docker\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721665834523</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721665834523</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"models comments and postdto\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721665971459</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721665971459</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Implement PostsRepository interface and PostsRepositoryImpl\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721719219233</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721719219233</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"Add PostService and PostServiceImpl\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721721433367</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721721433367</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"Added Security files\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721738599355</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721738599355</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"Security changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721825813297</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721825813297</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"Authentication fix\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721883783664</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721883783664</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"Authorization changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721898606929</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721898606929</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"Login changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721915774154</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721915774154</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"14\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"UpdateCopyrightCheckinHandler\">\r\n    <option name=\"UPDATE_COPYRIGHT\" value=\"true\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT\" value=\"false\" />\r\n    <option name=\"CHECK_NEW_TODO\" value=\"false\" />\r\n    <MESSAGE value=\"database changes\" />\r\n    <MESSAGE value=\"models - tags and posts\" />\r\n    <MESSAGE value=\"models - comments and postdto\" />\r\n    <MESSAGE value=\"database changes with docker\" />\r\n    <MESSAGE value=\"models comments and postdto\" />\r\n    <MESSAGE value=\"Implement PostsRepository interface and PostsRepositoryImpl\" />\r\n    <MESSAGE value=\"Add PostService and PostServiceImpl\" />\r\n    <MESSAGE value=\"added SecurityConfig, AuthenticationHelper, JWTService, JWTAuthenticationFilter and EmailPasswordAuthenticationFilter\" />\r\n    <MESSAGE value=\"Added UserRepository and register on UserService\" />\r\n    <MESSAGE value=\"Added Security files\" />\r\n    <MESSAGE value=\"Security changes\" />\r\n    <MESSAGE value=\"Authentication fix\" />\r\n    <MESSAGE value=\"Authorization changes\" />\r\n    <MESSAGE value=\"Login changes\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Login changes\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java</url>\r\n          <line>30</line>\r\n          <option name=\"timeStamp\" value=\"2\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>\r\n          <line>40</line>\r\n          <option name=\"timeStamp\" value=\"4\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>\r\n          <line>32</line>\r\n          <option name=\"timeStamp\" value=\"5\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>\r\n          <line>33</line>\r\n          <option name=\"timeStamp\" value=\"7\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>\r\n          <line>30</line>\r\n          <option name=\"timeStamp\" value=\"10\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java</url>\r\n          <line>37</line>\r\n          <option name=\"timeStamp\" value=\"11\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -4,9 +4,12 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Login changes">
+-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml" afterDir="false" />
++    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Authorization changes 2">
++      <change afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PrivateController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_aop_6_1_10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_springframework_spring_aop_6_1_10.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.bin" afterDir="false" />
+@@ -14,68 +17,30 @@
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/file-system.probe" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/AuthenticationController.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/CommentRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/CommentRestController.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/UserController.class" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/UserOperationController.class" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/AuthorizationHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/AuthorizationHelper.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/CustomUserDetails.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepository.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/UserMapper.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Role$RoleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Role$RoleType.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Role.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/UserDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/UserDTO.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepositoryImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/repositories/UserRepositoryImpl.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/AuthenticationServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/AuthenticationServiceImpl.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserService.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/resources/main/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/resources/main/application.properties" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationController.class.uniqueId1" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationService.class.uniqueId26" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthenticationServiceImpl.class.uniqueId29" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthorizationHelper.class.uniqueId19" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Comment.class.uniqueId13" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepository.class.uniqueId4" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepositoryImpl.class.uniqueId18" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRestController.class.uniqueId8" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentService.class.uniqueId20" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentServiceImpl.class.uniqueId28" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CustomUserDetails.class.uniqueId12" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTAuthenticationFilter.class.uniqueId10" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTService.class.uniqueId6" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Post.class.uniqueId23" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostMapper.class.uniqueId30" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostRestController.class.uniqueId17" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostService.class.uniqueId24" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostServiceImpl.class.uniqueId14" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepository.class.uniqueId15" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepositoryImpl.class.uniqueId25" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/SecurityConfig.class.uniqueId11" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/User.class.uniqueId2" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserDTO.class.uniqueId27" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserLoginDTO.class.uniqueId3" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserLoginMapper.class.uniqueId5" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserMapper.class.uniqueId22" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserOperationController.class.uniqueId9" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepository.class.uniqueId0" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepositoryImpl.class.uniqueId16" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserService.class.uniqueId21" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserServiceImpl.class.uniqueId7" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthorizationHelper.class.uniqueId1" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRestController.class.uniqueId0" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserController.class.uniqueId2" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileTestJava/compileTransaction/stash-dir/JWTtest.class.uniqueId0" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileTestJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/tmp/compileTestJava/previous-compilation-data.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserOperationController.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/AuthorizationHelper.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/CustomUserDetails.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/UserMapper.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Role.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationService.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/AuthenticationServiceImpl.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserService.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/resources/application.properties" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -136,40 +101,40 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Gradle.Build demo.executor": "Run",
+-    "Gradle.Download Sources.executor": "Run",
+-    "Gradle.JWTtest.testTokenGenerationAndValidation.executor": "Run",
+-    "RequestMappingsPanelOrder0": "0",
+-    "RequestMappingsPanelOrder1": "1",
+-    "RequestMappingsPanelWidth0": "75",
+-    "RequestMappingsPanelWidth1": "75",
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "Spring Boot.DemoApplication.executor": "Run",
+-    "git-widget-placeholder": "main",
+-    "kotlin-language-version-configured": "true",
+-    "last_opened_file_path": "C:/ForumProject",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "project.structure.last.edited": "Project",
+-    "project.structure.proportion": "0.0",
+-    "project.structure.side.proportion": "0.0",
+-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Gradle.Build demo.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.JWTtest.testTokenGenerationAndValidation.executor&quot;: &quot;Run&quot;,
++    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
++    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
++    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
++    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;Spring Boot.DemoApplication.executor&quot;: &quot;Run&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/ForumProject&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   },
+-  "keyToStringList": {
+-    "DatabaseDriversLRU": [
+-      "mariadb",
+-      "azure"
++  &quot;keyToStringList&quot;: {
++    &quot;DatabaseDriversLRU&quot;: [
++      &quot;mariadb&quot;,
++      &quot;azure&quot;
+     ]
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\ForumProject" />
+@@ -250,7 +215,8 @@
+       <workItem from="1721900016473" duration="9768000" />
+       <workItem from="1721988085542" duration="4497000" />
+       <workItem from="1722001048701" duration="1600000" />
+-      <workItem from="1722079234934" duration="13158000" />
++      <workItem from="1722079234934" duration="13550000" />
++      <workItem from="1722149479588" duration="10359000" />
+     </task>
+     <task id="LOCAL-00001" summary="database changes">
+       <option name="closed" value="true" />
+@@ -356,7 +322,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1721915774154</updated>
+     </task>
+-    <option name="localTasksCounter" value="14" />
++    <task id="LOCAL-00014" summary="Authorization changes 2">
++      <option name="closed" value="true" />
++      <created>1722094810606</created>
++      <option name="number" value="00014" />
++      <option name="presentableId" value="LOCAL-00014" />
++      <option name="project" value="LOCAL" />
++      <updated>1722094810607</updated>
++    </task>
++    <option name="localTasksCounter" value="15" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -393,7 +367,8 @@
+     <MESSAGE value="Authentication fix" />
+     <MESSAGE value="Authorization changes" />
+     <MESSAGE value="Login changes" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Login changes" />
++    <MESSAGE value="Authorization changes 2" />
++    <option name="LAST_COMMIT_MESSAGE" value="Authorization changes 2" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>
+@@ -405,28 +380,33 @@
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="java-line">
+           <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>
+-          <line>40</line>
++          <line>41</line>
+           <option name="timeStamp" value="4" />
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="java-line">
+           <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/AuthenticationController.java</url>
+-          <line>32</line>
++          <line>33</line>
+           <option name="timeStamp" value="5" />
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>
+-          <line>33</line>
+-          <option name="timeStamp" value="7" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>
+-          <line>30</line>
++          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PrivateController.java</url>
++          <line>28</line>
+           <option name="timeStamp" value="10" />
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="java-line">
+           <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/filter/JWTAuthenticationFilter.java</url>
+           <line>37</line>
+           <option name="timeStamp" value="11" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="java-line">
++          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java</url>
++          <line>84</line>
++          <option name="timeStamp" value="13" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="java-line">
++          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PrivateController.java</url>
++          <line>43</line>
++          <option name="timeStamp" value="15" />
+         </line-breakpoint>
+       </breakpoints>
+     </breakpoint-manager>
+Index: demo/src/main/java/com/example/demo/controllers/PrivateController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/controllers/PrivateController.java b/demo/src/main/java/com/example/demo/controllers/PrivateController.java
+new file mode 100644
+--- /dev/null	
++++ b/demo/src/main/java/com/example/demo/controllers/PrivateController.java	
+@@ -0,0 +1,93 @@
++package com.example.demo.controllers;
++
++import com.example.demo.exceptions.AuthorizationException;
++import com.example.demo.helpers.AuthorizationHelper;
++import com.example.demo.models.Role;
++import com.example.demo.models.userfolder.User;
++import com.example.demo.services.UserService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.HttpStatus;
++import org.springframework.http.ResponseEntity;
++import org.springframework.security.core.Authentication;
++import org.springframework.web.bind.annotation.*;
++import org.springframework.web.server.ResponseStatusException;
++
++import java.util.List;
++
++@RestController
++@RequestMapping("api/private")
++public class PrivateController {
++    private final UserService service;
++    private final AuthorizationHelper helper;
++
++    @Autowired
++    public PrivateController(UserService service, AuthorizationHelper helper){
++        this.service = service;
++        this.helper = helper;
++    }
++    @GetMapping("/users")
++    public ResponseEntity<List<User>> getUsers(Authentication auth) {
++        try {
++            User user = helper.extractUserFromToken(auth);
++            helper.isUserAdminOrModerator(user);
++            service.userList();
++            return ResponseEntity.ok().build();
++        } catch (AuthorizationException e) {
++            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
++        }
++    }
++
++    @GetMapping("/user")
++    public ResponseEntity<List<User>> findUserByInfo(@RequestParam String keyword, Authentication auth){
++        try {
++            User user = helper.extractUserFromToken(auth);
++            helper.isUserAdminOrModerator(user);
++            service.getUserByKeyword(keyword);
++            return ResponseEntity.ok().build();
++        } catch (AuthorizationException e) {
++            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
++        }
++    }
++
++    @PutMapping("/block/{id}")
++    public ResponseEntity<User> changeToBlock(@PathVariable int id, Authentication auth){
++        try {
++            User user = helper.extractUserFromToken(auth);
++            helper.isUserAdminOrModerator(user);
++            service.blockUser(id);
++            return ResponseEntity.ok().build();
++        }
++        catch (AuthorizationException e){
++            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
++        }
++    }
++    @PutMapping("/unblock/{id}")
++    public ResponseEntity<User> changeToNotBlock(@PathVariable int id, Authentication auth){
++        try {
++            User user = helper.extractUserFromToken(auth);
++            helper.isUserAdminOrModerator(user);
++            service.unBlockUser(id);
++            return ResponseEntity.ok().build();
++        }
++        catch (AuthorizationException e){
++            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
++        }
++    }
++
++    @PutMapping("/role/{id}")
++    public ResponseEntity<User> setRoles(@PathVariable int id, @RequestBody Role role, Authentication auth){
++        try {
++            User user = helper.extractUserFromToken(auth);
++            helper.isUserAdmin(user);
++
++            User userToUpdate = service.getUserById(id);
++            userToUpdate.setRole(role);
++
++            service.changeRole(userToUpdate);
++            return ResponseEntity.ok().build();
++        }
++        catch (AuthorizationException e){
++            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
++        }
++    }
++}
+Index: .idea/libraries/Gradle__org_springframework_spring_aop_6_1_10.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\r\n  <library name=\"Gradle: org.springframework:spring-aop:6.1.10\" type=\"java-imported\" external-system-id=\"GRADLE\">\r\n    <properties groupId=\"org.springframework\" artifactId=\"spring-aop\" version=\"6.1.10\" />\r\n    <CLASSES>\r\n      <root url=\"jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/6.1.10/aa6a147eb08820fb503a992a8fe2c9fee3439129/spring-aop-6.1.10.jar!/\" />\r\n    </CLASSES>\r\n    <JAVADOC />\r\n    <SOURCES />\r\n  </library>\r\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Gradle__org_springframework_spring_aop_6_1_10.xml b/.idea/libraries/Gradle__org_springframework_spring_aop_6_1_10.xml
+--- a/.idea/libraries/Gradle__org_springframework_spring_aop_6_1_10.xml	
++++ b/.idea/libraries/Gradle__org_springframework_spring_aop_6_1_10.xml	
+@@ -5,6 +5,8 @@
+       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/6.1.10/aa6a147eb08820fb503a992a8fe2c9fee3439129/spring-aop-6.1.10.jar!/" />
+     </CLASSES>
+     <JAVADOC />
+-    <SOURCES />
++    <SOURCES>
++      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/6.1.10/716a07ddca65989bf9db3a3fb745c601d63f2be7/spring-aop-6.1.10-sources.jar!/" />
++    </SOURCES>
+   </library>
+ </component>
+\ No newline at end of file
+Index: demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.models.userfolder;\r\n\r\nimport jakarta.validation.constraints.Email;\r\nimport jakarta.validation.constraints.NotNull;\r\nimport jakarta.validation.constraints.Size;\r\nimport org.checkerframework.common.aliasing.qual.Unique;\r\n\r\npublic class UserDTO {\r\n    @NotNull\r\n    @Size(min = 4, max = 32,\r\n            message = \"Username should be between 4 and 32 symbols\")\r\n    private String username;\r\n\r\n    @NotNull\r\n    @Size(min = 4, max = 32,\r\n            message = \"Password should be between 4 and 32 symbols\")\r\n    private String password;\r\n\r\n    @NotNull\r\n    @Size(min = 4, max = 32,\r\n            message = \"First name should be between 4 and 32 symbols\")\r\n    private String firstName;\r\n\r\n    @NotNull\r\n    @Size(min = 4, max = 32,\r\n            message = \"Last name should be between 4 and 32 symbols\")\r\n    private String lastName;\r\n\r\n    @NotNull\r\n    @Unique\r\n    @Email\r\n    private String email;\r\n\r\n    private String phone;\r\n\r\n    public UserDTO(){}\r\n\r\n    public String getUsername(){\r\n        return username;\r\n    }\r\n\r\n    public void setUsername() {\r\n        this.username = username;\r\n    }\r\n\r\n    public String getPassword() {\r\n        return password;\r\n    }\r\n\r\n    public void setPassword(String password) {\r\n        this.password = password;\r\n    }\r\n\r\n    public String getFirstName() {\r\n        return firstName;\r\n    }\r\n\r\n    public void setFirstName(String firstName) {\r\n        this.firstName = firstName;\r\n    }\r\n\r\n    public String getLastName() {\r\n        return lastName;\r\n    }\r\n\r\n    public void setLastName(String lastName) {\r\n        this.lastName = lastName;\r\n    }\r\n\r\n    public String getEmail() {\r\n        return email;\r\n    }\r\n\r\n    public void setEmail(String email) {\r\n        this.email = email;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java b/demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java
+--- a/demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java	
++++ b/demo/src/main/java/com/example/demo/models/userfolder/UserDTO.java	
+@@ -1,5 +1,6 @@
+ package com.example.demo.models.userfolder;
+ 
++import com.example.demo.models.Role;
+ import jakarta.validation.constraints.Email;
+ import jakarta.validation.constraints.NotNull;
+ import jakarta.validation.constraints.Size;

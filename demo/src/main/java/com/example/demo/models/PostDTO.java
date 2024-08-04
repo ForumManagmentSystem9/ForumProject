@@ -1,8 +1,11 @@
 package com.example.demo.models;
 
+import com.example.demo.models.userfolder.User;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.time.LocalDateTime;
 
 public class PostDTO {
     @NotNull
@@ -14,8 +17,10 @@ public class PostDTO {
             message = "The content should be between 32 and 8192 symbols")
     private String content;
     private String likes;
-    @Positive
-    private int creator_id;
+
+    private User creator;
+    @NotNull
+    private LocalDateTime createdDate = LocalDateTime.now();
     public PostDTO(){}
 
     public String getTitle() {
@@ -42,11 +47,19 @@ public class PostDTO {
         this.likes = likes;
     }
 
-    public int getCreator_id() {
-        return creator_id;
+    public User getCreator() {
+        return creator;
     }
 
-    public void setCreator_id(int creator_id) {
-        this.creator_id = creator_id;
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 }

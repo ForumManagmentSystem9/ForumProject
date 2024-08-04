@@ -22,6 +22,9 @@ public class Role {
         ADMIN
     }
     public Role(){}
+    public Role(int id) {
+        this.id = id;
+    }
     public int getId(){
         return id;
     }

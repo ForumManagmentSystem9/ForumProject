@@ -17,4 +17,5 @@ public interface UserRepository {
     List<User> search(String keyword);
     User getById(int id);
     void update(User user);
+    void delete(User user);
 }
