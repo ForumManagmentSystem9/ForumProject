@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -41,16 +42,17 @@ public class PostRestController {
         this.postMapper = postMapper;
         this.authorizationHelper = authorizationHelper;
     }
+
     @GetMapping
     public ResponseEntity<PostsResponse> getAllPosts() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated()) {
+        if (auth instanceof AnonymousAuthenticationToken) {
+            PostsResponse response = handleUnauthenticatedAccess();
+            return ResponseEntity.ok(response);
+        } else {
             User user = authorizationHelper.extractUserFromToken(auth);
             List<Post> allPosts = postService.getAllPosts();
             return ResponseEntity.ok(new PostsResponse(allPosts));
-        } else {
-            PostsResponse response = handleUnauthenticatedAccess();
-            return ResponseEntity.ok(response);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import com.example.demo.models.userfolder.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class Comment implements Creatable{
     @Column(name = "comment_likes")
     private int likes;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;

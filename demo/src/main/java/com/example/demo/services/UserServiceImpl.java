@@ -136,9 +136,9 @@ public class UserServiceImpl implements UserService{
     }
 
     private void updateUserField(User user, User updateUser) {
-        if (updateUser.getUsername() != null && !updateUser.getUsername().equals(user.getUsername())){
-            user.setUsername(updateUser.getUsername());
-        }
+//        if (updateUser.getUsername() != null && !updateUser.getUsername().equals(user.getUsername())){
+//            user.setUsername(updateUser.getUsername());
+//        }
         if (updateUser.getFirstName() != null && !updateUser.getFirstName().equals(user.getFirstName())){
             user.setFirstName(updateUser.getFirstName());
         }

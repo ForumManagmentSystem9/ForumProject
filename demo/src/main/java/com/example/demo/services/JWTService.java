@@ -5,6 +5,7 @@ import com.example.demo.models.userfolder.CustomUserDetails;
 import com.example.demo.models.userfolder.User;
 import com.example.demo.models.userfolder.UserDTO;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -77,9 +78,28 @@ public class JWTService {
                 .compact();
         return token;
     }
+    public String refreshToken(String token) {
+        try {
+            Claims claims = extractAllClaims(token);
+            return generateTokenWithClaims(claims);
+        } catch (ExpiredJwtException e) {
+            Claims claims = e.getClaims();
+            return generateTokenWithClaims(claims);
+        }
+    }
 
+    private String generateTokenWithClaims(Claims claims) {
+        long expirationTime = 1000 * 60 * 60 * 10;
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(getSigningKey())
+                .compact();
+    }
     private SecretKey getSigningKey() {
         byte [] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
 }

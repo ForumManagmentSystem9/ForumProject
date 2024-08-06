@@ -23,7 +23,7 @@ public class RestrictHelper {
     }
     public void isUserAdminOrModerator(User user){
         if (!user.getRole().getName().equals(Role.RoleType.ADMIN) && !user.getRole().getName().equals(Role.RoleType.MODERATOR)){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ADMIN_ERROR_MESSAGE);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ADMIN_MODERATOR_ERROR_MESSAGE);
         }
         logger.debug("User role is not admin: " + user.getRole());
     }

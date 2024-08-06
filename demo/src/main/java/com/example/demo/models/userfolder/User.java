@@ -46,9 +46,8 @@ public class User {
     @Column(name = "blocked")
     private boolean isBlocked;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Like> likes = new HashSet<>();
-
     public User() {}
 
     public int getId() {
