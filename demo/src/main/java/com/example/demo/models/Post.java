@@ -1,6 +1,9 @@
 package com.example.demo.models;
 
 import com.example.demo.models.userfolder.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +14,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "posts")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Post implements Creatable {
 
     @Id
@@ -24,6 +28,7 @@ public class Post implements Creatable {
     @Column(name = "content")
     private String content;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -39,10 +44,10 @@ public class Post implements Creatable {
     @Column(name = "created_date", nullable = false)
     private LocalDateTime createdDate;
 
-    @OneToMany(mappedBy = "post", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post",  cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Like> likes = new HashSet<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Comment> comments;
 
 
@@ -133,6 +138,10 @@ public class Post implements Creatable {
 
     public void addLike(Like like) {
         likes.add(like);
+        like.setPost(this);
+    }
+    public void removeLike(Like like) {
+        likes.remove(like);
         like.setPost(this);
     }
 

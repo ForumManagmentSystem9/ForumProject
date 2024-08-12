@@ -2,7 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.exceptions.EntityDuplicateException;
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.helpers.AuthorizationHelper;
+import com.example.demo.models.Role;
 import com.example.demo.helpers.RestrictHelper;
 import com.example.demo.models.userfolder.CustomUserDetails;
 import com.example.demo.models.userfolder.User;
@@ -124,14 +124,16 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void changeRole(User user, User changeUser){
+    public void changeRole(User user, User changeUser, Role role){
         helper.isUserAdmin(user);
-        user.setRole(changeUser.getRole());
-        repository.update(user);
+        changeUser.setRole(role);
+        repository.update(changeUser);
     }
 
     @Override
     public void deleteUser(User user) {
+        user.getComments().clear();
+        user.getPosts().clear();
         repository.delete(user);
     }
 

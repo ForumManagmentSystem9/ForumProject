@@ -57,7 +57,7 @@ public class PrivateController {
 
             User userToUpdate = service.getUserById(id);
 
-            service.changeRole(user, userToUpdate);
+            service.changeRole(user, userToUpdate, role);
             return ResponseEntity.ok().build();
         }
         catch (AuthorizationException e){

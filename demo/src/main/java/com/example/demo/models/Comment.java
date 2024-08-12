@@ -2,12 +2,15 @@ package com.example.demo.models;
 
 import com.example.demo.models.userfolder.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "comments")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Comment implements Creatable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +23,6 @@ public class Comment implements Creatable{
     @Column(name = "comment_likes")
     private int likes;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;

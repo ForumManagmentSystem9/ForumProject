@@ -29,7 +29,6 @@ public class CommentMapper {
 
         Comment comment = new Comment();
         comment.setContent(commentDTO.getContent());
-        comment.setLikes(0);
         comment.setUser(user);
 
         logger.debug("Created Comment from CommentDTO: {}", comment);

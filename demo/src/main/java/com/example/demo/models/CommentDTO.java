@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import com.example.demo.models.userfolder.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -9,8 +10,6 @@ import java.time.LocalDateTime;
 public class CommentDTO {
     @NotNull
     private String content;
-    private String likes;
-
     private User creator;
     private Post post;
 
@@ -24,14 +23,6 @@ public class CommentDTO {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getLikes() {
-        return likes;
-    }
-
-    public void setLikes(String likes) {
-        this.likes = likes;
     }
 
     public User getCreator() {

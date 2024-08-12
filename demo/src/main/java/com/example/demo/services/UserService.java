@@ -1,9 +1,9 @@
 package com.example.demo.services;
 
+import com.example.demo.models.Role;
 import com.example.demo.models.userfolder.User;
 import com.example.demo.response.AuthenticationResponse;
 import jakarta.transaction.Transactional;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public interface UserService extends UserDetailsService {
     void blockUser(int id);
 
     @Transactional
-    void changeRole(User user, User changeUser);
+    void changeRole(User user, User changeUser, Role role);
 
     void deleteUser(User user);
 }

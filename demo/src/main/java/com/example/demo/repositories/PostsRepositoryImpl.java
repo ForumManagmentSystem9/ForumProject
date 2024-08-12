@@ -9,8 +9,10 @@ import com.example.demo.models.userfolder.User;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
+import jakarta.validation.ConstraintViolationException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,6 +113,12 @@ public class PostsRepositoryImpl implements PostsRepository {
     public void addLike(Post post, User user) {
         Session session = sessionFactory.getCurrentSession();
 
+        // Ensure the post is managed
+        post = session.get(Post.class, post.getId());
+        if (post == null) {
+            throw new IllegalArgumentException("Post not found");
+        }
+
         // Check if the like already exists
         String hql = "SELECT l FROM Like l WHERE l.post = :post AND l.user = :user";
         Query<Like> query = session.createQuery(hql, Like.class);
@@ -120,23 +128,18 @@ public class PostsRepositoryImpl implements PostsRepository {
 
         try {
             if (existingLike != null) {
-                // If the like exists, remove it
-                session.delete(existingLike);
-                post.setLikes(post.getLikeCount() - 1); // Decrement the likes count
+                removeLike(existingLike);
+                post.setLikeCount(post.getLikeCount() - 1);
             } else {
-                // If the like does not exist, add it
                 Like newLike = new Like();
                 newLike.setPost(post);
                 newLike.setUser(user);
-                session.persist(newLike); // Persist the new like
-                post.setLikes(post.getLikeCount() + 1); // Increment the likes count
+                session.persist(newLike);
+                post.setLikeCount(post.getLikeCount() + 1);
+                session.merge(post);
             }
-
-            // Reattach the post and update it
-            session.merge(post);
-
         } catch (Exception e) {
-            logger.debug("Error while processing the like: " + e.getMessage());
+            logger.error("Error while processing the like: " + e.getMessage());
             throw new LikeException("Error while processing the like: " + e.getMessage());
         }
     }
@@ -148,6 +151,26 @@ public class PostsRepositoryImpl implements PostsRepository {
             Query<Post> query = session.createQuery("from Post p order by size(p.comments) desc", Post.class);
             query.setMaxResults(10);
             return query.list();
+        }
+    }
+
+    private void removeLike(Like like) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+
+            if (like != null) {
+                session.remove(like);
+                transaction.commit();
+            } else {
+                throw new EntityNotFoundException("Like with ID " + like.getId() + " does not exist.");
+            }
+        } catch (ConstraintViolationException e) {
+            if (transaction != null) transaction.rollback();
+            throw new RuntimeException("Constraint violation during delete operation", e);
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw new RuntimeException("Error removing like", e);
         }
     }
 }

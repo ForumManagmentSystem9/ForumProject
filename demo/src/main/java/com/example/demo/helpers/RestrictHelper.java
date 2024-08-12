@@ -13,26 +13,22 @@ import org.springframework.web.server.ResponseStatusException;
 public class RestrictHelper {
     public static final String ADMIN_ERROR_MESSAGE = "You are not admin";
     public static final String ADMIN_MODERATOR_ERROR_MESSAGE = "You must be admin or moderator";
-    private static final Logger logger = LoggerFactory.getLogger(RestrictHelper.class);
     public void isUserAdmin(User user){
         if (!user.getRole().getName().equals(Role.RoleType.ADMIN)){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     ADMIN_ERROR_MESSAGE);
         }
-        logger.debug("User role is not admin: " + user.getRole());
     }
     public void isUserAdminOrModerator(User user){
         if (!user.getRole().getName().equals(Role.RoleType.ADMIN) && !user.getRole().getName().equals(Role.RoleType.MODERATOR)){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ADMIN_MODERATOR_ERROR_MESSAGE);
         }
-        logger.debug("User role is not admin: " + user.getRole());
     }
 
     public <T extends Creatable> void isUserACreator(T entity, User user) {
         if (user.getId() != entity.getCreator().getId()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not authorized");
         }
-        logger.debug("User is the creator of the entity");
     }
     public <T extends Creatable> void deletePermission(T entity, User user) {
         if (user.getId() != entity.getCreator().getId() && (!user.getRole().getName().equals(Role.RoleType.ADMIN) && !user.getRole().getName().equals(Role.RoleType.MODERATOR))){

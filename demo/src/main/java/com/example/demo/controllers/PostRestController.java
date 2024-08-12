@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.exceptions.EntityDuplicateException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.AuthorizationException;
+import com.example.demo.exceptions.LikeException;
 import com.example.demo.models.PostDTO;
 import com.example.demo.models.Post;
 import com.example.demo.models.userfolder.User;
@@ -35,6 +36,7 @@ public class PostRestController {
     private final PostService postService;
     private final PostMapper postMapper;
     private final AuthorizationHelper authorizationHelper;
+    private static final Logger logger = LoggerFactory.getLogger(PostRestController.class);
 
     @Autowired
     public PostRestController(PostService postService, PostMapper postMapper, AuthorizationHelper authorizationHelper) {
@@ -116,13 +118,25 @@ public class PostRestController {
         try {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             User user = authorizationHelper.extractUserFromToken(auth);
+
+            if (postId <= 0 || user == null) {
+                throw new IllegalArgumentException("Invalid postId or user");
+            }
+
             postService.like(postId, user);
+
             return ResponseEntity.ok("Post liked successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (LikeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
+            logger.error("An unexpected error occurred while liking the post: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
         }
     }
+
 
 }

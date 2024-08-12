@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/webjars/**").permitAll()
                         .requestMatchers("/api/user/login", "/api/user/register", "/api/posts").permitAll()
-                        .requestMatchers("/api/posts/**", "/api/user/**").authenticated()
+                        .requestMatchers("/api/posts/**", "/api/user/**", "/api/posts/{postId}/comments").authenticated()
                         .requestMatchers("/api/private/**").hasAnyAuthority("ADMIN", "MODERATOR")
                         .requestMatchers("/api/private/role/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()

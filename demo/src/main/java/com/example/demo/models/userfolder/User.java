@@ -1,7 +1,10 @@
 package com.example.demo.models.userfolder;
 
+import com.example.demo.models.Comment;
 import com.example.demo.models.Like;
+import com.example.demo.models.Post;
 import com.example.demo.models.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import org.checkerframework.common.aliasing.qual.Unique;
@@ -45,9 +48,16 @@ public class User {
 
     @Column(name = "blocked")
     private boolean isBlocked;
-
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonBackReference("user-likes")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Like> likes = new HashSet<>();
+    @JsonBackReference("user-posts")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Post> posts = new HashSet<>();
+    @JsonBackReference("user-comments")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Set<Comment> comments = new HashSet<>();
+
     public User() {}
 
     public int getId() {
@@ -60,6 +70,26 @@ public class User {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public void setLikes(Set<Like> likes) {
+        this.likes = likes;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public void setFirstName(String firstName) {
