@@ -17,8 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -37,8 +35,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/webjars/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/webjars/**", "/homepage").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/style.css", "/like.js").permitAll()
                         .requestMatchers("/api/user/login", "/api/user/register", "/api/posts").permitAll()
+                        .requestMatchers("/post/**").permitAll()  // Use `/post/**` to match all posts
                         .requestMatchers("/api/posts/**", "/api/user/**", "/api/posts/{postId}/comments").authenticated()
                         .requestMatchers("/api/private/**").hasAnyAuthority("ADMIN", "MODERATOR")
                         .requestMatchers("/api/private/role/**").hasAuthority("ADMIN")

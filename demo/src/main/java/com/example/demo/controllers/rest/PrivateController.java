@@ -1,4 +1,4 @@
-package com.example.demo.controllers;
+package com.example.demo.controllers.rest;
 
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.helpers.AuthorizationHelper;

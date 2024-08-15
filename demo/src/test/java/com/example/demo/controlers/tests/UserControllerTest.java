@@ -1,6 +1,6 @@
 package com.example.demo.controlers.tests;
 
-import com.example.demo.controllers.UserController;
+import com.example.demo.controllers.rest.UserController;
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.helpers.AuthorizationHelper;
 import com.example.demo.helpers.UserMapper;
@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

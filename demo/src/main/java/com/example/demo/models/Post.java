@@ -49,8 +49,6 @@ public class Post implements Creatable {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Comment> comments;
-
-
     @Column(name = "likes")
     private int likeCount;
 
@@ -144,6 +142,10 @@ public class Post implements Creatable {
         likes.remove(like);
         like.setPost(this);
     }
+    public int getCommentCount() {
+        return (comments != null) ? comments.size() : 0;
+    }
+
 
     @Override
     public User getCreator() {

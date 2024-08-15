@@ -1,6 +1,6 @@
 package com.example.demo.controlers.tests;
 
-import com.example.demo.controllers.PrivateController;
+import com.example.demo.controllers.rest.PrivateController;
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.helpers.AuthorizationHelper;
 import com.example.demo.models.Role;

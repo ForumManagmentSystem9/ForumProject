@@ -1,6 +1,5 @@
-package com.example.demo.controllers;
+package com.example.demo.controllers.rest;
 
-import com.example.demo.exceptions.EntityDuplicateException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.AuthorizationException;
 import com.example.demo.exceptions.LikeException;
@@ -15,7 +14,6 @@ import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -26,7 +24,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
