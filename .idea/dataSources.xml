@@ -4,6 +4,7 @@
     <data-source source="LOCAL" name="ForumDB_2024-07-22T12-10Z@mariadbservertelerik.database.windows.net" uuid="679e753d-2f3b-4d0b-b37d-2bf3d2b44231">
       <driver-ref>azure.ms</driver-ref>
       <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
       <jdbc-url>jdbc:sqlserver://mariadbservertelerik.database.windows.net:1433;database=ForumDB_2024-07-22T12-10Z</jdbc-url>
       <jdbc-additional-properties>

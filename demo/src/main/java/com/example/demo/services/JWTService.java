@@ -39,7 +39,7 @@ public class JWTService {
         }
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         Date expirationDate = extractExpiration(token);
         boolean expired = expirationDate.before(new Date());
         logger.debug("Token expiration date: " + expirationDate + ", expired: " + expired);

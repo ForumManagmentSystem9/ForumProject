@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,14 +27,16 @@ public class UserServiceImpl implements UserService{
     private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RestrictHelper helper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, PasswordEncoder encoder, JWTService jwtService,@Lazy AuthenticationManager authenticationManager, RestrictHelper helper) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder encoder, JWTService jwtService, @Lazy AuthenticationManager authenticationManager, RestrictHelper helper, PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.encoder = encoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.helper = helper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -138,9 +139,6 @@ public class UserServiceImpl implements UserService{
     }
 
     private void updateUserField(User user, User updateUser) {
-//        if (updateUser.getUsername() != null && !updateUser.getUsername().equals(user.getUsername())){
-//            user.setUsername(updateUser.getUsername());
-//        }
         if (updateUser.getFirstName() != null && !updateUser.getFirstName().equals(user.getFirstName())){
             user.setFirstName(updateUser.getFirstName());
         }
@@ -152,4 +150,9 @@ public class UserServiceImpl implements UserService{
         }
         repository.update(user);
     }
+
+    public String encodePassword(String password){
+        return passwordEncoder.encode(password);
+    }
+
 }

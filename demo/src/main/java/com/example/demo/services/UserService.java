@@ -24,4 +24,5 @@ public interface UserService extends UserDetailsService {
     void changeRole(User user, User changeUser, Role role);
 
     void deleteUser(User user);
+    String encodePassword(String password);
 }

@@ -32,7 +32,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostById(int id) {
-        return postsRepository.findById(id).orElseThrow();
+        return postsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Post", id));
     }
 
     @Override
@@ -43,7 +44,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePostById(int id, User user) {
-        Post post = postsRepository.findById(id).orElseThrow();
+        Post post = postsRepository.findById(id).orElseThrow(()
+                -> new EntityNotFoundException("Post", id));
         helper.deletePermission(post, user);
         postsRepository.deleteById(id);
     }
