@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Added to mvc controller- AuthenticationMvc&#10;Created html for login, register and error&#10;added image for error 404&#10;minor changes to JWTAuthenticationFilter, CustomUserDetails, UserRepositoryImpl, JWTService, PostServiceImpl, UserService, UserServiceImpl&#10;Added RegisterDto and LoginDto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/filter/JWTAuthenticationFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/CustomUserDetails.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/CustomUserDetails.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,9 +172,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
-        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
-        <option value="jdk-22-openjdk-22-4caba194b151-f504ca98" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17890.1" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17890.1" />
       </set>
     </attachedChunks>
   </component>
@@ -219,6 +216,7 @@
       <workItem from="1723106477821" duration="9161000" />
       <workItem from="1723120800689" duration="1376000" />
       <workItem from="1723201099233" duration="2577000" />
+      <workItem from="1723805545949" duration="2008000" />
     </task>
     <task id="LOCAL-00001" summary="database changes">
       <option name="closed" value="true" />
@@ -348,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723760347969</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Added to mvc controller- AuthenticationMvc&#10;Created html for login, register and error&#10;added image for error 404&#10;minor changes to JWTAuthenticationFilter, CustomUserDetails, UserRepositoryImpl, JWTService, PostServiceImpl, UserService, UserServiceImpl&#10;Added RegisterDto and LoginDto">
+      <option name="closed" value="true" />
+      <created>1723805697984</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1723805697984</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

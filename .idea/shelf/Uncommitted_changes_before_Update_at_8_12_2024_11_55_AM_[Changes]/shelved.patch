@@ -1,0 +1,700 @@
+Index: demo/src/main/java/com/example/demo/services/JWTService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.helpers.AuthorizationHelper;\r\nimport com.example.demo.models.userfolder.CustomUserDetails;\r\nimport com.example.demo.models.userfolder.User;\r\nimport com.example.demo.models.userfolder.UserDTO;\r\nimport io.jsonwebtoken.Claims;\r\nimport io.jsonwebtoken.ExpiredJwtException;\r\nimport io.jsonwebtoken.JwtException;\r\nimport io.jsonwebtoken.Jwts;\r\nimport io.jsonwebtoken.io.Decoders;\r\nimport io.jsonwebtoken.security.Keys;\r\nimport org.slf4j.Logger;\r\nimport org.slf4j.LoggerFactory;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport javax.crypto.SecretKey;\r\nimport java.util.Date;\r\nimport java.util.function.Function;\r\n\r\n@Service\r\npublic class JWTService {\r\n    private final String SECRET_KEY = \"f85cbf079eacded5ebe7fa095e9b4a58b137ecc84a999bac921b4822e6d5b0f1\";\r\n    private static final Logger logger = LoggerFactory.getLogger(JWTService.class);\r\n    public String extractEmail(String token){\r\n        return extractClaims(token,Claims::getSubject);\r\n    }\r\n    public boolean isValid(String token, CustomUserDetails user) {\r\n        try {\r\n            String email = extractEmail(token);\r\n            boolean valid = email.equals(user.getEmail()) && !isTokenExpired(token);\r\n            logger.debug(\"Token email: \" + email + \", User email: \" + user.getEmail() + \", Valid: \" + valid);\r\n            logger.debug(\"User email: \" + user.getEmail() + \", Pass: \" + user.getPassword() + \", Username:\" + user.getUsername());\r\n            return valid;\r\n        } catch (Exception e) {\r\n            logger.error(\"Token validation error: \", e);\r\n            return false;\r\n        }\r\n    }\r\n\r\n    private boolean isTokenExpired(String token) {\r\n        Date expirationDate = extractExpiration(token);\r\n        boolean expired = expirationDate.before(new Date());\r\n        logger.debug(\"Token expiration date: \" + expirationDate + \", expired: \" + expired);\r\n        return expired;\r\n    }\r\n\r\n\r\n    private Date extractExpiration(String token) {\r\n        return extractClaims(token, Claims::getExpiration);\r\n    }\r\n\r\n    public <T> T extractClaims(String token, Function<Claims, T> resolver){\r\n        Claims claims = extractAllClaims(token);\r\n        return resolver.apply(claims);\r\n    }\r\n    public Claims extractAllClaims(String token) {\r\n        try {\r\n            return Jwts.parserBuilder()\r\n                    .setSigningKey(getSigningKey())\r\n                    .build()\r\n                    .parseClaimsJws(token)\r\n                    .getBody();\r\n        } catch (JwtException | IllegalArgumentException e) {\r\n            // Log the exception and handle it accordingly\r\n            throw new RuntimeException(\"Token parsing failed\", e);\r\n        }\r\n    }\r\n\r\n    public String generateToken(User user){\r\n        long expirationTime = 1000 * 60 * 60 * 10;\r\n        String token = Jwts.builder()\r\n                .setSubject(user.getEmail())\r\n                .setIssuedAt(new Date(System.currentTimeMillis()))\r\n                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))\r\n                .signWith(getSigningKey())\r\n                .compact();\r\n        return token;\r\n    }\r\n    public String refreshToken(String token) {\r\n        try {\r\n            Claims claims = extractAllClaims(token);\r\n            return generateTokenWithClaims(claims);\r\n        } catch (ExpiredJwtException e) {\r\n            Claims claims = e.getClaims();\r\n            return generateTokenWithClaims(claims);\r\n        }\r\n    }\r\n\r\n    private String generateTokenWithClaims(Claims claims) {\r\n        long expirationTime = 1000 * 60 * 60 * 10;\r\n        return Jwts.builder()\r\n                .setClaims(claims)\r\n                .setIssuedAt(new Date(System.currentTimeMillis()))\r\n                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))\r\n                .signWith(getSigningKey())\r\n                .compact();\r\n    }\r\n    private SecretKey getSigningKey() {\r\n        byte [] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);\r\n        return Keys.hmacShaKeyFor(keyBytes);\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/JWTService.java b/demo/src/main/java/com/example/demo/services/JWTService.java
+--- a/demo/src/main/java/com/example/demo/services/JWTService.java	(revision 71b098bb64996d32a65b3dccf0573f2f3a0ef15f)
++++ b/demo/src/main/java/com/example/demo/services/JWTService.java	(date 1723111494095)
+@@ -39,7 +39,7 @@
+         }
+     }
+ 
+-    private boolean isTokenExpired(String token) {
++    public boolean isTokenExpired(String token) {
+         Date expirationDate = extractExpiration(token);
+         boolean expired = expirationDate.before(new Date());
+         logger.debug("Token expiration date: " + expirationDate + ", expired: " + expired);
+Index: .idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml b/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml
+--- a/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml	(revision 71b098bb64996d32a65b3dccf0573f2f3a0ef15f)
++++ b/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml	(date 1723043633140)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <dataSource name="ForumDB_2024-07-22T12-10Z@mariadbservertelerik.database.windows.net">
+-  <database-model serializer="dbm" dbms="AZURE" family-id="AZURE" format-version="4.51">
++  <database-model serializer="dbm" dbms="AZURE" family-id="AZURE" format-version="4.52">
+     <root id="1">
+       <Dbms>AZURE</Dbms>
+       <ServerVersion>12.0.5564</ServerVersion>
+Index: demo/build/reports/tests/test/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html>\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>\r\n<meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\"/>\r\n<title>Test results - Test Summary</title>\r\n<link href=\"css/base-style.css\" rel=\"stylesheet\" type=\"text/css\"/>\r\n<link href=\"css/style.css\" rel=\"stylesheet\" type=\"text/css\"/>\r\n<script src=\"js/report.js\" type=\"text/javascript\"></script>\r\n</head>\r\n<body>\r\n<div id=\"content\">\r\n<h1>Test Summary</h1>\r\n<div id=\"summary\">\r\n<table>\r\n<tr>\r\n<td>\r\n<div class=\"summaryGroup\">\r\n<table>\r\n<tr>\r\n<td>\r\n<div class=\"infoBox\" id=\"tests\">\r\n<div class=\"counter\">0</div>\r\n<p>tests</p>\r\n</div>\r\n</td>\r\n<td>\r\n<div class=\"infoBox\" id=\"failures\">\r\n<div class=\"counter\">0</div>\r\n<p>failures</p>\r\n</div>\r\n</td>\r\n<td>\r\n<div class=\"infoBox\" id=\"ignored\">\r\n<div class=\"counter\">0</div>\r\n<p>ignored</p>\r\n</div>\r\n</td>\r\n<td>\r\n<div class=\"infoBox\" id=\"duration\">\r\n<div class=\"counter\">-</div>\r\n<p>duration</p>\r\n</div>\r\n</td>\r\n</tr>\r\n</table>\r\n</div>\r\n</td>\r\n<td>\r\n<div class=\"infoBox success\" id=\"successRate\">\r\n<div class=\"percent\">-</div>\r\n<p>successful</p>\r\n</div>\r\n</td>\r\n</tr>\r\n</table>\r\n</div>\r\n<div id=\"tabs\">\r\n<ul class=\"tabLinks\">\r\n<li>\r\n<a href=\"#tab0\">Classes</a>\r\n</li>\r\n</ul>\r\n<div id=\"tab0\" class=\"tab\">\r\n<h2>Classes</h2>\r\n<table>\r\n<thead>\r\n<tr>\r\n<th>Class</th>\r\n<th>Tests</th>\r\n<th>Failures</th>\r\n<th>Ignored</th>\r\n<th>Duration</th>\r\n<th>Success rate</th>\r\n</tr>\r\n</thead>\r\n<tbody/>\r\n</table>\r\n</div>\r\n</div>\r\n<div id=\"footer\">\r\n<p>\r\n<div>\r\n<label class=\"hidden\" id=\"label-for-line-wrapping-toggle\" for=\"line-wrapping-toggle\">Wrap lines\r\n<input id=\"line-wrapping-toggle\" type=\"checkbox\" autocomplete=\"off\"/>\r\n</label>\r\n</div>Generated by \r\n<a href=\"http://www.gradle.org\">Gradle 8.8</a> at 24.07.2024 г., 18:02:50 ч.</p>\r\n</div>\r\n</div>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/build/reports/tests/test/index.html b/demo/build/reports/tests/test/index.html
+--- a/demo/build/reports/tests/test/index.html	(revision 71b098bb64996d32a65b3dccf0573f2f3a0ef15f)
++++ b/demo/build/reports/tests/test/index.html	(date 1723113044660)
+@@ -20,13 +20,13 @@
+ <tr>
+ <td>
+ <div class="infoBox" id="tests">
+-<div class="counter">0</div>
++<div class="counter">10</div>
+ <p>tests</p>
+ </div>
+ </td>
+ <td>
+ <div class="infoBox" id="failures">
+-<div class="counter">0</div>
++<div class="counter">9</div>
+ <p>failures</p>
+ </div>
+ </td>
+@@ -38,7 +38,7 @@
+ </td>
+ <td>
+ <div class="infoBox" id="duration">
+-<div class="counter">-</div>
++<div class="counter">1.919s</div>
+ <p>duration</p>
+ </div>
+ </td>
+@@ -47,8 +47,8 @@
+ </div>
+ </td>
+ <td>
+-<div class="infoBox success" id="successRate">
+-<div class="percent">-</div>
++<div class="infoBox failures" id="successRate">
++<div class="percent">10%</div>
+ <p>successful</p>
+ </div>
+ </td>
+@@ -58,10 +58,84 @@
+ <div id="tabs">
+ <ul class="tabLinks">
+ <li>
+-<a href="#tab0">Classes</a>
++<a href="#tab0">Failed tests</a>
++</li>
++<li>
++<a href="#tab1">Packages</a>
++</li>
++<li>
++<a href="#tab2">Classes</a>
+ </li>
+ </ul>
+ <div id="tab0" class="tab">
++<h2>Failed tests</h2>
++<ul class="linkList">
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testExtractAllClaims_ThrowsException()">testExtractAllClaims_ThrowsException()</a>
++</li>
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testExtractEmail()">testExtractEmail()</a>
++</li>
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testIsTokenExpired_False()">testIsTokenExpired_False()</a>
++</li>
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testIsTokenExpired_True()">testIsTokenExpired_True()</a>
++</li>
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testIsValid_Failure_InvalidEmail()">testIsValid_Failure_InvalidEmail()</a>
++</li>
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testIsValid_Failure_TokenExpired()">testIsValid_Failure_TokenExpired()</a>
++</li>
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testIsValid_Success()">testIsValid_Success()</a>
++</li>
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testRefreshToken_ExpiredToken()">testRefreshToken_ExpiredToken()</a>
++</li>
++<li>
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">JWTServiceTest</a>.
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html#testRefreshToken_Success()">testRefreshToken_Success()</a>
++</li>
++</ul>
++</div>
++<div id="tab1" class="tab">
++<h2>Packages</h2>
++<table>
++<thead>
++<tr>
++<th>Package</th>
++<th>Tests</th>
++<th>Failures</th>
++<th>Ignored</th>
++<th>Duration</th>
++<th>Success rate</th>
++</tr>
++</thead>
++<tbody>
++<tr>
++<td class="failures">
++<a href="packages/com.example.demo.service.test.html">com.example.demo.service.test</a>
++</td>
++<td>10</td>
++<td>9</td>
++<td>0</td>
++<td>1.919s</td>
++<td class="failures">10%</td>
++</tr>
++</tbody>
++</table>
++</div>
++<div id="tab2" class="tab">
+ <h2>Classes</h2>
+ <table>
+ <thead>
+@@ -74,7 +148,18 @@
+ <th>Success rate</th>
+ </tr>
+ </thead>
+-<tbody/>
++<tbody>
++<tr>
++<td class="failures">
++<a href="classes/com.example.demo.service.test.JWTServiceTest.html">com.example.demo.service.test.JWTServiceTest</a>
++</td>
++<td>10</td>
++<td>9</td>
++<td>0</td>
++<td>1.919s</td>
++<td class="failures">10%</td>
++</tr>
++</tbody>
+ </table>
+ </div>
+ </div>
+@@ -85,7 +170,7 @@
+ <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+ </label>
+ </div>Generated by 
+-<a href="http://www.gradle.org">Gradle 8.8</a> at 24.07.2024 г., 18:02:50 ч.</p>
++<a href="http://www.gradle.org">Gradle 8.8</a> at Aug 8, 2024, 1:30:44 PM</p>
+ </div>
+ </div>
+ </body>
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"5ff856fa-9527-47b3-aada-19a767595685\" name=\"Changes\" comment=\"Login changes\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/jarRepositories.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/jarRepositories.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024___14_25__Changes_1.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/AuthenticationController.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/AuthorizationHelper.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/Role$RoleType.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/Role.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/SecurityConfig.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserDTO.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserMapper.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserRepositoryImpl.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserService.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserServiceImpl.class\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/buildOutputCleanup.lock\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/checksums.lock\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/executionHistory.bin\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/executionHistory.lock\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/file-system.probe\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/fileHashes.bin\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/fileHashes.lock\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/previous-compilation-data.bin\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/resourceHashesCache.bin\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/sha1-checksums.bin\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/shelved.patch\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/checksums/md5-checksums.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/checksums/md5-checksums.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/checksums/sha1-checksums.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/executionHistory/executionHistory.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/.gradle/file-system.probe\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/.gradle/file-system.probe\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build.gradle\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build.gradle\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/RestrictHelper.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/RestrictHelper.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Like.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Like.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Post.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Post.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/User.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/User.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthorizationHelper.class.uniqueId18\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Comment.class.uniqueId11\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentDTO.class.uniqueId30\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentMapper.class.uniqueId8\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepository.class.uniqueId3\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepositoryImpl.class.uniqueId17\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRestController.class.uniqueId7\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentService.class.uniqueId19\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentServiceImpl.class.uniqueId31\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Creatable.class.uniqueId1\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CustomUserDetails.class.uniqueId15\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTAuthenticationFilter.class.uniqueId9\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTService.class.uniqueId4\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Like.class.uniqueId5\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Post.class.uniqueId25\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostDTO.class.uniqueId28\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostMapper.class.uniqueId32\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostRestController.class.uniqueId16\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostService.class.uniqueId27\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostServiceImpl.class.uniqueId12\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepository.class.uniqueId13\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepositoryImpl.class.uniqueId29\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsResponse.class.uniqueId24\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PrivateController.class.uniqueId20\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/SecurityConfig.class.uniqueId10\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/User.class.uniqueId26\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserController.class.uniqueId21\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserMapper.class.uniqueId23\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepository.class.uniqueId2\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepositoryImpl.class.uniqueId14\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserService.class.uniqueId22\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserServiceImpl.class.uniqueId6\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/RestrictHelper.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/RestrictHelper.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Comment.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Comment.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Like.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Like.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Post.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Post.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/User.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/User.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ExternalProjectsData\">\r\n    <projectState path=\"$PROJECT_DIR$/demo\">\r\n      <ProjectState />\r\n    </projectState>\r\n  </component>\r\n  <component name=\"ExternalProjectsManager\">\r\n    <system id=\"GRADLE\">\r\n      <state>\r\n        <projects_view>\r\n          <tree_state>\r\n            <expand>\r\n              <path>\r\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\r\n                <item name=\"demo\" type=\"f1a62948:ProjectNode\" />\r\n              </path>\r\n            </expand>\r\n            <select />\r\n          </tree_state>\r\n        </projects_view>\r\n      </state>\r\n    </system>\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PUSH_AUTO_UPDATE\" value=\"true\" />\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"KubernetesApiProvider\">{\r\n  &quot;isMigrated&quot;: true\r\n}</component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProblemsViewState\">\r\n    <option name=\"selectedTabId\" value=\"ProjectErrors\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 3\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2jQEzCc1tzcPPGsSbh9q76hHNLt\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Gradle.Build demo.executor\": \"Run\",\r\n    \"Gradle.Download Sources.executor\": \"Run\",\r\n    \"Gradle.JWTtest.testTokenGenerationAndValidation.executor\": \"Run\",\r\n    \"RequestMappingsPanelOrder0\": \"0\",\r\n    \"RequestMappingsPanelOrder1\": \"1\",\r\n    \"RequestMappingsPanelWidth0\": \"75\",\r\n    \"RequestMappingsPanelWidth1\": \"75\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"Spring Boot.DemoApplication.executor\": \"Run\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"last_opened_file_path\": \"C:/ForumProject\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"project.structure.last.edited\": \"Project\",\r\n    \"project.structure.proportion\": \"0.0\",\r\n    \"project.structure.side.proportion\": \"0.0\",\r\n    \"settings.editor.selected.configurable\": \"reference.settingsdialog.project.gradle\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  },\r\n  \"keyToStringList\": {\r\n    \"DatabaseDriversLRU\": [\r\n      \"mariadb\",\r\n      \"azure\"\r\n    ]\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\ForumProject\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\ForumProject\\.idea\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"com.example.demo.exceptions\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Spring Boot.DemoApplication\">\r\n    <configuration name=\"JWTtest.testTokenGenerationAndValidation\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\r\n      <ExternalSystemSettings>\r\n        <option name=\"executionName\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$/demo\" />\r\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\r\n        <option name=\"scriptParameters\" value=\"\" />\r\n        <option name=\"taskDescriptions\">\r\n          <list />\r\n        </option>\r\n        <option name=\"taskNames\">\r\n          <list>\r\n            <option value=\":test\" />\r\n            <option value=\"--tests\" />\r\n            <option value=\"&quot;com.example.demo.JWTtest.testTokenGenerationAndValidation&quot;\" />\r\n          </list>\r\n        </option>\r\n        <option name=\"vmOptions\" />\r\n      </ExternalSystemSettings>\r\n      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>\r\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\r\n      <DebugAllEnabled>false</DebugAllEnabled>\r\n      <RunAsTest>true</RunAsTest>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"DemoApplication\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\r\n      <module name=\"demo.main\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"com.example.demo.DemoApplication\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Gradle.JWTtest.testTokenGenerationAndValidation\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4\" />\r\n        <option value=\"jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021\" />\r\n        <option value=\"jdk-22-openjdk-22-4caba194b151-f504ca98\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"5ff856fa-9527-47b3-aada-19a767595685\" name=\"Changes\" comment=\"\" />\r\n      <created>1721311160531</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1721311160531</updated>\r\n      <workItem from=\"1721311161614\" duration=\"5815000\" />\r\n      <workItem from=\"1721317552345\" duration=\"609000\" />\r\n      <workItem from=\"1721464840537\" duration=\"788000\" />\r\n      <workItem from=\"1721465784607\" duration=\"21000\" />\r\n      <workItem from=\"1721487708551\" duration=\"7181000\" />\r\n      <workItem from=\"1721536332151\" duration=\"131000\" />\r\n      <workItem from=\"1721713410305\" duration=\"4720000\" />\r\n      <workItem from=\"1721722524837\" duration=\"4312000\" />\r\n      <workItem from=\"1721801564098\" duration=\"9420000\" />\r\n      <workItem from=\"1721819482121\" duration=\"16716000\" />\r\n      <workItem from=\"1721883414003\" duration=\"8049000\" />\r\n      <workItem from=\"1721900016473\" duration=\"9768000\" />\r\n      <workItem from=\"1721988085542\" duration=\"4497000\" />\r\n      <workItem from=\"1722001048701\" duration=\"1600000\" />\r\n      <workItem from=\"1722079234934\" duration=\"13158000\" />\r\n      <workItem from=\"1722256245555\" duration=\"4517000\" />\r\n      <workItem from=\"1722319032436\" duration=\"15120000\" />\r\n      <workItem from=\"1722404712955\" duration=\"15292000\" />\r\n      <workItem from=\"1722510965878\" duration=\"762000\" />\r\n      <workItem from=\"1722511752147\" duration=\"5508000\" />\r\n      <workItem from=\"1722580766843\" duration=\"603000\" />\r\n      <workItem from=\"1722674665328\" duration=\"6922000\" />\r\n      <workItem from=\"1722688772510\" duration=\"2336000\" />\r\n      <workItem from=\"1722769003220\" duration=\"842000\" />\r\n      <workItem from=\"1722769862874\" duration=\"5051000\" />\r\n      <workItem from=\"1722862248732\" duration=\"1257000\" />\r\n      <workItem from=\"1722930663022\" duration=\"4762000\" />\r\n      <workItem from=\"1722951216918\" duration=\"3009000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"database changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721315598863</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721315598864</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"database changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721315724829</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721315724829</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"database changes with docker\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721502469098</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721502469098</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"models - tags and posts\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721657994025</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721657994025</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"database changes with docker\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721665834523</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721665834523</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"models comments and postdto\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721665971459</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721665971459</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"Implement PostsRepository interface and PostsRepositoryImpl\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721719219233</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721719219233</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"Add PostService and PostServiceImpl\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721721433367</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721721433367</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"Added Security files\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721738599355</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721738599355</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"Security changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721825813297</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721825813297</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00011\" summary=\"Authentication fix\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721883783664</created>\r\n      <option name=\"number\" value=\"00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00011\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721883783664</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00012\" summary=\"Authorization changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721898606929</created>\r\n      <option name=\"number\" value=\"00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00012\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721898606929</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00013\" summary=\"Login changes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1721915774154</created>\r\n      <option name=\"number\" value=\"00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00013\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1721915774154</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"14\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"UpdateCopyrightCheckinHandler\">\r\n    <option name=\"UPDATE_COPYRIGHT\" value=\"true\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT\" value=\"false\" />\r\n    <option name=\"CHECK_NEW_TODO\" value=\"false\" />\r\n    <MESSAGE value=\"database changes\" />\r\n    <MESSAGE value=\"models - tags and posts\" />\r\n    <MESSAGE value=\"models - comments and postdto\" />\r\n    <MESSAGE value=\"database changes with docker\" />\r\n    <MESSAGE value=\"models comments and postdto\" />\r\n    <MESSAGE value=\"Implement PostsRepository interface and PostsRepositoryImpl\" />\r\n    <MESSAGE value=\"Add PostService and PostServiceImpl\" />\r\n    <MESSAGE value=\"added SecurityConfig, AuthenticationHelper, JWTService, JWTAuthenticationFilter and EmailPasswordAuthenticationFilter\" />\r\n    <MESSAGE value=\"Added UserRepository and register on UserService\" />\r\n    <MESSAGE value=\"Added Security files\" />\r\n    <MESSAGE value=\"Security changes\" />\r\n    <MESSAGE value=\"Authentication fix\" />\r\n    <MESSAGE value=\"Authorization changes\" />\r\n    <MESSAGE value=\"Login changes\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Login changes\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java</url>\r\n          <line>75</line>\r\n          <option name=\"timeStamp\" value=\"12\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java</url>\r\n          <line>73</line>\r\n          <option name=\"timeStamp\" value=\"17\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/UserRepositoryImpl.java</url>\r\n          <line>103</line>\r\n          <option name=\"timeStamp\" value=\"18\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java</url>\r\n          <line>91</line>\r\n          <option name=\"timeStamp\" value=\"26\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>\r\n          <line>72</line>\r\n          <option name=\"timeStamp\" value=\"27\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java</url>\r\n          <line>93</line>\r\n          <option name=\"timeStamp\" value=\"28\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>\r\n          <line>79</line>\r\n          <option name=\"timeStamp\" value=\"29\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>\r\n          <line>94</line>\r\n          <option name=\"timeStamp\" value=\"30\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java</url>\r\n          <line>88</line>\r\n          <option name=\"timeStamp\" value=\"31\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java</url>\r\n          <line>68</line>\r\n          <option name=\"timeStamp\" value=\"34\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/RestrictHelper.java</url>\r\n          <line>37</line>\r\n          <option name=\"timeStamp\" value=\"35\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java</url>\r\n          <line>66</line>\r\n          <option name=\"timeStamp\" value=\"36\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java</url>\r\n          <line>152</line>\r\n          <option name=\"timeStamp\" value=\"47\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>\r\n          <line>44</line>\r\n          <option name=\"timeStamp\" value=\"48\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java</url>\r\n          <line>47</line>\r\n          <option name=\"timeStamp\" value=\"49\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 71b098bb64996d32a65b3dccf0573f2f3a0ef15f)
++++ b/.idea/workspace.xml	(date 1723452856697)
+@@ -4,31 +4,9 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Login changes">
++    <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="tests">
++      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/679e753d-2f3b-4d0b-b37d-2bf3d2b44231.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024___14_25__Changes_1.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/AuthenticationController.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/AuthorizationHelper.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/Role$RoleType.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/Role.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/SecurityConfig.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserDTO.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserMapper.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserRepositoryImpl.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserService.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/UserServiceImpl.class" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/buildOutputCleanup.lock" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/checksums.lock" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/executionHistory.bin" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/executionHistory.lock" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/file-system.probe" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/fileHashes.bin" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/fileHashes.lock" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/previous-compilation-data.bin" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/resourceHashesCache.bin" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/sha1-checksums.bin" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_29_7_2024_г__14_25_[Changes]1/shelved.patch" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/checksums.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/checksums/md5-checksums.bin" afterDir="false" />
+@@ -39,57 +17,22 @@
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/fileHashes.lock" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/8.8/fileHashes/resourceHashesCache.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/file-system.probe" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build.gradle" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/config/SecurityConfig.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/RestrictHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/helpers/RestrictHelper.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Like.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Like.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Post.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Post.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/userfolder/User.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/PostRestController.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/controllers/PostRestController.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Comment.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/models/Comment.class" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/JWTService.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/UserServiceImpl.class" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/AuthorizationHelper.class.uniqueId18" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Comment.class.uniqueId11" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentDTO.class.uniqueId30" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentMapper.class.uniqueId8" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepository.class.uniqueId3" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRepositoryImpl.class.uniqueId17" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentRestController.class.uniqueId7" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentService.class.uniqueId19" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CommentServiceImpl.class.uniqueId31" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Creatable.class.uniqueId1" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/CustomUserDetails.class.uniqueId15" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTAuthenticationFilter.class.uniqueId9" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/JWTService.class.uniqueId4" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Like.class.uniqueId5" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/Post.class.uniqueId25" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostDTO.class.uniqueId28" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostMapper.class.uniqueId32" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostRestController.class.uniqueId16" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostService.class.uniqueId27" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostServiceImpl.class.uniqueId12" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepository.class.uniqueId13" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsRepositoryImpl.class.uniqueId29" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PostsResponse.class.uniqueId24" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/PrivateController.class.uniqueId20" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/SecurityConfig.class.uniqueId10" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/User.class.uniqueId26" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserController.class.uniqueId21" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserMapper.class.uniqueId23" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepository.class.uniqueId2" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserRepositoryImpl.class.uniqueId14" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserService.class.uniqueId22" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/UserServiceImpl.class.uniqueId6" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/PostServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/classes/java/main/com/example/demo/services/PostServiceImpl.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/reports/tests/test/css/base-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/reports/tests/test/css/base-style.css" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/reports/tests/test/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/reports/tests/test/css/style.css" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/reports/tests/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/reports/tests/test/index.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/reports/tests/test/js/report.js" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/reports/tests/test/js/report.js" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/test-results/test/binary/results.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/test-results/test/binary/results.bin" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/compileTransaction/stash-dir/RestrictHelper.class.uniqueId0" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/config/SecurityConfig.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/RestrictHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/helpers/RestrictHelper.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Comment.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Like.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Like.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/Post.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/models/userfolder/User.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/build/tmp/compileTestJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/demo/build/tmp/compileTestJava/previous-compilation-data.bin" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/JWTService.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/UserServiceImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -104,6 +47,9 @@
+   <component name="ExternalProjectsManager">
+     <system id="GRADLE">
+       <state>
++        <task path="$PROJECT_DIR$/demo">
++          <activation />
++        </task>
+         <projects_view>
+           <tree_state>
+             <expand>
+@@ -130,6 +76,18 @@
+     <option name="PUSH_AUTO_UPDATE" value="true" />
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;DavidGrigorov&quot;
++  }
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/ForumManagmentSystem9/ForumProject.git&quot;,
++    &quot;accountId&quot;: &quot;2faa2bd5-8493-4b66-a5d2-e6877e3cef0d&quot;
++  }
++}</component>
+   <component name="KubernetesApiProvider">{
+   &quot;isMigrated&quot;: true
+ }</component>
+@@ -150,40 +108,50 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Gradle.Build demo.executor": "Run",
+-    "Gradle.Download Sources.executor": "Run",
+-    "Gradle.JWTtest.testTokenGenerationAndValidation.executor": "Run",
+-    "RequestMappingsPanelOrder0": "0",
+-    "RequestMappingsPanelOrder1": "1",
+-    "RequestMappingsPanelWidth0": "75",
+-    "RequestMappingsPanelWidth1": "75",
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "Spring Boot.DemoApplication.executor": "Run",
+-    "git-widget-placeholder": "main",
+-    "kotlin-language-version-configured": "true",
+-    "last_opened_file_path": "C:/ForumProject",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "project.structure.last.edited": "Project",
+-    "project.structure.proportion": "0.0",
+-    "project.structure.side.proportion": "0.0",
+-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Gradle.Build demo.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.CommentRestControllerTest.executor&quot;: &quot;Coverage&quot;,
++    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.JWTServiceTest.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.JWTtest.testTokenGenerationAndValidation.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.PostRestControllerTest.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.PostServiceImplTest.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.PostServiceImplTest.testDeletePostById_NotFound.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.PostServiceImplTest.testGetPostById_NotFound.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.PrivateControllerTest.executor&quot;: &quot;Run&quot;,
++    &quot;Gradle.Tests in 'demo.test'.executor&quot;: &quot;Coverage&quot;,
++    &quot;Gradle.UserControllerTest.executor&quot;: &quot;Coverage&quot;,
++    &quot;Gradle.UserServiceImplTest.executor&quot;: &quot;Run&quot;,
++    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
++    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
++    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
++    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;Spring Boot.DemoApplication.executor&quot;: &quot;Run&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/ForumProject&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   },
+-  "keyToStringList": {
+-    "DatabaseDriversLRU": [
+-      "mariadb",
+-      "azure"
++  &quot;keyToStringList&quot;: {
++    &quot;DatabaseDriversLRU&quot;: [
++      &quot;mariadb&quot;,
++      &quot;azure&quot;
+     ]
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\ForumProject" />
+@@ -195,8 +163,32 @@
+       <recent name="com.example.demo.exceptions" />
+     </key>
+   </component>
+-  <component name="RunManager" selected="Spring Boot.DemoApplication">
+-    <configuration name="JWTtest.testTokenGenerationAndValidation" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++  <component name="RunManager" selected="Gradle.JWTServiceTest">
++    <configuration name="JWTServiceTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++      <ExternalSystemSettings>
++        <option name="executionName" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$/demo" />
++        <option name="externalSystemIdString" value="GRADLE" />
++        <option name="scriptParameters" value="" />
++        <option name="taskDescriptions">
++          <list />
++        </option>
++        <option name="taskNames">
++          <list>
++            <option value=":test" />
++            <option value="--tests" />
++            <option value="&quot;com.example.demo.service.test.JWTServiceTest&quot;" />
++          </list>
++        </option>
++        <option name="vmOptions" />
++      </ExternalSystemSettings>
++      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
++      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
++      <DebugAllEnabled>false</DebugAllEnabled>
++      <RunAsTest>true</RunAsTest>
++      <method v="2" />
++    </configuration>
++    <configuration name="PostServiceImplTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+       <ExternalSystemSettings>
+         <option name="executionName" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$/demo" />
+@@ -209,7 +201,79 @@
+           <list>
+             <option value=":test" />
+             <option value="--tests" />
+-            <option value="&quot;com.example.demo.JWTtest.testTokenGenerationAndValidation&quot;" />
++            <option value="&quot;com.example.demo.service.test.PostServiceImplTest&quot;" />
++          </list>
++        </option>
++        <option name="vmOptions" />
++      </ExternalSystemSettings>
++      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
++      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
++      <DebugAllEnabled>false</DebugAllEnabled>
++      <RunAsTest>true</RunAsTest>
++      <method v="2" />
++    </configuration>
++    <configuration name="PostServiceImplTest.testDeletePostById_NotFound" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++      <ExternalSystemSettings>
++        <option name="executionName" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$/demo" />
++        <option name="externalSystemIdString" value="GRADLE" />
++        <option name="scriptParameters" value="" />
++        <option name="taskDescriptions">
++          <list />
++        </option>
++        <option name="taskNames">
++          <list>
++            <option value=":test" />
++            <option value="--tests" />
++            <option value="&quot;com.example.demo.service.test.PostServiceImplTest.testDeletePostById_NotFound&quot;" />
++          </list>
++        </option>
++        <option name="vmOptions" />
++      </ExternalSystemSettings>
++      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
++      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
++      <DebugAllEnabled>false</DebugAllEnabled>
++      <RunAsTest>true</RunAsTest>
++      <method v="2" />
++    </configuration>
++    <configuration name="PostServiceImplTest.testGetPostById_NotFound" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++      <ExternalSystemSettings>
++        <option name="executionName" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$/demo" />
++        <option name="externalSystemIdString" value="GRADLE" />
++        <option name="scriptParameters" value="" />
++        <option name="taskDescriptions">
++          <list />
++        </option>
++        <option name="taskNames">
++          <list>
++            <option value=":test" />
++            <option value="--tests" />
++            <option value="&quot;com.example.demo.service.test.PostServiceImplTest.testGetPostById_NotFound&quot;" />
++          </list>
++        </option>
++        <option name="vmOptions" />
++      </ExternalSystemSettings>
++      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
++      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
++      <DebugAllEnabled>false</DebugAllEnabled>
++      <RunAsTest>true</RunAsTest>
++      <method v="2" />
++    </configuration>
++    <configuration name="UserServiceImplTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
++      <ExternalSystemSettings>
++        <option name="executionName" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$/demo" />
++        <option name="externalSystemIdString" value="GRADLE" />
++        <option name="scriptParameters" value="" />
++        <option name="taskDescriptions">
++          <list />
++        </option>
++        <option name="taskNames">
++          <list>
++            <option value=":test" />
++            <option value="--tests" />
++            <option value="&quot;com.example.demo.service.test.UserServiceImplTest&quot;" />
+           </list>
+         </option>
+         <option name="vmOptions" />
+@@ -229,16 +293,19 @@
+     </configuration>
+     <recent_temporary>
+       <list>
+-        <item itemvalue="Gradle.JWTtest.testTokenGenerationAndValidation" />
++        <item itemvalue="Gradle.JWTServiceTest" />
++        <item itemvalue="Gradle.UserServiceImplTest" />
++        <item itemvalue="Gradle.PostServiceImplTest.testGetPostById_NotFound" />
++        <item itemvalue="Gradle.PostServiceImplTest.testDeletePostById_NotFound" />
++        <item itemvalue="Gradle.PostServiceImplTest" />
+       </list>
+     </recent_temporary>
+   </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+-        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
+-        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
+-        <option value="jdk-22-openjdk-22-4caba194b151-f504ca98" />
++        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17890.1" />
++        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17890.1" />
+       </set>
+     </attachedChunks>
+   </component>
+@@ -278,6 +345,7 @@
+       <workItem from="1722862248732" duration="1257000" />
+       <workItem from="1722930663022" duration="4762000" />
+       <workItem from="1722951216918" duration="3009000" />
++      <workItem from="1723194023473" duration="65000" />
+     </task>
+     <task id="LOCAL-00001" summary="database changes">
+       <option name="closed" value="true" />
+@@ -383,7 +451,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1721915774154</updated>
+     </task>
+-    <option name="localTasksCounter" value="14" />
++    <task id="LOCAL-00014" summary="tests">
++      <option name="closed" value="true" />
++      <created>1723113211289</created>
++      <option name="number" value="00014" />
++      <option name="presentableId" value="LOCAL-00014" />
++      <option name="project" value="LOCAL" />
++      <updated>1723113211290</updated>
++    </task>
++    <option name="localTasksCounter" value="15" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -420,7 +496,8 @@
+     <MESSAGE value="Authentication fix" />
+     <MESSAGE value="Authorization changes" />
+     <MESSAGE value="Login changes" />
+-    <option name="LAST_COMMIT_MESSAGE" value="Login changes" />
++    <MESSAGE value="tests" />
++    <option name="LAST_COMMIT_MESSAGE" value="tests" />
+   </component>
+   <component name="XDebuggerManager">
+     <breakpoint-manager>
+@@ -446,31 +523,11 @@
+           <option name="timeStamp" value="26" />
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>
+-          <line>72</line>
+-          <option name="timeStamp" value="27" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+           <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/repositories/PostsRepositoryImpl.java</url>
+           <line>93</line>
+           <option name="timeStamp" value="28" />
+         </line-breakpoint>
+         <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>
+-          <line>79</line>
+-          <option name="timeStamp" value="29" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/PostServiceImpl.java</url>
+-          <line>94</line>
+-          <option name="timeStamp" value="30" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/CommentRestController.java</url>
+-          <line>88</line>
+-          <option name="timeStamp" value="31" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+           <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/services/CommentServiceImpl.java</url>
+           <line>68</line>
+           <option name="timeStamp" value="34" />
+@@ -490,17 +547,12 @@
+           <line>152</line>
+           <option name="timeStamp" value="47" />
+         </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/UserController.java</url>
+-          <line>44</line>
+-          <option name="timeStamp" value="48" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/PostRestController.java</url>
+-          <line>47</line>
+-          <option name="timeStamp" value="49" />
+-        </line-breakpoint>
+       </breakpoints>
+     </breakpoint-manager>
+   </component>
++  <component name="com.intellij.coverage.CoverageDataManagerImpl">
++    <SUITE FILE_PATH="coverage/demo$CommentRestControllerTest.ic" NAME="CommentRestControllerTest Coverage Results" MODIFIED="1723054289086" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
++    <SUITE FILE_PATH="coverage/demo$Tests_in__demo_test_.ic" NAME="Tests in 'demo.test' Coverage Results" MODIFIED="1723053723226" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
++    <SUITE FILE_PATH="coverage/demo$UserControllerTest.ic" NAME="UserControllerTest Coverage Results" MODIFIED="1723054360868" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: .idea/dataSources.local.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"dataSourceStorageLocal\" created-in=\"IU-233.14015.106\">\r\n    <data-source name=\"ForumDB_2024-07-22T12-10Z@mariadbservertelerik.database.windows.net\" uuid=\"679e753d-2f3b-4d0b-b37d-2bf3d2b44231\">\r\n      <database-info product=\"Microsoft SQL Server\" version=\"12.00.5564\" jdbc-version=\"4.2\" driver-name=\"Microsoft JDBC Driver 12.2 for SQL Server\" driver-version=\"12.2.0.0\" dbms=\"AZURE\" exact-version=\"12.0.5564\" exact-driver-version=\"12.2\">\r\n        <extra-name-characters>$#@</extra-name-characters>\r\n        <identifier-quote-string>&quot;</identifier-quote-string>\r\n      </database-info>\r\n      <case-sensitivity plain-identifiers=\"mixed\" quoted-identifiers=\"mixed\" />\r\n      <secret-storage>master_key</secret-storage>\r\n      <user-name>mariadbuser</user-name>\r\n      <schema-mapping>\r\n        <introspection-scope>\r\n          <node kind=\"database\" qname=\"@\">\r\n            <node kind=\"schema\" qname=\"@\" />\r\n          </node>\r\n        </introspection-scope>\r\n      </schema-mapping>\r\n    </data-source>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.local.xml b/.idea/dataSources.local.xml
+--- a/.idea/dataSources.local.xml	(revision 71b098bb64996d32a65b3dccf0573f2f3a0ef15f)
++++ b/.idea/dataSources.local.xml	(date 1723043638335)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="dataSourceStorageLocal" created-in="IU-233.14015.106">
++  <component name="dataSourceStorageLocal" created-in="IU-241.17890.1">
+     <data-source name="ForumDB_2024-07-22T12-10Z@mariadbservertelerik.database.windows.net" uuid="679e753d-2f3b-4d0b-b37d-2bf3d2b44231">
+       <database-info product="Microsoft SQL Server" version="12.00.5564" jdbc-version="4.2" driver-name="Microsoft JDBC Driver 12.2 for SQL Server" driver-version="12.2.0.0" dbms="AZURE" exact-version="12.0.5564" exact-driver-version="12.2">
+         <extra-name-characters>$#@</extra-name-characters>
+Index: demo/src/main/java/com/example/demo/services/PostServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.demo.services;\r\n\r\nimport com.example.demo.exceptions.EntityNotFoundException;\r\nimport com.example.demo.helpers.RestrictHelper;\r\nimport com.example.demo.models.Comment;\r\nimport com.example.demo.models.Post;\r\nimport com.example.demo.models.userfolder.User;\r\nimport com.example.demo.repositories.PostsRepository;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class PostServiceImpl implements PostService {\r\n\r\n    private static final String MODIFY_POST_ERROR_MESSAGE = \"Only admin or post creator can modify a post.\";\r\n\r\n    private final PostsRepository postsRepository;\r\n    private final RestrictHelper helper;\r\n\r\n    @Autowired\r\n    public PostServiceImpl(PostsRepository postsRepository, RestrictHelper helper) {\r\n        this.postsRepository = postsRepository;\r\n        this.helper = helper;\r\n    }\r\n\r\n    @Override\r\n    public Post createPost(Post post) {\r\n        return postsRepository.create(post);\r\n    }\r\n\r\n    @Override\r\n    public Post getPostById(int id) {\r\n        return postsRepository.findById(id).orElseThrow();\r\n    }\r\n\r\n    @Override\r\n    public List<Post> getAllPosts() {\r\n        return postsRepository.findAll();\r\n    }\r\n\r\n\r\n    @Override\r\n    public void deletePostById(int id, User user) {\r\n        Post post = postsRepository.findById(id).orElseThrow();\r\n        helper.deletePermission(post, user);\r\n        postsRepository.deleteById(id);\r\n    }\r\n    @Override\r\n    public List<Post> getTop10MostCommentedPosts() {\r\n        return postsRepository.findTop10ByOrderByCommentsCountDesc();\r\n    }\r\n\r\n    @Override\r\n    public List<Post> getTop10NewestPosts() {\r\n        return postsRepository.findTop10ByOrderByCreatedDateDesc();\r\n    }\r\n\r\n    @Override\r\n    public List<Post> getPostsByUserId(int userId) {\r\n        return postsRepository.findByUserId(userId);\r\n    }\r\n\r\n    @Override\r\n    public List<Post> getPostsByTitleContaining(String title) {\r\n        return postsRepository.findByTitleContaining(title);\r\n    }\r\n\r\n\r\n    @Override\r\n    public void updatePost(Post post, User user) {\r\n        helper.isUserACreator(post, user);\r\n\r\n\r\n        Post existingPosts = postsRepository.findById(post.getId()).orElseThrow(\r\n                () -> new EntityNotFoundException(\"Post\", post.getId())\r\n        );\r\n\r\n        updatePostField(existingPosts, post);\r\n        postsRepository.update(existingPosts);\r\n    }\r\n\r\n    @Override\r\n    public void like(int id, User user) {\r\n        // Fetch the post, or throw an EntityNotFoundException if not found\r\n        Post post = postsRepository.findById(id)\r\n                .orElseThrow(() -> new EntityNotFoundException(\"Post not found with id: \" + id));\r\n\r\n        // Assuming addLike is a method in your repository to handle the like operation\r\n        postsRepository.addLike(post, user);\r\n    }\r\n\r\n    private void updatePostField(Post post, Post changePost) {\r\n        if (changePost.getTitle() != null && !changePost.getTitle().equals(post.getTitle())){\r\n            post.setTitle(changePost.getTitle());\r\n        }\r\n        if (changePost.getContent() != null && !changePost.getContent().equals(post.getContent())){\r\n            post.setContent(changePost.getContent());\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/demo/src/main/java/com/example/demo/services/PostServiceImpl.java b/demo/src/main/java/com/example/demo/services/PostServiceImpl.java
+--- a/demo/src/main/java/com/example/demo/services/PostServiceImpl.java	(revision 71b098bb64996d32a65b3dccf0573f2f3a0ef15f)
++++ b/demo/src/main/java/com/example/demo/services/PostServiceImpl.java	(date 1723112251629)
+@@ -32,7 +32,8 @@
+ 
+     @Override
+     public Post getPostById(int id) {
+-        return postsRepository.findById(id).orElseThrow();
++        return postsRepository.findById(id)
++                .orElseThrow(() -> new EntityNotFoundException("Post", id));
+     }
+ 
+     @Override
+@@ -43,7 +44,8 @@
+ 
+     @Override
+     public void deletePostById(int id, User user) {
+-        Post post = postsRepository.findById(id).orElseThrow();
++        Post post = postsRepository.findById(id).orElseThrow(()
++                -> new EntityNotFoundException("Post", id));
+         helper.deletePermission(post, user);
+         postsRepository.deleteById(id);
+     }
