@@ -6,6 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="5ff856fa-9527-47b3-aada-19a767595685" name="Changes" comment="Added to mvc controller- AuthenticationMvc&#10;Created html for login, register and error&#10;added image for error 404&#10;minor changes to JWTAuthenticationFilter, CustomUserDetails, UserRepositoryImpl, JWTService, PostServiceImpl, UserService, UserServiceImpl&#10;Added RegisterDto and LoginDto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/demo/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/mvc/PostMVC.java" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/java/com/example/demo/controllers/mvc/PostMVC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/demo/src/main/resources/templates/Top10PostsView.html" beforeDir="false" afterPath="$PROJECT_DIR$/demo/src/main/resources/templates/Top10PostsView.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,6 +220,7 @@
       <workItem from="1723120800689" duration="1376000" />
       <workItem from="1723201099233" duration="2577000" />
       <workItem from="1723805545949" duration="2008000" />
+      <workItem from="1723983447036" duration="4295000" />
     </task>
     <task id="LOCAL-00001" summary="database changes">
       <option name="closed" value="true" />
